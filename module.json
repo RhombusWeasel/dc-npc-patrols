@@ -26,6 +26,12 @@
 			"path": "lang/en.json"
 		}
 	],
+	"documentTypes": {
+		"RegionBehavior": {
+			"dcDialogTree": {},
+			"dcAmbient": {}
+		}
+	},
 	"relationships": {
 		"systems": [
 			{
