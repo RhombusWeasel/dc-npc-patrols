@@ -78,7 +78,7 @@
 			"recording_cancelled": "Path recording cancelled.",
 			"recording_complete": "Path recorded: {count} waypoints.",
 			"no_token_on_scene": "This actor has no token on the current scene. Place one first.",
-			"wp_route": "Route",
+			"wp_route": "Route"
 		},
 		"chat": {
 			"arrival": "{name}: {line}",
