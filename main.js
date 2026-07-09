@@ -220,7 +220,7 @@ Hooks.once("init", () => {
 // Preload the attachment-editor partial (called in ready hook after templates are available)
 async function _preload_partials() {
 	try {
-		const tpl = await getTemplate("modules/dc-npc-patrols/templates/attachment-editor.hbs");
+		const tpl = await foundry.applications.handlebars.getTemplate("modules/dc-npc-patrols/templates/attachment-editor.hbs");
 		Handlebars.registerPartial("attachment-editor", tpl);
 	} catch (err) {
 		console.warn(`[${MODULE_ID}] Failed to preload attachment-editor partial:`, err);
