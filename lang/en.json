@@ -1,14 +1,14 @@
 {
 	"TYPES": {
 		"RegionBehavior": {
-			"dcDialogTree": "DC Dialog Tree",
-			"dcAmbient": "DC Ambient Lines"
+			"dc-npc-patrols.dcDialogTree": "DC Dialog Tree",
+			"dc-npc-patrols.dcAmbient": "DC Ambient Lines"
 		}
 	},
 	"TYPES.HINTS": {
 		"RegionBehavior": {
-			"dcDialogTree": "Opens a branching conversation when a player enters the region.",
-			"dcAmbient": "Whispers a random flavour line when a player enters the region."
+			"dc-npc-patrols.dcDialogTree": "Opens a branching conversation when a player enters the region.",
+			"dc-npc-patrols.dcAmbient": "Whispers a random flavour line when a player enters the region."
 		}
 	},
 	"dc-npc-patrols": {
