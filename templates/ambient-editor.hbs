@@ -1,0 +1,45 @@
+<div class="dc-ambient-editor">
+	<!-- Sidebar: set list -->
+	<div class="dc-ambient-editor-sidebar">
+		<div class="dc-ambient-editor-section-title">{{localize "dc-npc-patrols.ambient.sets"}}</div>
+		{{#each sets}}
+		<div class="dc-ambient-editor-set-item {{#if (eq this.id ../selected_set_id)}}active{{/if}}" data-set-select="{{this.id}}">
+			<span>{{this.name}}</span>
+			<button type="button" class="dc-ambient-editor-set-delete" data-set-delete="{{this.id}}" title="{{localize 'dc-npc-patrols.ambient.delete_set'}}">
+				<i class="fa-solid fa-trash"></i>
+			</button>
+		</div>
+		{{/each}}
+		<button type="button" class="dc-ambient-editor-add-btn" data-action="add-set">
+			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.ambient.add_set"}}
+		</button>
+	</div>
+
+	<!-- Main: line editor -->
+	<div class="dc-ambient-editor-main">
+		{{#if selected_set}}
+		<div class="dc-ambient-editor-set-meta">
+			<label>{{localize "dc-npc-patrols.ambient.set_name"}}
+				<input type="text" data-set-field="name" value="{{selected_set.name}}" />
+			</label>
+		</div>
+
+		<div class="dc-ambient-editor-lines">
+			<div class="dc-ambient-editor-section-title">{{localize "dc-npc-patrols.ambient.lines"}}</div>
+			{{#each selected_set.lines}}
+			<div class="dc-ambient-editor-line-row">
+				<input type="text" data-line-field="{{@index}}" value="{{this}}" placeholder="{{localize 'dc-npc-patrols.ambient.line_placeholder'}}" />
+				<button type="button" class="dc-ambient-editor-line-delete" data-line-delete="{{@index}}" title="{{localize 'dc-npc-patrols.ambient.delete_line'}}">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</div>
+			{{/each}}
+			<button type="button" class="dc-ambient-editor-add-btn" data-action="add-line">
+				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.ambient.add_line"}}
+			</button>
+		</div>
+		{{else}}
+		<div class="dc-ambient-editor-empty">{{localize "dc-npc-patrols.ambient.select_set"}}</div>
+		{{/if}}
+	</div>
+</div>

@@ -1,5 +1,14 @@
 <form class="dc-patrol-manager">
 	{{#if is_gm}}
+	<!-- Tab bar -->
+	<div class="patrol-tab-bar">
+		<button type="button" data-tab-select="patrols" class="patrol-tab {{#if (eq active_tab 'patrols')}}active{{/if}}">{{localize "dc-npc-patrols.panel.tab_patrols"}}</button>
+		<button type="button" data-tab-select="attachments" class="patrol-tab {{#if (eq active_tab 'attachments')}}active{{/if}}">{{localize "dc-npc-patrols.panel.tab_attachments"}}</button>
+	</div>
+
+	{{#if (eq active_tab 'patrols')}}
+	<!-- Patrols tab -->
+	<div class="patrol-tab-content">
 	<!-- NPC list -->
 	<div class="patrol-section">
 		<div class="patrol-section-title">{{localize "dc-npc-patrols.controls.patrol_manager.tooltip"}}</div>
@@ -147,6 +156,21 @@
 	{{else}}
 	<div class="empty-state">{{localize "dc-npc-patrols.panel.select_actor"}}</div>
 	{{/if}}
+	</div><!-- /patrols tab content -->
+
+	{{/if}}
+
+	{{#if (eq active_tab 'attachments')}}
+	<!-- Attachments tab -->
+	<div class="patrol-tab-content">
+		{{#if selected_actor}}
+		{{> attachment-editor}}
+		{{else}}
+		<div class="empty-state">{{localize "dc-npc-patrols.panel.select_actor"}}</div>
+		{{/if}}
+	</div><!-- /attachments tab content -->
+	{{/if}}
+
 	{{else}}
 	<div class="empty-state">GM access required.</div>
 	{{/if}}

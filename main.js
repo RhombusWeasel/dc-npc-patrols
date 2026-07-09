@@ -10,6 +10,9 @@ import { PatrolEngine } from "./lib/patrol_engine.js";
 import { CrossScene } from "./lib/cross_scene.js";
 import { RegionManager } from "./lib/region_manager.js";
 import { PatrolManagerPanel } from "./lib/patrol_manager_panel.js";
+import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
+import { DialogEditor } from "./lib/dialog_editor.js";
+import { AmbientEditor } from "./lib/ambient_editor.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -29,6 +32,21 @@ const DEFAULTS = {
 };
 
 function register_settings() {
+	// World-level JSON storage for dialog trees and ambient sets
+	game.settings.register(MODULE_ID, "dialog_trees", {
+		scope: "world",
+		config: false,
+		type: Object,
+		default: {},
+	});
+
+	game.settings.register(MODULE_ID, "ambient_sets", {
+		scope: "world",
+		config: false,
+		type: Object,
+		default: {},
+	});
+
 	game.settings.register(MODULE_ID, "enable_patrols", {
 		name: game.i18n.localize("dc-npc-patrols.settings.enable_patrols.name"),
 		hint: game.i18n.localize("dc-npc-patrols.settings.enable_patrols.hint"),
@@ -137,6 +155,34 @@ function register_scene_control() {
 						}
 					},
 				},
+				dialogEditor: {
+					name: "dialogEditor",
+					order: 1,
+					title: game.i18n.localize("dc-npc-patrols.controls.dialog_editor.tooltip"),
+					icon: "fa-solid fa-comments",
+					button: true,
+					onChange: () => {
+						try {
+							new DialogEditor().render(true);
+						} catch (err) {
+							console.error("dc-npc-patrols | Error opening dialog editor:", err);
+						}
+					},
+				},
+				ambientEditor: {
+					name: "ambientEditor",
+					order: 2,
+					title: game.i18n.localize("dc-npc-patrols.controls.ambient_editor.tooltip"),
+					icon: "fa-solid fa-comment-dots",
+					button: true,
+					onChange: () => {
+						try {
+							new AmbientEditor().render(true);
+						} catch (err) {
+							console.error("dc-npc-patrols | Error opening ambient editor:", err);
+						}
+					},
+				},
 			},
 		};
 	});
@@ -168,7 +214,18 @@ Hooks.once("init", () => {
 	register_settings();
 	register_helpers();
 	register_scene_control();
+	register_dialog_behaviors();
 });
+
+// Preload the attachment-editor partial (called in ready hook after templates are available)
+async function _preload_partials() {
+	try {
+		const tpl = await getTemplate("modules/dc-npc-patrols/templates/attachment-editor.hbs");
+		Handlebars.registerPartial("attachment-editor", tpl);
+	} catch (err) {
+		console.warn(`[${MODULE_ID}] Failed to preload attachment-editor partial:`, err);
+	}
+}
 
 // --- Wait for game.dc (DC system sets it asynchronously in its own ready hook) ---
 async function waitForGameDc(attempt = 1, maxAttempts = 50, interval = 200) {
@@ -189,6 +246,9 @@ Hooks.once("ready", async () => {
 
 	console.log(`[${MODULE_ID}] Deadlands-Classic system detected — initializing patrol engine.`);
 
+	// Preload partials
+	await _preload_partials();
+
 	// Initialize subsystems
 	const cross_scene = new CrossScene(MODULE_ID);
 	const region_manager = new RegionManager(MODULE_ID);
@@ -208,6 +268,42 @@ Hooks.once("ready", async () => {
 
 	// Start time polling for schedule evaluation
 	start_time_poll();
+
+	// --- Region lifecycle hooks (Phase 3) ---
+	// Reposition auto-created regions when a token moves
+	Hooks.on("updateToken", (token_doc, changes) => {
+		if (!("x" in changes || "y" in changes)) return;
+		const actor = token_doc.actor;
+		if (!actor) return;
+		const scene = token_doc.parent;
+		if (!scene) return;
+		// Check dialog attachments
+		const dialog_atts = actor.getFlag(MODULE_ID, "dialog_attachments") || [];
+		for (const att of dialog_atts) {
+			if (att.region_uuid) region_manager.update_region_position(scene, token_doc, att.region_uuid);
+		}
+		// Check ambient attachments
+		const ambient_atts = actor.getFlag(MODULE_ID, "ambient_attachments") || [];
+		for (const att of ambient_atts) {
+			if (att.region_uuid) region_manager.update_region_position(scene, token_doc, att.region_uuid);
+		}
+	});
+
+	// Sync regions on scene load (create missing, reposition moved)
+	Hooks.on("canvasReady", () => {
+		if (!game.user.isGM) return;
+		region_manager.sync_all_regions(canvas.scene);
+	});
+
+	// Clean up regions when a token is deleted
+	Hooks.on("deleteToken", (token_doc) => {
+		if (!game.user.isGM) return;
+		region_manager.cleanup_for_deleted_token(token_doc.parent, token_doc);
+	});
+
+	// Expose editors for the scene control tools
+	mod.api.dialog_editor = () => new DialogEditor().render(true);
+	mod.api.ambient_editor = () => new AmbientEditor().render(true);
 
 	console.log(`[${MODULE_ID}] Ready — patrol engine initialized.`);
 });

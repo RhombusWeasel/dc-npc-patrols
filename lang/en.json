@@ -31,10 +31,18 @@
 			"patrol_manager": {
 				"title": "NPC Patrol Manager",
 				"tooltip": "Manage NPC patrol paths and schedules"
+			},
+			"dialog_editor": {
+				"tooltip": "Edit dialog trees"
+			},
+			"ambient_editor": {
+				"tooltip": "Edit ambient line sets"
 			}
 		},
 		"panel": {
 			"title": "NPC Patrol Manager",
+			"tab_patrols": "Patrols",
+			"tab_attachments": "Dialog & Ambient",
 			"no_paths": "No patrol paths defined for this actor.",
 			"add_path": "Add Path",
 			"path_name": "Path Name",
@@ -79,6 +87,81 @@
 			"recording_complete": "Path recorded: {count} waypoints.",
 			"no_token_on_scene": "This actor has no token on the current scene. Place one first.",
 			"wp_route": "Route"
+		},
+		"dialog": {
+			"title": "Conversation",
+			"editor_title": "Dialog Tree Editor",
+			"trees": "Dialog Trees",
+			"nodes": "Nodes",
+			"responses": "Responses",
+			"add_tree": "New Tree",
+			"add_node": "New Node",
+			"add_response": "Add Response",
+			"tree_name": "Name",
+			"tree_desc": "Description",
+			"root_node": "Root Node",
+			"node_id": "Node ID",
+			"npc_text": "NPC Text",
+			"response_text": "Response text",
+			"goto": "Goes To",
+			"exit_conversation": "(Exit Conversation)",
+			"set_flags": "Set Flags",
+			"once": "Once Only",
+			"once_tooltip": "This response is only shown once per player",
+			"delete_tree": "Delete Tree",
+			"delete_node": "Delete Node",
+			"delete_response": "Delete Response",
+			"delete_tree_confirm": "Delete this entire dialog tree?",
+			"delete_node_confirm": "Delete this node? All references to it will be cleared.",
+			"node_id_exists": "A node with this ID already exists.",
+			"cant_delete_last_node": "Cannot delete the last node in a tree.",
+			"select_tree": "Select or create a dialog tree to begin.",
+			"select_node": "Select a node to edit.",
+			"node_missing": "This node no longer exists.",
+			"exit": "Leave Conversation",
+			"tree_id": "Dialog Tree ID",
+			"actor_id": "NPC Actor ID"
+		},
+		"ambient": {
+			"editor_title": "Ambient Line Set Editor",
+			"sets": "Ambient Sets",
+			"lines": "Lines",
+			"add_set": "New Set",
+			"add_line": "Add Line",
+			"set_name": "Set Name",
+			"line_placeholder": "Enter a flavour line…",
+			"delete_set": "Delete Set",
+			"delete_line": "Delete Line",
+			"delete_set_confirm": "Delete this ambient set?",
+			"select_set": "Select or create an ambient set to begin.",
+			"set_id": "Ambient Set ID",
+			"actor_id": "NPC Actor ID"
+		},
+		"attachment": {
+			"dialog_attachments": "Dialog Attachments",
+			"ambient_attachments": "Ambient Attachments",
+			"no_dialog": "No dialog trees attached to this NPC.",
+			"no_ambient": "No ambient sets attached to this NPC.",
+			"add": "Attach",
+			"remove": "Remove",
+			"select_tree": "Select a dialog tree…",
+			"select_set": "Select an ambient set…",
+			"time_start": "Active from (leave blank for always)",
+			"time_end": "Active until (leave blank for always)",
+			"radius": "Radius (grid squares)",
+			"added": "Attachment added and proximity region created.",
+			"removed": "Attachment removed and proximity region deleted.",
+			"no_scene": "No active scene — open a scene first."
+		},
+		"behavior": {
+			"dcDialogTree": {
+				"label": "DC Dialog Tree",
+				"hint": "Opens a branching conversation when a player enters the region."
+			},
+			"dcAmbient": {
+				"label": "DC Ambient Lines",
+				"hint": "Whispers a random flavour line when a player enters the region."
+			}
 		},
 		"chat": {
 			"arrival": "{name}: {line}",

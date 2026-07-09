@@ -1,0 +1,29 @@
+<div class="dc-dialog-conversation">
+	<div class="dc-dialog-header">
+		{{#if portrait}}
+		<img class="dc-dialog-portrait" src="{{portrait}}" alt="{{npc_name}}" />
+		{{/if}}
+		<div class="dc-dialog-speaker">
+			<strong>{{npc_name}}</strong>
+		</div>
+	</div>
+
+	<div class="dc-dialog-text">{{npc_text}}</div>
+
+	<div class="dc-dialog-responses">
+		{{#each responses}}
+		<button type="button" class="dc-dialog-response" data-response-id="{{this.id}}">
+			<span class="dc-dialog-response-text">{{this.text}}</span>
+			{{#if this.once}}
+			<span class="dc-dialog-once-badge" title="{{localize 'dc-npc-patrols.dialog.once_tooltip'}}">
+				<i class="fa-solid fa-clock-rotate-left"></i>
+			</span>
+			{{/if}}
+		</button>
+		{{/each}}
+
+		<button type="button" class="dc-dialog-response dc-dialog-exit" data-action="exit">
+			<i class="fa-solid fa-door-open"></i> {{localize "dc-npc-patrols.dialog.exit"}}
+		</button>
+	</div>
+</div>

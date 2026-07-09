@@ -1,0 +1,71 @@
+<div class="dc-attachment-editor">
+	{{#if selected_actor}}
+	<!-- Dialog attachments -->
+	<div class="dc-attachment-section">
+		<div class="dc-attachment-section-title">{{localize "dc-npc-patrols.attachment.dialog_attachments"}}</div>
+		{{#each dialog_attachments}}
+		<div class="dc-attachment-row">
+			<span class="dc-attachment-name">{{this.tree_name}}</span>
+			<span class="dc-attachment-time">{{this.time_start}}–{{this.time_end}}</span>
+			<span class="dc-attachment-radius">{{this.region_radius}} sq</span>
+			<button type="button" class="dc-attachment-remove" data-remove-dialog="{{@index}}" title="{{localize 'dc-npc-patrols.attachment.remove'}}">
+				<i class="fa-solid fa-trash"></i>
+			</button>
+		</div>
+		{{/each}}
+		{{#unless dialog_attachments.length}}
+		<div class="dc-attachment-empty">{{localize "dc-npc-patrols.attachment.no_dialog"}}</div>
+		{{/unless}}
+
+		<div class="dc-attachment-add-row">
+			<select data-add-dialog-tree>
+				<option value="">{{localize "dc-npc-patrols.attachment.select_tree"}}</option>
+				{{#each available_trees}}
+				<option value="{{this.id}}">{{this.name}}</option>
+				{{/each}}
+			</select>
+			<input type="time" data-add-dialog-start placeholder="Start" title="{{localize 'dc-npc-patrols.attachment.time_start'}}" />
+			<input type="time" data-add-dialog-end placeholder="End" title="{{localize 'dc-npc-patrols.attachment.time_end'}}" />
+			<input type="number" data-add-dialog-radius value="2" min="0" max="20" title="{{localize 'dc-npc-patrols.attachment.radius'}}" class="dc-attachment-radius-input" />
+			<button type="button" data-action="add-dialog-attachment" class="dc-attachment-add-btn">
+				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.attachment.add"}}
+			</button>
+		</div>
+	</div>
+
+	<!-- Ambient attachments -->
+	<div class="dc-attachment-section">
+		<div class="dc-attachment-section-title">{{localize "dc-npc-patrols.attachment.ambient_attachments"}}</div>
+		{{#each ambient_attachments}}
+		<div class="dc-attachment-row">
+			<span class="dc-attachment-name">{{this.set_name}}</span>
+			<span class="dc-attachment-time">{{this.time_start}}–{{this.time_end}}</span>
+			<span class="dc-attachment-radius">{{this.region_radius}} sq</span>
+			<button type="button" class="dc-attachment-remove" data-remove-ambient="{{@index}}" title="{{localize 'dc-npc-patrols.attachment.remove'}}">
+				<i class="fa-solid fa-trash"></i>
+			</button>
+		</div>
+		{{/each}}
+		{{#unless ambient_attachments.length}}
+		<div class="dc-attachment-empty">{{localize "dc-npc-patrols.attachment.no_ambient"}}</div>
+		{{/unless}}
+
+		<div class="dc-attachment-add-row">
+			<select data-add-ambient-set>
+				<option value="">{{localize "dc-npc-patrols.attachment.select_set"}}</option>
+				{{#each available_sets}}
+				<option value="{{this.id}}">{{this.name}}</option>
+				{{/each}}
+			</select>
+			<input type="time" data-add-ambient-start placeholder="Start" title="{{localize 'dc-npc-patrols.attachment.time_start'}}" />
+			<input type="time" data-add-ambient-end placeholder="End" title="{{localize 'dc-npc-patrols.attachment.time_end'}}" />
+			<input type="number" data-add-ambient-radius value="2" min="0" max="20" title="{{localize 'dc-npc-patrols.attachment.radius'}}" class="dc-attachment-radius-input" />
+			<button type="button" data-action="add-ambient-attachment" class="dc-attachment-add-btn">
+				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.attachment.add"}}
+			</button>
+		</div>
+	</div>
+	{{else}}
+	<div class="dc-attachment-empty">{{localize "dc-npc-patrols.panel.select_actor"}}</div>
+	{{/if}}
+</div>
