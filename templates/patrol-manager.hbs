@@ -54,9 +54,9 @@
 			<!-- Active days -->
 			<div class="day-checkboxes">
 				<span class="patrol-section-title" style="font-size: 0.8em; margin-right: 4px;">{{localize "dc-npc-patrols.panel.days"}}:</span>
-				{{#each ../day_labels}}
+				{{#each this.day_states}}
 				<label>
-					<input type="checkbox" data-day-toggle="{{@../index}}:{{this.key}}" {{#if (includes @../this.days this.key)}}checked{{/if}} />
+					<input type="checkbox" data-day-toggle="{{@../index}}:{{this.key}}" {{#if this.checked}}checked{{/if}} />
 					{{localize this.label}}
 				</label>
 				{{/each}}
@@ -71,8 +71,8 @@
 					<tr>
 						<th>{{localize "dc-npc-patrols.panel.wp_label"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_time"}}</th>
-						<th>X</th>
-						<th>Y</th>
+						<th>X (grid)</th>
+						<th>Y (grid)</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_scene"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_arrival_lines"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_face_dir"}}</th>

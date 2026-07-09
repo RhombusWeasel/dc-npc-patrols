@@ -31,7 +31,7 @@
 			{
 				"id": "Deadlands-Classic",
 				"compatibility": {
-					"minimum": "14"
+					"minimum": "0.1.0"
 				}
 			}
 		]

@@ -107,23 +107,38 @@ function register_scene_control() {
 	Hooks.on("getSceneControlButtons", (controls) => {
 		if (!game.user.isGM) return;
 
-		const dc_control = controls.find((c) => c.name === "tokens") || controls.find((c) => c.name === "lighting");
-		if (!dc_control) return;
-
-		dc_control.tools.push({
+		controls[MODULE_ID] = {
 			name: MODULE_ID,
 			title: game.i18n.localize("dc-npc-patrols.controls.patrol_manager.title"),
-			toggle: true,
-			active: false,
 			icon: "fa-solid fa-route",
-			onClick: (toggle) => {
-				if (toggle) {
-					open_panel();
-				} else {
-					close_panel();
-				}
+			visible: true,
+			order: 98,
+			activeTool: "openPanel",
+			onChange: (event, active) => {
+				console.log("dc-npc-patrols | Control layer activated", { active });
 			},
-		});
+			onToolChange: (event, tool, active) => {
+				console.log("dc-npc-patrols | onToolChange fired", { tool: tool?.name, active });
+			},
+			tools: {
+				openPanel: {
+					name: "openPanel",
+					order: 0,
+					title: game.i18n.localize("dc-npc-patrols.controls.patrol_manager.tooltip"),
+					icon: "fa-solid fa-route",
+					button: true,
+					onChange: (event, active) => {
+						console.log("dc-npc-patrols | openPanel tool clicked");
+						try {
+							open_panel();
+							console.log("dc-npc-patrols | PatrolManagerPanel render requested");
+						} catch (err) {
+							console.error("dc-npc-patrols | Error opening patrol panel:", err);
+						}
+					},
+				},
+			},
+		};
 	});
 }
 
@@ -152,14 +167,27 @@ function register_helpers() {
 Hooks.once("init", () => {
 	register_settings();
 	register_helpers();
+	register_scene_control();
 });
 
-Hooks.once("ready", () => {
-	// Verify DC system is active
-	if (!game.dc) {
-		console.warn(`[${MODULE_ID}] Deadlands-Classic system not detected — module disabled.`);
+// --- Wait for game.dc (DC system sets it asynchronously in its own ready hook) ---
+async function waitForGameDc(attempt = 1, maxAttempts = 50, interval = 200) {
+	if (game.dc) return true;
+	if (attempt >= maxAttempts) return false;
+	console.log(`[${MODULE_ID}] Waiting for game.dc… (attempt ${attempt}/${maxAttempts})`);
+	await new Promise((r) => setTimeout(r, interval));
+	return waitForGameDc(attempt + 1, maxAttempts, interval);
+}
+
+Hooks.once("ready", async () => {
+	// Wait for the Deadlands-Classic system to set up game.dc
+	const found = await waitForGameDc();
+	if (!found) {
+		console.warn(`[${MODULE_ID}] Deadlands-Classic system not detected after waiting — module disabled.`);
 		return;
 	}
+
+	console.log(`[${MODULE_ID}] Deadlands-Classic system detected — initializing patrol engine.`);
 
 	// Initialize subsystems
 	const cross_scene = new CrossScene(MODULE_ID);
@@ -177,9 +205,6 @@ Hooks.once("ready", () => {
 	};
 	// Also on window for easy access
 	window.dcNpcPatrols = mod.api;
-
-	// Register scene control button
-	register_scene_control();
 
 	// Start time polling for schedule evaluation
 	start_time_poll();
