@@ -83,8 +83,8 @@
 						<label>{{localize "dc-npc-patrols.dialog.goto"}}
 							<select data-response-field="{{@index}}:goto">
 								<option value="" {{#unless this.goto}}selected{{/unless}}>{{localize "dc-npc-patrols.dialog.exit_conversation"}}</option>
-								{{#each ../../node_list}}
-								<option value="{{this.id}}" {{#if (eq this.id ../../../this.goto)}}selected{{/if}}>{{this.label}}</option>
+								{{#each @root.node_list}}
+								<option value="{{this.id}}">{{this.label}}</option>
 								{{/each}}
 							</select>
 						</label>
