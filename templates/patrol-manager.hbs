@@ -73,6 +73,7 @@
 						<th>{{localize "dc-npc-patrols.panel.wp_time"}}</th>
 						<th>X (grid)</th>
 						<th>Y (grid)</th>
+						<th>{{localize "dc-npc-patrols.panel.wp_route"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_scene"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_arrival_lines"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_face_dir"}}</th>
@@ -88,6 +89,9 @@
 						<td><input type="time" data-wp-field="{{@../index}}:{{@index}}:time" value="{{this.time}}" class="time-input" /></td>
 						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:x" value="{{this.x}}" class="number-input" /></td>
 						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:y" value="{{this.y}}" class="number-input" /></td>
+						<td>
+							<span class="route-badge {{#unless this.route.length}}route-empty{{/unless}}">{{#if this.route.length}}{{this.route.length}}{{else}}0{{/if}}</span>
+						</td>
 						<td>
 							<select data-wp-field="{{@../index}}:{{@index}}:scene_id">
 								<option value="">{{localize "dc-npc-patrols.panel.current_scene"}}</option>

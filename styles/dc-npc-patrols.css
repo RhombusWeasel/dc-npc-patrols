@@ -176,6 +176,24 @@
 	color: var(--color-level-info);
 }
 
+/* Route badge in waypoint table */
+.dc-patrol-manager .route-badge {
+	display: inline-block;
+	min-width: 24px;
+	padding: 2px 6px;
+	border-radius: 4px;
+	background: var(--color-level-info-bg, #d1ecf1);
+	color: var(--color-level-info, #0c5460);
+	font-size: 0.85em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.dc-patrol-manager .route-badge.route-empty {
+	background: var(--color-bg-option, #333);
+	color: var(--color-text-secondary, #999);
+}
+
 /* Arrival chat messages */
 .dc-patrol-arrival {
 	padding: 4px 0;
