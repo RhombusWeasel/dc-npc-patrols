@@ -28,8 +28,8 @@
 	],
 	"documentTypes": {
 		"RegionBehavior": {
-			"dc-npc-patrols.dcDialogTree": {},
-			"dc-npc-patrols.dcAmbient": {}
+			"dcDialogTree": {},
+			"dcAmbient": {}
 		}
 	},
 	"relationships": {
