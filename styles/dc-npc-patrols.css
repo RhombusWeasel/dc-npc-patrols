@@ -171,6 +171,11 @@
 	color: var(--color-text-secondary);
 }
 
+/* Record path button */
+.dc-patrol-manager .patrol-btn-record {
+	color: var(--color-level-info);
+}
+
 /* Arrival chat messages */
 .dc-patrol-arrival {
 	padding: 4px 0;

@@ -72,7 +72,12 @@
 			"delete_confirm": "Delete this waypoint?",
 			"delete_path_confirm": "Delete this entire path?",
 			"select_actor": "Select an NPC token or actor to manage their patrol paths.",
-			"arrival_chat_flavor": "{name} arrives at {label}."
+			"arrival_chat_flavor": "{name} arrives at {label}.",
+			"record_path": "Record Path",
+			"record_path_hint": "Drag the token along the patrol route. CTRL+click for waypoints, right-click to undo.",
+			"recording_cancelled": "Path recording cancelled.",
+			"recording_complete": "Path recorded: {count} waypoints.",
+			"no_token_on_scene": "This actor has no token on the current scene. Place one first."
 		},
 		"chat": {
 			"arrival": "{name}: {line}",

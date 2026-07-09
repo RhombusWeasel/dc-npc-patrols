@@ -117,9 +117,14 @@
 			<div class="empty-state">{{localize "dc-npc-patrols.panel.no_waypoints"}}</div>
 			{{/unless}}
 
-			<button type="button" data-add-waypoint="{{@index}}" class="patrol-btn" style="margin-top: 6px;">
-				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.panel.add_waypoint"}}
-			</button>
+			<div style="margin-top: 6px; display: flex; gap: 8px;">
+				<button type="button" data-add-waypoint="{{@index}}" class="patrol-btn">
+					<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.panel.add_waypoint"}}
+				</button>
+				<button type="button" data-record-path="{{@index}}" class="patrol-btn patrol-btn-record">
+					<i class="fa-solid fa-video"></i> {{localize "dc-npc-patrols.panel.record_path"}}
+				</button>
+			</div>
 		</div>
 		{{/each}}
 		{{else}}
