@@ -1,0 +1,188 @@
+/* dc-npc-patrols — styles */
+
+/* Patrol Manager Panel */
+.dc-patrol-manager {
+	min-width: 600px;
+}
+
+.dc-patrol-manager .patrol-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 8px;
+}
+
+.dc-patrol-manager .patrol-actor-name {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.dc-patrol-manager .patrol-section {
+	margin-bottom: 12px;
+	padding: 8px;
+	border: 1px solid var(--color-border-faint);
+	border-radius: 4px;
+}
+
+.dc-patrol-manager .patrol-section-title {
+	font-weight: bold;
+	margin-bottom: 6px;
+	color: var(--color-text-primary);
+}
+
+/* Path list */
+.dc-patrol-manager .path-item {
+	margin-bottom: 8px;
+	padding: 6px 8px;
+	border: 1px solid var(--color-border-faint);
+	border-radius: 4px;
+	background: var(--color-bg-option);
+}
+
+.dc-patrol-manager .path-item-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+
+.dc-patrol-manager .path-item-header input[type="text"] {
+	flex: 1;
+}
+
+/* Days checkboxes */
+.dc-patrol-manager .day-checkboxes {
+	display: flex;
+	gap: 4px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.dc-patrol-manager .day-checkboxes label {
+	font-size: 0.85em;
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+/* Waypoint table */
+.dc-patrol-manager .waypoint-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9em;
+}
+
+.dc-patrol-manager .waypoint-table th {
+	text-align: left;
+	padding: 4px 6px;
+	border-bottom: 1px solid var(--color-border-faint);
+	color: var(--color-text-secondary);
+	font-weight: normal;
+	font-size: 0.8em;
+	text-transform: uppercase;
+}
+
+.dc-patrol-manager .waypoint-table td {
+	padding: 4px 6px;
+	vertical-align: top;
+}
+
+.dc-patrol-manager .waypoint-table input,
+.dc-patrol-manager .waypoint-table select,
+.dc-patrol-manager .waypoint-table textarea {
+	width: 100%;
+	box-sizing: border-box;
+	font-size: 0.9em;
+}
+
+.dc-patrol-manager .waypoint-table textarea {
+	resize: vertical;
+	min-height: 40px;
+}
+
+.dc-patrol-manager .waypoint-row {
+	border-bottom: 1px solid var(--color-border-faint);
+}
+
+.dc-patrol-manager .waypoint-row:last-child {
+	border-bottom: none;
+}
+
+/* Combat behavior select */
+.dc-patrol-manager .combat-behavior-select {
+	max-width: 120px;
+}
+
+/* Buttons */
+.dc-patrol-manager .patrol-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	cursor: pointer;
+}
+
+.dc-patrol-manager .patrol-btn-danger {
+	color: var(--color-level-error);
+}
+
+/* Time input */
+.dc-patrol-manager .time-input {
+	max-width: 80px;
+}
+
+.dc-patrol-manager .number-input {
+	max-width: 60px;
+}
+
+/* Empty state */
+.dc-patrol-manager .empty-state {
+	text-align: center;
+	padding: 20px;
+	color: var(--color-text-secondary);
+	font-style: italic;
+}
+
+/* NPC list */
+.dc-patrol-manager .npc-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+}
+
+.dc-patrol-manager .npc-item {
+	display: inline-block;
+}
+
+.dc-patrol-manager .npc-item .patrol-btn {
+	padding: 4px 8px;
+	border: 1px solid var(--color-border-faint);
+	border-radius: 4px;
+	text-decoration: none;
+	color: var(--color-text-primary);
+}
+
+.dc-patrol-manager .npc-item .patrol-btn.active {
+	border-color: var(--color-accent);
+	background: var(--color-bg-option-active);
+}
+
+.dc-patrol-manager .path-count {
+	font-size: 0.8em;
+	color: var(--color-text-secondary);
+}
+
+/* Arrival chat messages */
+.dc-patrol-arrival {
+	padding: 4px 0;
+}
+
+.dc-patrol-arrival-flavor {
+	font-size: 0.85em;
+	color: var(--color-text-secondary);
+	font-style: italic;
+	margin-bottom: 2px;
+}
+
+.dc-patrol-arrival-line {
+	padding: 2px 0;
+}

@@ -1,0 +1,39 @@
+{
+	"id": "dc-npc-patrols",
+	"title": "Deadlands Classic — NPC Patrols & Dialog",
+	"description": "Scheduled NPC movement with animated paths, cross-scene transitions, dialog trees, and boon-based quest consequences for the Deadlands-Classic system.",
+	"version": "0.1.0",
+	"compatibility": {
+		"minimum": "14",
+		"verified": "14"
+	},
+	"system": ["Deadlands-Classic"],
+	"authors": [
+		{
+			"name": "RhombusWeasel"
+		}
+	],
+	"esmodules": [
+		"main.js"
+	],
+	"styles": [
+		"styles/dc-npc-patrols.css"
+	],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "lang/en.json"
+		}
+	],
+	"relationships": {
+		"systems": [
+			{
+				"id": "Deadlands-Classic",
+				"compatibility": {
+					"minimum": "14"
+				}
+			}
+		]
+	}
+}

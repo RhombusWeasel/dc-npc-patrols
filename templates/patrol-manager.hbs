@@ -1,0 +1,144 @@
+<form class="dc-patrol-manager">
+	{{#if is_gm}}
+	<!-- NPC list -->
+	<div class="patrol-section">
+		<div class="patrol-section-title">{{localize "dc-npc-patrols.controls.patrol_manager.tooltip"}}</div>
+		<div class="npc-list">
+			{{#each npc_tokens}}
+			<div class="npc-item">
+				<a data-actor-select="{{this.id}}" class="patrol-btn {{#if (eq this.id ../selected_actor_id)}}active{{/if}}">
+					<i class="fa-solid fa-person-walking"></i> {{this.name}}
+					{{#if this.has_patrol}}
+					<span class="path-count">({{this.path_count}} paths)</span>
+					{{/if}}
+				</a>
+			</div>
+			{{/each}}
+		</div>
+	</div>
+
+	{{#if selected_actor}}
+	<!-- Selected NPC: Combat behavior -->
+	<div class="patrol-section">
+		<div class="patrol-section-title">{{localize "dc-npc-patrols.panel.combat_behavior"}}</div>
+		<select data-combat-behavior class="combat-behavior-select">
+			<option value="freeze" {{#if (eq combat_behavior "freeze")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_freeze"}}</option>
+			<option value="flee" {{#if (eq combat_behavior "flee")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_flee"}}</option>
+			<option value="ignore" {{#if (eq combat_behavior "ignore")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_ignore"}}</option>
+		</select>
+	</div>
+
+	<!-- Paths -->
+	<div class="patrol-section">
+		<div class="patrol-header">
+			<span class="patrol-section-title">{{localize "dc-npc-patrols.panel.waypoints"}}</span>
+			<button type="button" data-action="add-path" class="patrol-btn">
+				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.panel.add_path"}}
+			</button>
+		</div>
+
+		{{#if paths.length}}
+		{{#each paths}}
+		<div class="path-item">
+			<div class="path-item-header">
+				<input type="text" data-path-name="{{@index}}" value="{{this.name}}" placeholder="{{localize 'dc-npc-patrols.panel.path_name'}}" />
+				<label class="patrol-btn">
+					<input type="checkbox" data-toggle-path="{{@index}}" {{#if this.enabled}}checked{{/if}} />
+					{{localize "dc-npc-patrols.panel.enabled"}}
+				</label>
+				<button type="button" data-delete-path="{{@index}}" class="patrol-btn patrol-btn-danger">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</div>
+
+			<!-- Active days -->
+			<div class="day-checkboxes">
+				<span class="patrol-section-title" style="font-size: 0.8em; margin-right: 4px;">{{localize "dc-npc-patrols.panel.days"}}:</span>
+				{{#each ../day_labels}}
+				<label>
+					<input type="checkbox" data-day-toggle="{{@../index}}:{{this.key}}" {{#if (includes @../this.days this.key)}}checked{{/if}} />
+					{{localize this.label}}
+				</label>
+				{{/each}}
+				{{#unless this.days.length}}
+				<em style="font-size: 0.8em; color: var(--color-text-secondary);">({{localize "dc-npc-patrols.panel.all_days"}})</em>
+				{{/unless}}
+			</div>
+
+			<!-- Waypoint table -->
+			<table class="waypoint-table">
+				<thead>
+					<tr>
+						<th>{{localize "dc-npc-patrols.panel.wp_label"}}</th>
+						<th>{{localize "dc-npc-patrols.panel.wp_time"}}</th>
+						<th>X</th>
+						<th>Y</th>
+						<th>{{localize "dc-npc-patrols.panel.wp_scene"}}</th>
+						<th>{{localize "dc-npc-patrols.panel.wp_arrival_lines"}}</th>
+						<th>{{localize "dc-npc-patrols.panel.wp_face_dir"}}</th>
+						<th>{{localize "dc-npc-patrols.panel.wp_linger"}}</th>
+						<th>{{localize "dc-npc-patrols.panel.wp_region_radius"}}</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each this.waypoints}}
+					<tr class="waypoint-row">
+						<td><input type="text" data-wp-field="{{@../index}}:{{@index}}:label" value="{{this.label}}" /></td>
+						<td><input type="time" data-wp-field="{{@../index}}:{{@index}}:time" value="{{this.time}}" class="time-input" /></td>
+						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:x" value="{{this.x}}" class="number-input" /></td>
+						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:y" value="{{this.y}}" class="number-input" /></td>
+						<td>
+							<select data-wp-field="{{@../index}}:{{@index}}:scene_id">
+								<option value="">{{localize "dc-npc-patrols.panel.current_scene"}}</option>
+								{{#each ../../scenes}}
+								<option value="{{this.id}}" {{#if (eq this.id ../../../this.scene_id)}}selected{{/if}}>{{this.name}}</option>
+								{{/each}}
+							</select>
+						</td>
+						<td>
+							<textarea data-wp-field="{{@../index}}:{{@index}}:arrival_lines">{{#each this.arrival_lines}}{{this}}{{#unless @last}}
+{{/unless}}{{/each}}</textarea>
+						</td>
+						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:face_direction" value="{{this.face_direction}}" class="number-input" /></td>
+						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:linger_minutes" value="{{this.linger_minutes}}" class="number-input" /></td>
+						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:region_radius" value="{{this.region_radius}}" class="number-input" /></td>
+						<td>
+							<button type="button" data-delete-waypoint="{{@../index}}:{{@index}}" class="patrol-btn patrol-btn-danger">
+								<i class="fa-solid fa-trash"></i>
+							</button>
+						</td>
+					</tr>
+					{{/each}}
+				</tbody>
+			</table>
+
+			{{#unless this.waypoints.length}}
+			<div class="empty-state">{{localize "dc-npc-patrols.panel.no_waypoints"}}</div>
+			{{/unless}}
+
+			<button type="button" data-add-waypoint="{{@index}}" class="patrol-btn" style="margin-top: 6px;">
+				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.panel.add_waypoint"}}
+			</button>
+		</div>
+		{{/each}}
+		{{else}}
+		<div class="empty-state">{{localize "dc-npc-patrols.panel.no_paths"}}</div>
+		{{/if}}
+	</div>
+
+	<!-- Save button -->
+	{{#if selected_actor}}
+	<div class="patrol-section">
+		<button type="button" data-action="save" class="patrol-btn">
+			<i class="fa-solid fa-floppy-disk"></i> {{localize "dc-npc-patrols.panel.save"}}
+		</button>
+	</div>
+	{{/if}}
+	{{else}}
+	<div class="empty-state">{{localize "dc-npc-patrols.panel.select_actor"}}</div>
+	{{/if}}
+	{{else}}
+	<div class="empty-state">GM access required.</div>
+	{{/if}}
+</form>

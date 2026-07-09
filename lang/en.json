@@ -1,0 +1,82 @@
+{
+	"dc-npc-patrols": {
+		"title": "NPC Patrols & Dialog",
+		"settings": {
+			"enable_patrols": {
+				"name": "Enable NPC Patrols",
+				"hint": "Master toggle for all NPC patrol behavior."
+			},
+			"movement_speed": {
+				"name": "Movement Speed",
+				"hint": "Token animation speed in pixels per second."
+			},
+			"stagger_delay": {
+				"name": "Stagger Delay",
+				"hint": "Milliseconds of delay between sequential NPC movements to avoid visual chaos."
+			},
+			"proximity_radius": {
+				"name": "Default Proximity Radius",
+				"hint": "Default radius in grid squares for auto-generated proximity regions around NPCs."
+			},
+			"ambient_cooldown": {
+				"name": "Ambient Dialog Cooldown",
+				"hint": "Seconds before an NPC repeats ambient dialog to the same player."
+			},
+			"combat_freeze": {
+				"name": "Freeze Patrols in Combat",
+				"hint": "When enabled, all NPCs with combat_behavior 'freeze' stop moving during combat."
+			}
+		},
+		"controls": {
+			"patrol_manager": {
+				"title": "NPC Patrol Manager",
+				"tooltip": "Manage NPC patrol paths and schedules"
+			}
+		},
+		"panel": {
+			"title": "NPC Patrol Manager",
+			"no_paths": "No patrol paths defined for this actor.",
+			"add_path": "Add Path",
+			"path_name": "Path Name",
+			"waypoints": "Waypoints",
+			"add_waypoint": "Add Waypoint",
+			"no_waypoints": "No waypoints in this path yet.",
+			"wp_label": "Label",
+			"wp_time": "Time",
+			"wp_scene": "Scene",
+			"wp_arrival_lines": "Arrival Lines",
+			"wp_ambient_lines": "Ambient Lines",
+			"wp_face_dir": "Face Direction",
+			"wp_linger": "Linger (min)",
+			"wp_region_radius": "Region Radius",
+			"current_scene": "Current Scene",
+			"cross_scene": "Cross Scene",
+			"days": "Active Days",
+			"day_sun": "Sun",
+			"day_mon": "Mon",
+			"day_tue": "Tue",
+			"day_wed": "Wed",
+			"day_thu": "Thu",
+			"day_fri": "Fri",
+			"day_sat": "Sat",
+			"all_days": "All Days",
+			"combat_behavior": "Combat Behavior",
+			"combat_freeze": "Freeze",
+			"combat_flee": "Flee",
+			"combat_ignore": "Ignore",
+			"enabled": "Enabled",
+			"disabled": "Disabled",
+			"save": "Save",
+			"cancel": "Cancel",
+			"delete": "Delete",
+			"delete_confirm": "Delete this waypoint?",
+			"delete_path_confirm": "Delete this entire path?",
+			"select_actor": "Select an NPC token or actor to manage their patrol paths.",
+			"arrival_chat_flavor": "{name} arrives at {label}."
+		},
+		"chat": {
+			"arrival": "{name}: {line}",
+			"ambient": "{name}: {line}"
+		}
+	}
+}
