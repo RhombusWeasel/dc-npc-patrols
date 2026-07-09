@@ -270,24 +270,8 @@ Hooks.once("ready", async () => {
 	start_time_poll();
 
 	// --- Region lifecycle hooks (Phase 3) ---
-	// Reposition auto-created regions when a token moves
-	Hooks.on("updateToken", (token_doc, changes) => {
-		if (!("x" in changes || "y" in changes)) return;
-		const actor = token_doc.actor;
-		if (!actor) return;
-		const scene = token_doc.parent;
-		if (!scene) return;
-		// Check dialog attachments
-		const dialog_atts = actor.getFlag(MODULE_ID, "dialog_attachments") || [];
-		for (const att of dialog_atts) {
-			if (att.region_uuid) region_manager.update_region_position(scene, token_doc, att.region_uuid);
-		}
-		// Check ambient attachments
-		const ambient_atts = actor.getFlag(MODULE_ID, "ambient_attachments") || [];
-		for (const att of ambient_atts) {
-			if (att.region_uuid) region_manager.update_region_position(scene, token_doc, att.region_uuid);
-		}
-	});
+	// Regions are attached to tokens via attachment.token, so Foundry
+	// auto-moves them. No updateToken hook needed.
 
 	// Sync regions on scene load (create missing, reposition moved)
 	Hooks.on("canvasReady", () => {
