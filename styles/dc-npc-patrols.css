@@ -224,6 +224,20 @@
 	gap: 4px;
 	margin-bottom: 8px;
 	border-bottom: 1px solid var(--color-border-faint);
+	align-items: center;
+}
+
+.dc-patrol-manager .weather-setter {
+	margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+}
+
+.dc-patrol-manager .weather-setter select {
+	width: auto;
+	min-width: 80px;
 }
 
 .dc-patrol-manager .patrol-tab {

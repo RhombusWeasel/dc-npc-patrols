@@ -16,6 +16,7 @@ import { AmbientEditor } from "./lib/ambient_editor.js";
 import { BTEngine } from "./lib/bt_engine.js";
 import { Pathfinding } from "./lib/pathfinding.js";
 import { BTEditor } from "./lib/bt_editor.js";
+import { get_default_bts } from "./lib/default_bts.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -277,6 +278,14 @@ Hooks.once("dcReady", async () => {
 		animate_to: (token_doc, wp) => _engine.animate_to(token_doc, wp),
 		fire_arrival: (token_doc, actor, wp) => _engine.fire_arrival(token_doc, actor, wp),
 	});
+
+	// Seed default BT templates if no BTs exist
+	const existing_bts = game.settings.get(MODULE_ID, "behaviour_trees") || {};
+	if (Object.keys(existing_bts).length === 0) {
+		const defaults = get_default_bts();
+		await game.settings.set(MODULE_ID, "behaviour_trees", defaults);
+		console.log(`[${MODULE_ID}] Seeded ${Object.keys(defaults).length} default behaviour trees.`);
+	}
 
 	// Expose module API
 	const mod = game.modules.get(MODULE_ID);

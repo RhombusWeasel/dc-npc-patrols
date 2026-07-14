@@ -4,10 +4,18 @@
 	<div class="patrol-tab-bar">
 		<button type="button" data-tab-select="patrols" class="patrol-tab {{#if (eq active_tab 'patrols')}}active{{/if}}">{{localize "dc-npc-patrols.panel.tab_patrols"}}</button>
 		<button type="button" data-tab-select="attachments" class="patrol-tab {{#if (eq active_tab 'attachments')}}active{{/if}}">{{localize "dc-npc-patrols.panel.tab_attachments"}}</button>
+		<button type="button" data-tab-select="behaviour" class="patrol-tab {{#if (eq active_tab 'behaviour')}}active{{/if}}">{{localize "dc-npc-patrols.bt.tab_behaviour"}}</button>
+		<div class="weather-setter">
+			<label>{{localize "dc-npc-patrols.bt.weather"}}:</label>
+			<select data-weather-set>
+				<option value="clear" {{#if (eq weather "clear")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_clear"}}</option>
+				<option value="rain" {{#if (eq weather "rain")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_rain"}}</option>
+				<option value="snow" {{#if (eq weather "snow")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_snow"}}</option>
+				<option value="storm" {{#if (eq weather "storm")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_storm"}}</option>
+				<option value="fog" {{#if (eq weather "fog")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_fog"}}</option>
+			</select>
+		</div>
 	</div>
-
-	{{#if (eq active_tab 'patrols')}}
-	<!-- Patrols tab -->
 	<div class="patrol-tab-content">
 	<!-- NPC list -->
 	<div class="patrol-section">
@@ -87,8 +95,10 @@
 						<th>{{localize "dc-npc-patrols.panel.wp_arrival_lines"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_face_dir"}}</th>
 						<th>{{localize "dc-npc-patrols.panel.wp_linger"}}</th>
-						<th>{{localize "dc-npc-patrols.panel.wp_region_radius"}}</th>
-						<th></th>
+				<th>{{localize "dc-npc-patrols.panel.wp_region_radius"}}</th>
+				<th>{{localize "dc-npc-patrols.bt.wp_flee_target"}}</th>
+				<th>{{localize "dc-npc-patrols.bt.wp_home"}}</th>
+				<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -115,9 +125,14 @@
 						</td>
 						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:face_direction" value="{{this.face_direction}}" class="number-input" /></td>
 						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:linger_minutes" value="{{this.linger_minutes}}" class="number-input" /></td>
-						<td><input type="number" data-wp-field="{{@../index}}:{{@index}}:region_radius" value="{{this.region_radius}}" class="number-input" /></td>
-						<td>
-							<button type="button" data-delete-waypoint="{{@../index}}:{{@index}}" class="patrol-btn patrol-btn-danger">
+						<input type="number" data-wp-field="{{@../index}}:{{@index}}:region_radius" value="{{this.region_radius}}" class="number-input" />
+					</td>
+					<td>
+						<label><input type="checkbox" data-wp-field="{{@../index}}:{{@index}}:flee_target" {{#if this.flee_target}}checked{{/if}} /></label>
+					</td>
+					<td>
+						<label><input type="checkbox" data-wp-field="{{@../index}}:{{@index}}:home" {{#if this.home}}checked{{/if}} /></label>
+					</td>
 								<i class="fa-solid fa-trash"></i>
 							</button>
 						</td>
@@ -169,6 +184,30 @@
 		<div class="empty-state">{{localize "dc-npc-patrols.panel.select_actor"}}</div>
 		{{/if}}
 	</div><!-- /attachments tab content -->
+	{{/if}}
+
+	{{#if (eq active_tab 'behaviour')}}
+	<!-- Behaviour tab -->
+	<div class="patrol-tab-content">
+		{{#if selected_actor}}
+		<div class="patrol-section">
+			<div class="patrol-section-title">{{localize "dc-npc-patrols.bt.assign_bt"}}</div>
+			<select data-bt-assign>
+				<option value="">{{localize "dc-npc-patrols.bt.no_bt"}}</option>
+				{{#each available_bts}}
+				<option value="{{this.id}}" {{#if (eq this.id ../../assigned_bt_id)}}selected{{/if}}>{{this.name}}</option>
+				{{/each}}
+			</select>
+		</div>
+		<div class="patrol-section">
+			<button type="button" data-action="open-bt-editor" class="patrol-btn">
+				<i class="fa-solid fa-diagram-project"></i> {{localize "dc-npc-patrols.bt.open_editor"}}
+			</button>
+		</div>
+		{{else}}
+		<div class="empty-state">{{localize "dc-npc-patrols.panel.select_actor"}}</div>
+		{{/if}}
+	</div><!-- /behaviour tab content -->
 	{{/if}}
 
 	{{else}}
