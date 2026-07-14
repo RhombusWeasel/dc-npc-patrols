@@ -13,10 +13,14 @@ import { PatrolManagerPanel } from "./lib/patrol_manager_panel.js";
 import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
 import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
+import { BTEngine } from "./lib/bt_engine.js";
+import { Pathfinding } from "./lib/pathfinding.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
 let _engine = null;
+let _bt_engine = null;
+let _pathfinding = null;
 let _panel = null;
 let _last_unixtime = null;
 let _poll_interval = null;
@@ -41,6 +45,14 @@ function register_settings() {
 	});
 
 	game.settings.register(MODULE_ID, "ambient_sets", {
+		scope: "world",
+		config: false,
+		type: Object,
+		default: {},
+	});
+
+	// World-level JSON storage for behaviour trees
+	game.settings.register(MODULE_ID, "behaviour_trees", {
 		scope: "world",
 		config: false,
 		type: Object,
@@ -114,9 +126,12 @@ function start_time_poll() {
 			const old = _last_unixtime;
 			_last_unixtime = now;
 			if (game.user.isGM) {
+				// Tick BT engine for NPCs with behaviour trees
+				if (_bt_engine) _bt_engine.tick();
+
+				// Tick legacy engine for NPCs without BTs
 				_engine.evaluate_schedules(old, now);
 			}
-		}
 	}, 2000);
 }
 
@@ -238,10 +253,22 @@ Hooks.once("dcReady", async () => {
 	const region_manager = new RegionManager(MODULE_ID);
 	_engine = new PatrolEngine(MODULE_ID, cross_scene, region_manager);
 
+	// Initialize pathfinding and BT engine
+	_pathfinding = new Pathfinding();
+	_bt_engine = new BTEngine(MODULE_ID, {
+		cross_scene,
+		region_manager,
+		pathfinding: _pathfinding,
+		animate_to: (token_doc, wp) => _engine.animate_to(token_doc, wp),
+		fire_arrival: (token_doc, actor, wp) => _engine.fire_arrival(token_doc, actor, wp),
+	});
+
 	// Expose module API
 	const mod = game.modules.get(MODULE_ID);
 	mod.api = {
 		engine: _engine,
+		bt_engine: _bt_engine,
+		pathfinding: _pathfinding,
 		cross_scene,
 		region_manager,
 		open_panel,
@@ -261,17 +288,27 @@ Hooks.once("dcReady", async () => {
 	Hooks.on("canvasReady", () => {
 		if (!game.user.isGM) return;
 		region_manager.sync_all_regions(canvas.scene);
+		_pathfinding.invalidate(canvas.scene.id);
 	});
 
 	// Clean up regions when a token is deleted
 	Hooks.on("deleteToken", (token_doc) => {
 		if (!game.user.isGM) return;
 		region_manager.cleanup_for_deleted_token(token_doc.parent, token_doc);
+		if (token_doc.actor) _bt_engine.remove_blackboard(token_doc.actor.id);
 	});
+
+	// --- Pathfinding cache invalidation hooks (Phase 4b) ---
+	Hooks.on("createWall", (wall) => _pathfinding.invalidate(wall.parent.id));
+	Hooks.on("updateWall", (wall) => _pathfinding.invalidate(wall.parent.id));
+	Hooks.on("deleteWall", (wall) => _pathfinding.invalidate(wall.parent.id));
+	Hooks.on("createRegion", (region) => _pathfinding.invalidate(region.parent.id));
+	Hooks.on("updateRegion", (region) => _pathfinding.invalidate(region.parent.id));
+	Hooks.on("deleteRegion", (region) => _pathfinding.invalidate(region.parent.id));
 
 	// Expose editors for the scene control tools
 	mod.api.dialog_editor = () => new DialogEditor().render(true);
 	mod.api.ambient_editor = () => new AmbientEditor().render(true);
 
-	console.log(`[${MODULE_ID}] Ready — patrol engine initialized.`);
+	console.log(`[${MODULE_ID}] Ready — patrol engine + BT engine initialized.`);
 });
