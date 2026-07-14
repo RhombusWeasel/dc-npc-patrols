@@ -217,7 +217,7 @@ Hooks.once("init", () => {
 	register_dialog_behaviors();
 });
 
-// Preload the attachment-editor partial (called in ready hook after templates are available)
+// Preload the attachment-editor partial (called in dcReady hook after templates are available)
 async function _preload_partials() {
 	try {
 		const tpl = await foundry.applications.handlebars.getTemplate("modules/dc-npc-patrols/templates/attachment-editor.hbs");
@@ -227,23 +227,7 @@ async function _preload_partials() {
 	}
 }
 
-// --- Wait for game.dc (DC system sets it asynchronously in its own ready hook) ---
-async function waitForGameDc(attempt = 1, maxAttempts = 50, interval = 200) {
-	if (game.dc) return true;
-	if (attempt >= maxAttempts) return false;
-	console.log(`[${MODULE_ID}] Waiting for game.dc… (attempt ${attempt}/${maxAttempts})`);
-	await new Promise((r) => setTimeout(r, interval));
-	return waitForGameDc(attempt + 1, maxAttempts, interval);
-}
-
-Hooks.once("ready", async () => {
-	// Wait for the Deadlands-Classic system to set up game.dc
-	const found = await waitForGameDc();
-	if (!found) {
-		console.warn(`[${MODULE_ID}] Deadlands-Classic system not detected after waiting — module disabled.`);
-		return;
-	}
-
+Hooks.once("dcReady", async () => {
 	console.log(`[${MODULE_ID}] Deadlands-Classic system detected — initializing patrol engine.`);
 
 	// Preload partials
