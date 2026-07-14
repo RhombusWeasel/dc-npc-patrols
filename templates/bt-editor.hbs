@@ -1,0 +1,100 @@
+<form class="dc-bt-editor">
+	<div class="bt-sidebar">
+		<div class="bt-tree-list">
+			{{#each bts}}
+			<div class="bt-tree-item">
+				<a data-bt-select="{{this.id}}" class="bt-btn {{#if (eq this.id ../selected_bt_id)}}active{{/if}}">
+					<i class="fa-solid fa-diagram-project"></i> {{this.name}}
+				</a>
+				<button type="button" data-bt-delete="{{this.id}}" class="bt-btn-danger">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</div>
+			{{/each}}
+		</div>
+		<button type="button" data-action="add-bt" class="bt-btn">
+			<i class="fa-solid fa-plus"></i> New Tree
+		</button>
+	</div>
+
+	<div class="bt-main">
+		{{#if selected_bt}}
+		<div class="bt-meta">
+			<input type="text" data-bt-field="name" value="{{selected_bt.name}}" placeholder="Tree name" />
+			<input type="text" data-bt-field="description" value="{{selected_bt.description}}" placeholder="Description" />
+		</div>
+
+		<div class="bt-tree-view">
+			{{#each tree_nodes}}
+			<div class="bt-node {{this.type}} level-{{this.level}} {{#if this.selected}}selected{{/if}}"
+				 data-node-id="{{this._id}}">
+				<span class="bt-node-indent" style="margin-left: {{this.indent}}px;"></span>
+				<i class="fa-solid {{this.icon}}"></i>
+				<span class="bt-node-label">{{this.label}}</span>
+				<span class="bt-node-type">{{this.type}}</span>
+			</div>
+			{{/each}}
+		</div>
+
+		{{#if selected_node}}
+		<div class="bt-node-props">
+			<div class="bt-node-props-title">
+				<input type="text" data-node-label value="{{selected_node._label}}" placeholder="Node label (optional)" />
+			</div>
+			<div class="bt-node-props-fields">
+				{{#each node_fields}}
+				<div class="bt-prop-row">
+					<label>{{this.label}}</label>
+					{{#if (eq this.type "dropdown")}}
+					<select data-node-prop="{{this.key}}">
+						{{#each this.options}}
+						<option value="{{@key}}">{{this}}</option>
+						{{/each}}
+					</select>
+					{{else if (eq this.type "region_select")}}
+					<select data-node-prop="{{this.key}}">
+						<option value="">(none)</option>
+					</select>
+					{{else}}
+					<input type="text" data-node-prop="{{this.key}}" value="{{lookup ../node_field_values this.key}}" />
+					{{/if}}
+				</div>
+				{{/each}}
+			</div>
+		</div>
+		{{/if}}
+
+		<div class="bt-actions">
+			<select data-node-type-select>
+				<optgroup label="Composite">
+					{{#each node_types.composite}}
+					<option value="{{this.type}}">{{this.label}}</option>
+					{{/each}}
+				</optgroup>
+				<optgroup label="Decorator">
+					{{#each node_types.decorator}}
+					<option value="{{this.type}}">{{this.label}}</option>
+					{{/each}}
+				</optgroup>
+				<optgroup label="Condition">
+					{{#each node_types.condition}}
+					<option value="{{this.type}}">{{this.label}}</option>
+					{{/each}}
+				</optgroup>
+				<optgroup label="Action">
+					{{#each node_types.action}}
+					<option value="{{this.type}}">{{this.label}}</option>
+					{{/each}}
+				</optgroup>
+			</select>
+			<button type="button" data-action="add-node">Add as child</button>
+			<button type="button" data-action="add-sibling">Add as sibling</button>
+			<button type="button" data-action="delete-node">Delete</button>
+			<button type="button" data-action="move-up">↑</button>
+			<button type="button" data-action="move-down">↓</button>
+		</div>
+		{{else}}
+		<div class="empty-state">Select or create a tree to edit.</div>
+		{{/if}}
+	</div>
+</form>

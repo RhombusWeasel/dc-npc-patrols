@@ -15,6 +15,7 @@ import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
 import { BTEngine } from "./lib/bt_engine.js";
 import { Pathfinding } from "./lib/pathfinding.js";
+import { BTEditor } from "./lib/bt_editor.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -198,6 +199,20 @@ function register_scene_control() {
 						}
 					},
 				},
+				btEditor: {
+					name: "btEditor",
+					order: 3,
+					title: game.i18n.localize("dc-npc-patrols.controls.bt_editor.tooltip"),
+					icon: "fa-solid fa-diagram-project",
+					button: true,
+					onChange: () => {
+						try {
+							new BTEditor().render(true);
+						} catch (err) {
+							console.error("dc-npc-patrols | Error opening BT editor:", err);
+						}
+					},
+				},
 			},
 		};
 	});
@@ -309,6 +324,7 @@ Hooks.once("dcReady", async () => {
 	// Expose editors for the scene control tools
 	mod.api.dialog_editor = () => new DialogEditor().render(true);
 	mod.api.ambient_editor = () => new AmbientEditor().render(true);
+	mod.api.bt_editor = () => new BTEditor().render(true);
 
 	console.log(`[${MODULE_ID}] Ready — patrol engine + BT engine initialized.`);
 });
