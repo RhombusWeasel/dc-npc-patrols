@@ -17,15 +17,18 @@ import { BTEngine } from "./lib/bt_engine.js";
 import { Pathfinding } from "./lib/pathfinding.js";
 import { BTEditor } from "./lib/bt_editor.js";
 import { get_default_bts } from "./lib/default_bts.js";
+import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
 let _engine = null;
 let _bt_engine = null;
 let _pathfinding = null;
+let _path_debug = null;
 let _panel = null;
 let _last_unixtime = null;
 let _poll_interval = null;
+let _bt_tick_interval = null;
 
 // --- Default settings ---
 const DEFAULTS = {
@@ -35,6 +38,7 @@ const DEFAULTS = {
 	proximity_radius: 2,
 	ambient_cooldown: 30,
 	combat_freeze: true,
+	nav_resolution: 4,
 };
 
 function register_settings() {
@@ -114,6 +118,29 @@ function register_settings() {
 		type: Boolean,
 		default: DEFAULTS.combat_freeze,
 	});
+
+	game.settings.register(MODULE_ID, "nav_resolution", {
+		name: game.i18n.localize("dc-npc-patrols.settings.nav_resolution.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.nav_resolution.hint"),
+		scope: "world",
+		config: true,
+		type: Number,
+		default: DEFAULTS.nav_resolution,
+		onChange: () => {
+			if (_pathfinding) {
+				for (const scene of game.scenes) {
+					_pathfinding.invalidate(scene.id);
+				}
+			}
+		},
+	});
+
+	game.settings.register(MODULE_ID, "bt_paused", {
+		scope: "world",
+		config: false,
+		type: Boolean,
+		default: false,
+	});
 }
 
 // --- Time polling ---
@@ -128,12 +155,22 @@ function start_time_poll() {
 			const old = _last_unixtime;
 			_last_unixtime = now;
 			if (game.user.isGM) {
-				// Tick BT engine for NPCs with behaviour trees
-				if (_bt_engine) _bt_engine.tick();
-
 				// Tick legacy engine for NPCs without BTs
 				_engine.evaluate_schedules(old, now);
 			}
+		}
+	}, 2000);
+}
+
+// --- BT tick loop (independent of game time) ---
+function start_bt_tick() {
+	if (_bt_tick_interval) clearInterval(_bt_tick_interval);
+
+	_bt_tick_interval = setInterval(() => {
+		if (!game.user.isGM) return;
+		if (!game.settings.get(MODULE_ID, "bt_paused")) {
+			if (_bt_engine) _bt_engine.tick();
+		}
 	}, 2000);
 }
 
@@ -201,17 +238,27 @@ function register_scene_control() {
 					},
 				},
 				btEditor: {
-					name: "btEditor",
-					order: 3,
-					title: game.i18n.localize("dc-npc-patrols.controls.bt_editor.tooltip"),
-					icon: "fa-solid fa-diagram-project",
+				name: "btEditor",
+				order: 3,
+				title: game.i18n.localize("dc-npc-patrols.controls.bt_editor.tooltip"),
+				icon: "fa-solid fa-diagram-project",
+				button: true,
+				onChange: () => {
+					try {
+						new BTEditor().render(true);
+					} catch (err) {
+						console.error("dc-npc-patrols | Error opening BT editor:", err);
+					}
+				},
+			},
+				pathDebug: {
+					name: "pathDebug",
+					order: 4,
+					title: game.i18n.localize("dc-npc-patrols.controls.path_debug.tooltip"),
+					icon: "fa-solid fa-eye",
 					button: true,
 					onChange: () => {
-						try {
-							new BTEditor().render(true);
-						} catch (err) {
-							console.error("dc-npc-patrols | Error opening BT editor:", err);
-						}
+						if (_path_debug) _path_debug.toggle();
 					},
 				},
 			},
@@ -271,6 +318,10 @@ Hooks.once("dcReady", async () => {
 
 	// Initialize pathfinding and BT engine
 	_pathfinding = new Pathfinding();
+	_path_debug = new PathDebugOverlay(_pathfinding);
+	_pathfinding.set_on_path_callback((path) => {
+		if (_path_debug) _path_debug.set_last_path(path);
+	});
 	_bt_engine = new BTEngine(MODULE_ID, {
 		cross_scene,
 		region_manager,
@@ -300,9 +351,13 @@ Hooks.once("dcReady", async () => {
 	};
 	// Also on window for easy access
 	window.dcNpcPatrols = mod.api;
+	window.dcNpcPatrols.path_debug = _path_debug;
 
 	// Start time polling for schedule evaluation
 	start_time_poll();
+
+	// Start independent BT tick loop
+	start_bt_tick();
 
 	// --- Region lifecycle hooks (Phase 3) ---
 	// Regions are attached to tokens via attachment.token, so Foundry
@@ -312,7 +367,12 @@ Hooks.once("dcReady", async () => {
 	Hooks.on("canvasReady", () => {
 		if (!game.user.isGM) return;
 		region_manager.sync_all_regions(canvas.scene);
+		region_manager.cleanup_orphaned_waypoint_regions(canvas.scene);
 		_pathfinding.invalidate(canvas.scene.id);
+		if (_path_debug) {
+			_path_debug.clear_path();
+			if (_path_debug._active) _path_debug._render();
+		}
 	});
 
 	// Clean up regions when a token is deleted
@@ -323,12 +383,40 @@ Hooks.once("dcReady", async () => {
 	});
 
 	// --- Pathfinding cache invalidation hooks (Phase 4b) ---
-	Hooks.on("createWall", (wall) => _pathfinding.invalidate(wall.parent.id));
-	Hooks.on("updateWall", (wall) => _pathfinding.invalidate(wall.parent.id));
-	Hooks.on("deleteWall", (wall) => _pathfinding.invalidate(wall.parent.id));
-	Hooks.on("createRegion", (region) => _pathfinding.invalidate(region.parent.id));
-	Hooks.on("updateRegion", (region) => _pathfinding.invalidate(region.parent.id));
-	Hooks.on("deleteRegion", (region) => _pathfinding.invalidate(region.parent.id));
+	Hooks.on("createWall", (wall) => {
+		_pathfinding.invalidate(wall.parent.id);
+		if (_path_debug?._active) _path_debug._render();
+	});
+	Hooks.on("updateWall", (wall) => {
+		_pathfinding.invalidate(wall.parent.id);
+		if (_path_debug?._active) _path_debug._render();
+	});
+	Hooks.on("deleteWall", (wall) => {
+		_pathfinding.invalidate(wall.parent.id);
+		if (_path_debug?._active) _path_debug._render();
+	});
+	Hooks.on("createRegion", (region) => {
+		_pathfinding.invalidate(region.parent.id);
+		if (_path_debug?._active) _path_debug._render();
+	});
+	Hooks.on("updateRegion", (region) => {
+		_pathfinding.invalidate(region.parent.id);
+		if (_path_debug?._active) _path_debug._render();
+	});
+	Hooks.on("deleteRegion", (region) => {
+		_pathfinding.invalidate(region.parent.id);
+		if (_path_debug?._active) _path_debug._render();
+	});
+
+	// --- Keyboard shortcut: Alt+Shift+P toggles path debug overlay ---
+	Hooks.on("keydown", (event) => {
+		if (event.altKey && event.shiftKey && (event.key === 'P' || event.key === 'p')) {
+			if (_path_debug) {
+				_path_debug.toggle();
+				event.preventDefault();
+			}
+		}
+	});
 
 	// Expose editors for the scene control tools
 	mod.api.dialog_editor = () => new DialogEditor().render(true);

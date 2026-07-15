@@ -37,6 +37,10 @@
 			"combat_freeze": {
 				"name": "Freeze Patrols in Combat",
 				"hint": "When enabled, all NPCs with combat_behavior 'freeze' stop moving during combat."
+			},
+			"nav_resolution": {
+				"name": "Pathfinding Resolution",
+				"hint": "Subdivides each grid square into N×N navigation cells for finer wall avoidance. 1 = original behavior, 4 = recommended for tight corridors. Higher values improve pathfinding in narrow spaces but use more memory."
 			}
 		},
 		"controls": {
@@ -52,6 +56,9 @@
 			},
 			"bt_editor": {
 				"tooltip": "Edit behaviour trees"
+			},
+			"path_debug": {
+				"tooltip": "Toggle Pathfinding Debug Overlay"
 			}
 		},
 		"panel": {
