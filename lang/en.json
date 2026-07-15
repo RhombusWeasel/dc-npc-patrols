@@ -37,6 +37,10 @@
 			"combat_freeze": {
 				"name": "Freeze Patrols in Combat",
 				"hint": "When enabled, all NPCs with combat_behavior 'freeze' stop moving during combat."
+			},
+			"nav_resolution": {
+				"name": "Pathfinding Resolution",
+				"hint": "Subdivides each grid square into N×N navigation cells for finer wall avoidance. 1 = original behavior, 4 = recommended for tight corridors. Higher values improve pathfinding in narrow spaces but use more memory."
 			}
 		},
 		"controls": {
@@ -49,6 +53,12 @@
 			},
 			"ambient_editor": {
 				"tooltip": "Edit ambient line sets"
+			},
+			"bt_editor": {
+				"tooltip": "Edit behaviour trees"
+			},
+			"path_debug": {
+				"tooltip": "Toggle Pathfinding Debug Overlay"
 			}
 		},
 		"panel": {
@@ -178,6 +188,22 @@
 		"chat": {
 			"arrival": "{name}: {line}",
 			"ambient": "{name}: {line}"
+		},
+		"bt": {
+			"editor_title": "Behaviour Tree Editor",
+			"delete_confirm": "Delete this behaviour tree?",
+			"tab_behaviour": "Behaviour",
+			"assign_bt": "Assign Behaviour Tree",
+			"no_bt": "None (legacy patrol engine)",
+			"open_editor": "Open BT Editor",
+			"weather": "Weather",
+			"weather_clear": "Clear",
+			"weather_rain": "Rain",
+			"weather_snow": "Snow",
+			"weather_storm": "Storm",
+			"weather_fog": "Fog",
+			"wp_flee_target": "Flee Target",
+			"wp_home": "Home"
 		}
 	}
 }
