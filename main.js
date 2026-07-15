@@ -188,13 +188,6 @@ function register_scene_control() {
 			icon: "fa-solid fa-route",
 			visible: true,
 			order: 98,
-			activeTool: "openPanel",
-			onChange: (event, active) => {
-				console.log("dc-npc-patrols | Control layer activated", { active });
-			},
-			onToolChange: (event, tool, active) => {
-				console.log("dc-npc-patrols | onToolChange fired", { tool: tool?.name, active });
-			},
 			tools: {
 				openPanel: {
 					name: "openPanel",
@@ -203,10 +196,9 @@ function register_scene_control() {
 					icon: "fa-solid fa-route",
 					button: true,
 					onChange: (event, active) => {
-						console.log("dc-npc-patrols | openPanel tool clicked");
+						if (!active) return;
 						try {
 							open_panel();
-							console.log("dc-npc-patrols | PatrolManagerPanel render requested");
 						} catch (err) {
 							console.error("dc-npc-patrols | Error opening patrol panel:", err);
 						}
@@ -218,7 +210,8 @@ function register_scene_control() {
 					title: game.i18n.localize("dc-npc-patrols.controls.dialog_editor.tooltip"),
 					icon: "fa-solid fa-comments",
 					button: true,
-					onChange: () => {
+					onChange: (event, active) => {
+						if (!active) return;
 						try {
 							new DialogEditor().render(true);
 						} catch (err) {
@@ -232,7 +225,8 @@ function register_scene_control() {
 					title: game.i18n.localize("dc-npc-patrols.controls.ambient_editor.tooltip"),
 					icon: "fa-solid fa-comment-dots",
 					button: true,
-					onChange: () => {
+					onChange: (event, active) => {
+						if (!active) return;
 						try {
 							new AmbientEditor().render(true);
 						} catch (err) {
@@ -241,26 +235,28 @@ function register_scene_control() {
 					},
 				},
 				btEditor: {
-				name: "btEditor",
-				order: 3,
-				title: game.i18n.localize("dc-npc-patrols.controls.bt_editor.tooltip"),
-				icon: "fa-solid fa-diagram-project",
-				button: true,
-				onChange: () => {
-					try {
-						new BTEditor().render(true);
-					} catch (err) {
-						console.error("dc-npc-patrols | Error opening BT editor:", err);
-					}
+					name: "btEditor",
+					order: 3,
+					title: game.i18n.localize("dc-npc-patrols.controls.bt_editor.tooltip"),
+					icon: "fa-solid fa-diagram-project",
+					button: true,
+					onChange: (event, active) => {
+						if (!active) return;
+						try {
+							new BTEditor().render(true);
+						} catch (err) {
+							console.error("dc-npc-patrols | Error opening BT editor:", err);
+						}
+					},
 				},
-			},
 				pathDebug: {
 					name: "pathDebug",
 					order: 4,
 					title: game.i18n.localize("dc-npc-patrols.controls.path_debug.tooltip"),
 					icon: "fa-solid fa-eye",
 					button: true,
-					onChange: () => {
+					onChange: (event, active) => {
+						if (!active) return;
 						if (_path_debug) _path_debug.toggle();
 					},
 				},
