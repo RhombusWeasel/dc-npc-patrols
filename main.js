@@ -30,6 +30,9 @@ let _last_unixtime = null;
 let _poll_interval = null;
 let _bt_tick_interval = null;
 
+
+
+
 // --- Default settings ---
 const DEFAULTS = {
 	enable_patrols: true,

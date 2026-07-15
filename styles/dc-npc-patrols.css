@@ -737,6 +737,7 @@
 
 .dc-attachment-add-btn {
 	white-space: nowrap;
+}
 
 /* ── BT Editor ────────────────────────────────────────────────── */
 
@@ -928,4 +929,66 @@
 	padding: 40px;
 	text-align: center;
 	color: var(--color-text-secondary);
+}
+
+/* ── BT Editor: Variable Management Panel ── */
+
+.dc-bt-editor .bt-variables-panel {
+	padding: 8px;
+	border-bottom: 1px solid var(--color-border-dark);
+}
+
+.dc-bt-editor .bt-variables-header {
+	font-weight: bold;
+	font-size: 0.85em;
+	text-transform: uppercase;
+	color: var(--color-text-secondary);
+	margin-bottom: 6px;
+}
+
+.dc-bt-editor .bt-variables-table {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin-bottom: 6px;
+}
+
+.dc-bt-editor .bt-var-row {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.dc-bt-editor .bt-var-header {
+	font-size: 0.75em;
+	text-transform: uppercase;
+	color: var(--color-text-secondary);
+}
+
+.dc-bt-editor .bt-var-header span {
+	flex: 1;
+}
+
+.dc-bt-editor .bt-var-row input,
+.dc-bt-editor .bt-var-row select {
+	flex: 1;
+	min-width: 0;
+	font-size: 11px;
+}
+
+.dc-bt-editor .bt-var-row input[readonly] {
+	color: var(--color-text-secondary);
+	background: var(--color-bg-option);
+}
+
+/* Variable reference badges in node property labels */
+.dc-bt-editor .bt-var-ref-badge {
+	margin-left: 4px;
+	font-size: 10px;
+	color: var(--color-accent);
+	cursor: help;
+}
+
+.dc-bt-editor .bt-var-ref-warning {
+	color: var(--color-level-error);
 }

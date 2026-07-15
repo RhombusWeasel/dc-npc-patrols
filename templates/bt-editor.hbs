@@ -24,6 +24,34 @@
 			<input type="text" data-bt-field="description" value="{{selected_bt.description}}" placeholder="Description" />
 		</div>
 
+		{{!-- Variable Management Panel --}}
+		<div class="bt-variables-panel">
+			<div class="bt-variables-header">Variables</div>
+			<div class="bt-variables-table">
+				<div class="bt-var-row bt-var-header">
+				<span>Key</span>
+				<span>Label</span>
+				<span>Type</span>
+				<span>Default</span>
+				<span></span>
+				</div>
+			{{#each selected_bt.variables}}
+				<div class="bt-var-row" data-var-index="{{@index}}">
+				<input type="text" data-var-field="key" value="{{this.key}}" placeholder="key" {{#if this.key}}readonly{{/if}} />
+				<input type="text" data-var-field="label" value="{{this.label}}" placeholder="Label" />
+				<select data-var-field="type">
+					{{#each ../var_types}}
+					<option value="{{this}}" {{#if (eq this ../type)}}selected{{/if}}>{{this}}</option>
+					{{/each}}
+				</select>
+				<input type="text" data-var-field="default" value="{{this.default}}" placeholder="(blank)" />
+				<button type="button" data-var-delete="{{@index}}" class="bt-btn-danger"><i class="fa-solid fa-trash"></i></button>
+				</div>
+			{{/each}}
+			</div>
+			<button type="button" data-action="add-variable" class="bt-btn"><i class="fa-solid fa-plus"></i> Add Variable</button>
+		</div>
+
 		<div class="bt-tree-view">
 			{{#each tree_nodes}}
 			<div class="bt-node {{this.type}} level-{{this.level}} {{#if this.selected}}selected{{/if}}"
@@ -44,7 +72,12 @@
 			<div class="bt-node-props-fields">
 				{{#each node_fields}}
 				<div class="bt-prop-row">
-					<label>{{this.label}}</label>
+					<label>{{this.label}}
+						{{#each this._var_refs}}
+						<i class="fa-solid fa-tag bt-var-ref-badge {{#unless this.declared}}bt-var-ref-warning{{/unless}}"
+						   title="References variable: {{this.name}}{{#unless this.declared}} (not declared!){{/unless}}"></i>
+						{{/each}}
+					</label>
 					{{#if (eq this.type "dropdown")}}
 					<select data-node-prop="{{this.key}}">
 						{{#each this.options}}
