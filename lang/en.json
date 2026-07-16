@@ -107,6 +107,15 @@
 				"tooltip": "Toggle Pathfinding Debug Overlay"
 			}
 		},
+		"sheet": {
+			"tab_behaviour": "Behaviour",
+			"assigned_bt": "Assigned Behaviour Tree",
+			"tree_variables": "Tree Variables",
+			"var_default": "default",
+			"var_use_default": "(use default)",
+			"var_no_regions": "Open a scene to pick regions",
+			"open_hub": "Open Patrol Hub"
+		},
 		"panel": {
 			"title": "NPC Patrol Manager",
 			"tab_patrols": "Patrols",
@@ -265,6 +274,8 @@
 			"conversation_map": "Conversation Map",
 			"tree_settings": "Tree Settings",
 			"variables": "Variables",
+			"var_options": "Variables",
+			"scene_regions": "Scene Regions",
 			"add_variable": "Add Variable",
 			"node_label": "Display Label",
 			"node_label_optional": "Optional label (optional)",

@@ -16,6 +16,10 @@ import { AmbientEditor } from "./lib/ambient_editor.js";
 import { BTEngine } from "./lib/bt_engine.js";
 import { Pathfinding } from "./lib/pathfinding.js";
 import { BTEditor } from "./lib/bt_editor.js";
+import {
+	prepare_behaviour_tab_context,
+	wire_behaviour_tab_events,
+} from "./lib/actor_behaviour_tab.js";
 import { get_default_bts } from "./lib/default_bts.js";
 import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 
@@ -214,6 +218,16 @@ function open_panel() {
 		_panel = new PatrolManagerPanel();
 	}
 	_panel.render(true);
+	return _panel;
+}
+
+function open_hub_for_actor(actor_id, options = {}) {
+	const hub = open_panel();
+	if (hub?.focus_actor) {
+		hub.focus_actor(actor_id, options);
+		hub.render({ force: true });
+	}
+	return hub;
 }
 
 function close_panel() {
@@ -259,6 +273,8 @@ async function _preload_partials() {
 		["dialog-editor", "templates/dialog-editor.hbs"],
 		["ambient-editor", "templates/ambient-editor.hbs"],
 		["bt-editor", "templates/bt-editor.hbs"],
+		["behaviour-tab", "templates/actor/behaviour-tab.hbs"],
+		["bt-variables-fields", "templates/partials/bt-variables-fields.hbs"],
 	];
 
 	for (const [name, path] of partials) {
@@ -272,8 +288,6 @@ async function _preload_partials() {
 }
 
 Hooks.once("dcReady", async () => {
-	console.log(`[${MODULE_ID}] Deadlands-Classic system detected — initializing patrol engine.`);
-
 	// Preload partials
 	await _preload_partials();
 
@@ -301,7 +315,6 @@ Hooks.once("dcReady", async () => {
 	if (Object.keys(existing_bts).length === 0) {
 		const defaults = get_default_bts();
 		await game.settings.set(MODULE_ID, "behaviour_trees", defaults);
-		console.log(`[${MODULE_ID}] Seeded ${Object.keys(defaults).length} default behaviour trees.`);
 	}
 
 	// Expose module API
@@ -313,8 +326,24 @@ Hooks.once("dcReady", async () => {
 		cross_scene,
 		region_manager,
 		open_panel,
+		open_hub_for_actor,
 		close_panel,
+		get_hub: () => _panel,
 	};
+
+	if (game.dc?.register_actor_tab) {
+		game.dc.register_actor_tab(`${MODULE_ID}.behaviour`, {
+			id: "patrol_behaviour",
+			label: "dc-npc-patrols.sheet.tab_behaviour",
+			template: "behaviour-tab",
+			order: 50,
+			types: ["npc", "critter", "abomination"],
+			gm_only: true,
+			visible: (actor) => !!actor.getFlag(MODULE_ID, "bt_id"),
+			prepare: prepare_behaviour_tab_context,
+			on_render: wire_behaviour_tab_events,
+		});
+	}
 	// Also on window for easy access
 	window.dcNpcPatrols = mod.api;
 	window.dcNpcPatrols.path_debug = _path_debug;
@@ -388,6 +417,4 @@ Hooks.once("dcReady", async () => {
 	mod.api.dialog_editor = () => new DialogEditor().render(true);
 	mod.api.ambient_editor = () => new AmbientEditor().render(true);
 	mod.api.bt_editor = () => new BTEditor().render(true);
-
-	console.log(`[${MODULE_ID}] Ready — patrol engine + BT engine initialized.`);
 });

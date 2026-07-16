@@ -16,7 +16,7 @@
 	</button>
 
 	{{#if selected_bt}}
-	<details class="editor-asset-settings">
+	<details class="editor-asset-settings" data-settings-panel="tree">
 		<summary>{{localize "dc-npc-patrols.editor.tree_settings"}}</summary>
 		<label class="editor-field">
 			<span>{{localize "dc-npc-patrols.dialog.tree_name"}}</span>
@@ -28,7 +28,7 @@
 		</label>
 	</details>
 
-	<details class="editor-asset-settings">
+	<details class="editor-asset-settings" data-settings-panel="variables">
 		<summary>{{localize "dc-npc-patrols.editor.variables"}}</summary>
 		<div class="bt-variables-table">
 			<div class="bt-var-row bt-var-header">

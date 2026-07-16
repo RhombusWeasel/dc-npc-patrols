@@ -1,0 +1,33 @@
+{{#if bt_variable_fields.length}}
+<div class="bt-variables-fields">
+	{{#each bt_variable_fields}}
+	<div class="actor-flag-row flexrow" style="gap:8px; align-items:center; margin-top:8px;">
+		<label>{{this.label}}{{#if this.default}} <span class="bt-var-default-hint">({{localize "dc-npc-patrols.sheet.var_default"}}: {{this.default}})</span>{{/if}}</label>
+		{{#if (eq this.type "boolean")}}
+		<input type="checkbox" data-bt-var="{{this.key}}" {{#if this.checked}}checked{{/if}} />
+		{{else if (eq this.type "number")}}
+		<input type="number" data-bt-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />
+		{{else if (eq this.type "waypoint_select")}}
+		<select data-bt-var="{{this.key}}">
+			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
+			{{#each this.options}}
+			<option value="{{this.value}}" {{#if (eq ../value this.value)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
+		{{else if (eq this.type "region_select")}}
+		<select data-bt-var="{{this.key}}">
+			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
+			{{#each this.options}}
+			<option value="{{this.value}}" {{#if (eq ../value this.value)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
+		{{#unless this.options.length}}
+		<span class="bt-var-default-hint">{{localize "dc-npc-patrols.sheet.var_no_regions"}}</span>
+		{{/unless}}
+		{{else}}
+		<input type="text" data-bt-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />
+		{{/if}}
+	</div>
+	{{/each}}
+</div>
+{{/if}}

@@ -33,6 +33,14 @@
 				<option value="ignore" {{#if (eq combat_behavior "ignore")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_ignore"}}</option>
 			</select>
 		</label>
+		{{#if assigned_bt_id}}
+		{{#if bt_variable_fields.length}}
+		<div class="hub-bt-variables hub-npc-subsection">
+			<div class="hub-npc-subsection-title">{{localize "dc-npc-patrols.sheet.tree_variables"}}</div>
+			{{> "modules/dc-npc-patrols/templates/partials/bt-variables-fields.hbs"}}
+		</div>
+		{{/if}}
+		{{/if}}
 	</div>
 
 	<!-- Interactions -->

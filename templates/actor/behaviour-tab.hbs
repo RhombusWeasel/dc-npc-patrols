@@ -1,0 +1,32 @@
+<section class="dc-patrol-behaviour-tab">
+	<h3 class="center">{{localize "dc-npc-patrols.sheet.assigned_bt"}}</h3>
+	<p class="center"><strong>{{bt_name}}</strong></p>
+	{{#if bt_description}}
+	<p class="center bt-tab-desc">{{bt_description}}</p>
+	{{/if}}
+	<div class="center" style="margin-top: 8px;">
+		<button type="button" data-action="edit-assigned-bt" class="patrol-btn">
+			<i class="fa-solid fa-pen"></i> {{localize "dc-npc-patrols.bt.open_editor"}}
+		</button>
+	</div>
+
+	{{#if bt_variable_fields.length}}
+	<h3 class="center" style="margin-top: 16px;">{{localize "dc-npc-patrols.sheet.tree_variables"}}</h3>
+	{{> bt-variables-fields}}
+	{{/if}}
+
+	<h3 class="center" style="margin-top: 16px;">{{localize "dc-npc-patrols.panel.combat_behavior"}}</h3>
+	<div class="actor-flag-row flexrow" style="gap:8px; align-items:center; justify-content:center; margin-top:8px;">
+		<select data-combat-behavior class="combat-behavior-select">
+			<option value="freeze" {{#if (eq combat_behavior "freeze")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_freeze"}}</option>
+			<option value="flee" {{#if (eq combat_behavior "flee")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_flee"}}</option>
+			<option value="ignore" {{#if (eq combat_behavior "ignore")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_ignore"}}</option>
+		</select>
+	</div>
+
+	<div class="center" style="margin-top: 16px;">
+		<button type="button" data-action="open-patrol-hub" class="patrol-btn">
+			<i class="fa-solid fa-route"></i> {{localize "dc-npc-patrols.sheet.open_hub"}}
+		</button>
+	</div>
+</section>
