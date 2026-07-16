@@ -1,0 +1,24 @@
+<div class="ambient-asset-panel">
+	<div class="editor-asset-list">
+		{{#each sets}}
+		<div class="editor-asset-item">
+			<button type="button" data-set-select="{{this.id}}" class="editor-asset-btn {{#if (eq this.id ../selected_set_id)}}active{{/if}}">
+				<i class="fa-solid fa-comment-dots"></i> {{this.name}}
+			</button>
+			<button type="button" data-set-delete="{{this.id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.ambient.delete_set'}}">
+				<i class="fa-solid fa-trash"></i>
+			</button>
+		</div>
+		{{/each}}
+	</div>
+	<button type="button" data-action="add-set" class="editor-add-btn">
+		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.ambient.add_set"}}
+	</button>
+
+	{{#if selected_set}}
+	<label class="editor-field">
+		<span>{{localize "dc-npc-patrols.ambient.set_name"}}</span>
+		<input type="text" data-set-field="name" value="{{selected_set.name}}" />
+	</label>
+	{{/if}}
+</div>

@@ -1,0 +1,55 @@
+{{#if selected_node}}
+<div class="bt-detail-panel">
+	{{#if node_breadcrumb.length}}
+	<nav class="bt-detail-breadcrumb">
+		{{#each node_breadcrumb}}
+		{{#unless @first}}<span class="bt-breadcrumb-sep">›</span>{{/unless}}
+		<button type="button" class="bt-breadcrumb-segment {{#if @last}}active{{/if}}" data-breadcrumb-select="{{this._id}}">
+			{{this.label}}
+		</button>
+		{{/each}}
+	</nav>
+	{{/if}}
+
+	<div class="bt-detail-type-badge bt-node-stripe-{{selected_node_category}}">
+		<i class="fa-solid {{selected_node_icon}}"></i>
+		<span>{{node_label}}</span>
+		<code class="bt-detail-type-id">{{selected_node.type}}</code>
+	</div>
+
+	<label class="editor-field">
+		<span>{{localize "dc-npc-patrols.editor.node_label"}}</span>
+		<input type="text" data-node-label value="{{selected_node._label}}" placeholder="{{localize 'dc-npc-patrols.editor.node_label_optional'}}" />
+	</label>
+
+	<div class="bt-node-props-fields">
+		{{#each node_fields}}
+		<div class="bt-prop-row">
+			<label>{{this.label}}
+				{{#each this._var_refs}}
+				<i class="fa-solid fa-tag bt-var-ref-badge {{#unless this.declared}}bt-var-ref-warning{{/unless}}"
+				   title="References variable: {{this.name}}{{#unless this.declared}} (not declared!){{/unless}}"></i>
+				{{/each}}
+			</label>
+			{{#if (eq this.type "dropdown")}}
+			<select data-node-prop="{{this.key}}">
+				{{#each this.options}}
+				<option value="{{@key}}">{{this}}</option>
+				{{/each}}
+			</select>
+			{{else if (eq this.type "region_select")}}
+			<select data-node-prop="{{this.key}}">
+				<option value="">(none)</option>
+			</select>
+			{{else}}
+			<input type="text" data-node-prop="{{this.key}}" value="{{lookup ../node_field_values this.key}}" />
+			{{/if}}
+		</div>
+		{{/each}}
+	</div>
+</div>
+{{else if selected_bt}}
+<div class="editor-panel-empty">{{localize "dc-npc-patrols.editor.no_node_selected"}}</div>
+{{else}}
+<div class="editor-panel-empty">{{localize "dc-npc-patrols.editor.select_bt"}}</div>
+{{/if}}

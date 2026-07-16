@@ -184,15 +184,15 @@ function register_scene_control() {
 
 		controls[MODULE_ID] = {
 			name: MODULE_ID,
-			title: game.i18n.localize("dc-npc-patrols.controls.patrol_manager.title"),
+			title: game.i18n.localize("dc-npc-patrols.hub.title"),
 			icon: "fa-solid fa-route",
 			visible: true,
 			order: 98,
 			tools: {
-				openPanel: {
-					name: "openPanel",
+				openHub: {
+					name: "openHub",
 					order: 0,
-					title: game.i18n.localize("dc-npc-patrols.controls.patrol_manager.tooltip"),
+					title: game.i18n.localize("dc-npc-patrols.controls.hub.tooltip"),
 					icon: "fa-solid fa-route",
 					button: true,
 					onChange: (event, active) => {
@@ -200,64 +200,8 @@ function register_scene_control() {
 						try {
 							open_panel();
 						} catch (err) {
-							console.error("dc-npc-patrols | Error opening patrol panel:", err);
+							console.error("dc-npc-patrols | Error opening patrol hub:", err);
 						}
-					},
-				},
-				dialogEditor: {
-					name: "dialogEditor",
-					order: 1,
-					title: game.i18n.localize("dc-npc-patrols.controls.dialog_editor.tooltip"),
-					icon: "fa-solid fa-comments",
-					button: true,
-					onChange: (event, active) => {
-						if (!active) return;
-						try {
-							new DialogEditor().render(true);
-						} catch (err) {
-							console.error("dc-npc-patrols | Error opening dialog editor:", err);
-						}
-					},
-				},
-				ambientEditor: {
-					name: "ambientEditor",
-					order: 2,
-					title: game.i18n.localize("dc-npc-patrols.controls.ambient_editor.tooltip"),
-					icon: "fa-solid fa-comment-dots",
-					button: true,
-					onChange: (event, active) => {
-						if (!active) return;
-						try {
-							new AmbientEditor().render(true);
-						} catch (err) {
-							console.error("dc-npc-patrols | Error opening ambient editor:", err);
-						}
-					},
-				},
-				btEditor: {
-					name: "btEditor",
-					order: 3,
-					title: game.i18n.localize("dc-npc-patrols.controls.bt_editor.tooltip"),
-					icon: "fa-solid fa-diagram-project",
-					button: true,
-					onChange: (event, active) => {
-						if (!active) return;
-						try {
-							new BTEditor().render(true);
-						} catch (err) {
-							console.error("dc-npc-patrols | Error opening BT editor:", err);
-						}
-					},
-				},
-				pathDebug: {
-					name: "pathDebug",
-					order: 4,
-					title: game.i18n.localize("dc-npc-patrols.controls.path_debug.tooltip"),
-					icon: "fa-solid fa-eye",
-					button: true,
-					onChange: (event, active) => {
-						if (!active) return;
-						if (_path_debug) _path_debug.toggle();
 					},
 				},
 			},
@@ -285,6 +229,8 @@ function register_helpers() {
 	Handlebars.registerHelper("includes", (arr, val) => {
 		return Array.isArray(arr) && arr.includes(val);
 	});
+	Handlebars.registerHelper("eq", (a, b) => a === b);
+	Handlebars.registerHelper("add", (a, b) => Number(a) + Number(b));
 }
 
 Hooks.once("init", () => {
@@ -294,13 +240,34 @@ Hooks.once("init", () => {
 	register_dialog_behaviors();
 });
 
-// Preload the attachment-editor partial (called in dcReady hook after templates are available)
 async function _preload_partials() {
-	try {
-		const tpl = await foundry.applications.handlebars.getTemplate("modules/dc-npc-patrols/templates/attachment-editor.hbs");
-		Handlebars.registerPartial("attachment-editor", tpl);
-	} catch (err) {
-		console.warn(`[${MODULE_ID}] Failed to preload attachment-editor partial:`, err);
+	const partials = [
+		["attachment-editor", "templates/attachment-editor.hbs"],
+		["hub-sidebar", "templates/partials/hub-sidebar.hbs"],
+		["scene-view", "templates/partials/scene-view.hbs"],
+		["waypoint-card", "templates/partials/waypoint-card.hbs"],
+		["npc-detail", "templates/partials/npc-detail.hbs"],
+		["editor-shell", "templates/partials/editor-shell.hbs"],
+		["bt-asset-panel", "templates/partials/bt-asset-panel.hbs"],
+		["bt-structure-panel", "templates/partials/bt-structure-panel.hbs"],
+		["bt-detail-panel", "templates/partials/bt-detail-panel.hbs"],
+		["dialog-asset-panel", "templates/partials/dialog-asset-panel.hbs"],
+		["dialog-structure-panel", "templates/partials/dialog-structure-panel.hbs"],
+		["dialog-detail-panel", "templates/partials/dialog-detail-panel.hbs"],
+		["ambient-asset-panel", "templates/partials/ambient-asset-panel.hbs"],
+		["ambient-detail-panel", "templates/partials/ambient-detail-panel.hbs"],
+		["dialog-editor", "templates/dialog-editor.hbs"],
+		["ambient-editor", "templates/ambient-editor.hbs"],
+		["bt-editor", "templates/bt-editor.hbs"],
+	];
+
+	for (const [name, path] of partials) {
+		try {
+			const tpl = await foundry.applications.handlebars.getTemplate(`modules/dc-npc-patrols/${path}`);
+			Handlebars.registerPartial(name, tpl);
+		} catch (err) {
+			console.warn(`[${MODULE_ID}] Failed to preload ${name} partial:`, err);
+		}
 	}
 }
 

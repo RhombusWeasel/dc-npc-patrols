@@ -1,0 +1,42 @@
+<div class="dialog-asset-panel">
+	<div class="editor-asset-list">
+		{{#each trees}}
+		<div class="editor-asset-item">
+			<button type="button" data-tree-select="{{this.id}}" class="editor-asset-btn {{#if (eq this.id ../selected_tree_id)}}active{{/if}}">
+				<i class="fa-solid fa-comments"></i> {{this.name}}
+			</button>
+			<button type="button" data-tree-delete="{{this.id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.delete_tree'}}">
+				<i class="fa-solid fa-trash"></i>
+			</button>
+		</div>
+		{{/each}}
+	</div>
+	<button type="button" data-action="add-tree" class="editor-add-btn">
+		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_tree"}}
+	</button>
+
+	{{#if selected_tree}}
+	<details class="editor-asset-settings" open>
+		<summary>{{localize "dc-npc-patrols.editor.tree_settings"}}</summary>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.dialog.tree_name"}}</span>
+			<input type="text" data-tree-field="name" value="{{selected_tree.name}}" />
+		</label>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.dialog.tree_desc"}}</span>
+			<input type="text" data-tree-field="description" value="{{selected_tree.description}}" />
+		</label>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.dialog.root_node"}}</span>
+			<select data-tree-field="root_node">
+				{{#each node_list}}
+				<option value="{{this.id}}" {{#if (eq this.id ../selected_tree.root_node)}}selected{{/if}}>{{this.label}}</option>
+				{{/each}}
+			</select>
+		</label>
+	</details>
+	<button type="button" data-action="add-node" class="editor-add-btn editor-add-btn-inline">
+		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_node"}}
+	</button>
+	{{/if}}
+</div>

@@ -1,0 +1,60 @@
+<div class="bt-asset-panel">
+	<div class="editor-asset-list">
+		{{#each bts}}
+		<div class="editor-asset-item">
+			<button type="button" data-bt-select="{{this.id}}" class="editor-asset-btn {{#if (eq this.id ../selected_bt_id)}}active{{/if}}">
+				<i class="fa-solid fa-diagram-project"></i> {{this.name}}
+			</button>
+			<button type="button" data-bt-delete="{{this.id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.delete_tree'}}">
+				<i class="fa-solid fa-trash"></i>
+			</button>
+		</div>
+		{{/each}}
+	</div>
+	<button type="button" data-action="add-bt" class="editor-add-btn">
+		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.bt.new_tree"}}
+	</button>
+
+	{{#if selected_bt}}
+	<details class="editor-asset-settings">
+		<summary>{{localize "dc-npc-patrols.editor.tree_settings"}}</summary>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.dialog.tree_name"}}</span>
+			<input type="text" data-bt-field="name" value="{{selected_bt.name}}" />
+		</label>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.dialog.tree_desc"}}</span>
+			<input type="text" data-bt-field="description" value="{{selected_bt.description}}" />
+		</label>
+	</details>
+
+	<details class="editor-asset-settings">
+		<summary>{{localize "dc-npc-patrols.editor.variables"}}</summary>
+		<div class="bt-variables-table">
+			<div class="bt-var-row bt-var-header">
+				<span>Key</span>
+				<span>Label</span>
+				<span>Type</span>
+				<span>Default</span>
+				<span></span>
+			</div>
+			{{#each selected_bt.variables}}
+			<div class="bt-var-row" data-var-index="{{@index}}">
+				<input type="text" data-var-field="key" value="{{this.key}}" placeholder="key" {{#if this.key}}readonly{{/if}} />
+				<input type="text" data-var-field="label" value="{{this.label}}" placeholder="Label" />
+				<select data-var-field="type">
+					{{#each ../var_types}}
+					<option value="{{this}}" {{#if (eq this ../type)}}selected{{/if}}>{{this}}</option>
+					{{/each}}
+				</select>
+				<input type="text" data-var-field="default" value="{{this.default}}" placeholder="(blank)" />
+				<button type="button" data-var-delete="{{@index}}" class="editor-asset-delete"><i class="fa-solid fa-trash"></i></button>
+			</div>
+			{{/each}}
+		</div>
+		<button type="button" data-action="add-variable" class="editor-add-btn editor-add-btn-inline">
+			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.editor.add_variable"}}
+		</button>
+	</details>
+	{{/if}}
+</div>

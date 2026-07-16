@@ -1,0 +1,41 @@
+<form class="dc-patrol-hub">
+	{{#if is_gm}}
+	<div class="hub-layout">
+		{{> hub-sidebar}}
+
+		<div class="hub-main {{#if (eq active_view 'world_dialog')}}hub-main-editor{{/if}}{{#if (eq active_view 'world_ambient')}}hub-main-editor{{/if}}{{#if (eq active_view 'world_bt')}}hub-main-editor{{/if}}">
+			{{#if (eq active_view 'scene')}}
+			{{> scene-view}}
+			{{/if}}
+
+			{{#if (eq active_view 'world_dialog')}}
+			<div class="hub-world-view-fill">
+				{{> dialog-editor}}
+			</div>
+			{{/if}}
+
+			{{#if (eq active_view 'world_ambient')}}
+			<div class="hub-world-view-fill">
+				{{> ambient-editor}}
+			</div>
+			{{/if}}
+
+			{{#if (eq active_view 'world_bt')}}
+			<div class="hub-world-view-fill">
+				{{> bt-editor}}
+			</div>
+			{{/if}}
+
+			{{#if (eq active_view 'npc')}}
+			{{#if selected_actor}}
+			{{> npc-detail}}
+			{{else}}
+			<div class="empty-state">{{localize "dc-npc-patrols.panel.select_actor"}}</div>
+			{{/if}}
+			{{/if}}
+		</div>
+	</div>
+	{{else}}
+	<div class="empty-state">GM access required.</div>
+	{{/if}}
+</form>

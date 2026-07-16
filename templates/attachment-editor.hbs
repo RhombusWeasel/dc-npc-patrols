@@ -2,7 +2,24 @@
 	{{#if selected_actor}}
 	<!-- Dialog attachments -->
 	<div class="dc-attachment-section">
-		<div class="dc-attachment-section-title">{{localize "dc-npc-patrols.attachment.dialog_attachments"}}</div>
+		<div class="dc-attachment-section-header">
+			<div class="dc-attachment-section-title">{{localize "dc-npc-patrols.attachment.dialog_attachments"}}</div>
+			{{#if hub_mode}}
+			<button type="button" data-nav-world="world_dialog" class="hub-link-btn">
+				<i class="fa-solid fa-arrow-up-right-from-square"></i> {{localize "dc-npc-patrols.hub.manage_content"}}
+			</button>
+			{{/if}}
+		</div>
+
+		{{#if dialog_attachments.length}}
+		<div class="dc-attachment-table-header">
+			<span>{{localize "dc-npc-patrols.hub.col_tree"}}</span>
+			<span>{{localize "dc-npc-patrols.hub.col_hours"}}</span>
+			<span>{{localize "dc-npc-patrols.hub.col_radius"}}</span>
+			<span></span>
+		</div>
+		{{/if}}
+
 		{{#each dialog_attachments}}
 		<div class="dc-attachment-row">
 			<span class="dc-attachment-name">{{this.tree_name}}</span>
@@ -13,8 +30,16 @@
 			</button>
 		</div>
 		{{/each}}
+
 		{{#unless dialog_attachments.length}}
-		<div class="dc-attachment-empty">{{localize "dc-npc-patrols.attachment.no_dialog"}}</div>
+		<div class="dc-attachment-empty">
+			{{localize "dc-npc-patrols.attachment.no_dialog"}}
+			{{#if hub_mode}}
+			<button type="button" data-nav-world="world_dialog" class="hub-link-btn hub-link-inline">
+				{{localize "dc-npc-patrols.hub.create_dialog_tree"}}
+			</button>
+			{{/if}}
+		</div>
 		{{/unless}}
 
 		<div class="dc-attachment-add-row">
@@ -35,7 +60,24 @@
 
 	<!-- Ambient attachments -->
 	<div class="dc-attachment-section">
-		<div class="dc-attachment-section-title">{{localize "dc-npc-patrols.attachment.ambient_attachments"}}</div>
+		<div class="dc-attachment-section-header">
+			<div class="dc-attachment-section-title">{{localize "dc-npc-patrols.attachment.ambient_attachments"}}</div>
+			{{#if hub_mode}}
+			<button type="button" data-nav-world="world_ambient" class="hub-link-btn">
+				<i class="fa-solid fa-arrow-up-right-from-square"></i> {{localize "dc-npc-patrols.hub.manage_content"}}
+			</button>
+			{{/if}}
+		</div>
+
+		{{#if ambient_attachments.length}}
+		<div class="dc-attachment-table-header">
+			<span>{{localize "dc-npc-patrols.hub.col_set"}}</span>
+			<span>{{localize "dc-npc-patrols.hub.col_hours"}}</span>
+			<span>{{localize "dc-npc-patrols.hub.col_radius"}}</span>
+			<span></span>
+		</div>
+		{{/if}}
+
 		{{#each ambient_attachments}}
 		<div class="dc-attachment-row">
 			<span class="dc-attachment-name">{{this.set_name}}</span>
@@ -46,8 +88,16 @@
 			</button>
 		</div>
 		{{/each}}
+
 		{{#unless ambient_attachments.length}}
-		<div class="dc-attachment-empty">{{localize "dc-npc-patrols.attachment.no_ambient"}}</div>
+		<div class="dc-attachment-empty">
+			{{localize "dc-npc-patrols.attachment.no_ambient"}}
+			{{#if hub_mode}}
+			<button type="button" data-nav-world="world_ambient" class="hub-link-btn hub-link-inline">
+				{{localize "dc-npc-patrols.hub.create_ambient_set"}}
+			</button>
+			{{/if}}
+		</div>
 		{{/unless}}
 
 		<div class="dc-attachment-add-row">

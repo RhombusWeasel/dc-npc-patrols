@@ -1,0 +1,28 @@
+<div class="editor-shell {{shell_class}}">
+	<aside class="editor-panel editor-panel-assets">
+		<header class="editor-panel-header">{{asset_title}}</header>
+		<div class="editor-panel-body">{{> asset_panel}}</div>
+		{{#if asset_hint}}
+		<footer class="editor-panel-footer">
+			<p class="editor-hint">{{asset_hint}}</p>
+		</footer>
+		{{/if}}
+	</aside>
+
+	{{#if structure_panel}}
+	<section class="editor-panel editor-panel-structure">
+		<header class="editor-panel-header">
+			<span>{{structure_title}}</span>
+			{{#if structure_subtitle}}
+			<span class="editor-panel-subtitle">{{structure_subtitle}}</span>
+			{{/if}}
+		</header>
+		<div class="editor-panel-body">{{> structure_panel}}</div>
+	</section>
+	{{/if}}
+
+	<section class="editor-panel editor-panel-detail">
+		<header class="editor-panel-header">{{detail_title}}</header>
+		<div class="editor-panel-body">{{> detail_panel}}</div>
+	</section>
+</div>

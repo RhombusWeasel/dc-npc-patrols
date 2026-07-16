@@ -1,0 +1,118 @@
+<div class="hub-npc-detail">
+	<div class="hub-view-header hub-npc-header">
+		<h3>{{selected_actor.name}}</h3>
+		<p class="hub-view-hint">{{localize "dc-npc-patrols.hub.npc_hint"}}</p>
+	</div>
+
+	<!-- Behaviour (primary) -->
+	<div class="hub-npc-section hub-npc-section-primary">
+		<div class="hub-npc-section-title">
+			<i class="fa-solid fa-diagram-project"></i> {{localize "dc-npc-patrols.hub.section_behaviour"}}
+		</div>
+		<div class="hub-behaviour-row">
+			<label class="hub-field-row hub-field-grow">
+				<span>{{localize "dc-npc-patrols.bt.assign_bt"}}</span>
+				<select data-bt-assign>
+					<option value="">{{localize "dc-npc-patrols.bt.no_bt"}}</option>
+					{{#each available_bts}}
+					<option value="{{this.id}}" {{#if (eq this.id ../assigned_bt_id)}}selected{{/if}}>{{this.name}}</option>
+					{{/each}}
+				</select>
+			</label>
+			{{#if assigned_bt_id}}
+			<button type="button" data-action="edit-assigned-bt" class="patrol-btn">
+				<i class="fa-solid fa-pen"></i> {{localize "dc-npc-patrols.hub.edit_tree"}}
+			</button>
+			{{/if}}
+		</div>
+		<label class="hub-field-row">
+			<span>{{localize "dc-npc-patrols.panel.combat_behavior"}}</span>
+			<select data-combat-behavior class="combat-behavior-select">
+				<option value="freeze" {{#if (eq combat_behavior "freeze")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_freeze"}}</option>
+				<option value="flee" {{#if (eq combat_behavior "flee")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_flee"}}</option>
+				<option value="ignore" {{#if (eq combat_behavior "ignore")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_ignore"}}</option>
+			</select>
+		</label>
+	</div>
+
+	<!-- Interactions -->
+	<div class="hub-npc-section">
+		<div class="hub-npc-section-title">
+			<i class="fa-solid fa-handshake"></i> {{localize "dc-npc-patrols.hub.section_interactions"}}
+		</div>
+		{{> attachment-editor hub_mode=true}}
+	</div>
+
+	<!-- Movement Data (collapsed by default) -->
+	<details class="hub-npc-section hub-movement-section" {{#if movement_expanded}}open{{/if}}>
+		<summary class="hub-npc-section-title hub-movement-summary">
+			<i class="fa-solid fa-route"></i> {{localize "dc-npc-patrols.hub.section_movement"}}
+			<span class="hub-movement-badge">{{paths.length}} {{localize "dc-npc-patrols.hub.paths_count"}}</span>
+		</summary>
+		<p class="hub-field-hint">{{localize "dc-npc-patrols.hub.movement_hint"}}</p>
+
+		<div class="patrol-header">
+			<span>{{localize "dc-npc-patrols.panel.waypoints"}}</span>
+			<button type="button" data-action="add-path" class="patrol-btn">
+				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.panel.add_path"}}
+			</button>
+		</div>
+
+		{{#if paths.length}}
+		{{#each paths}}
+		<div class="path-item">
+			<div class="path-item-header">
+				<input type="text" data-path-name="{{@index}}" value="{{this.name}}" placeholder="{{localize 'dc-npc-patrols.panel.path_name'}}" />
+				<label class="patrol-btn">
+					<input type="checkbox" data-toggle-path="{{@index}}" {{#if this.enabled}}checked{{/if}} />
+					{{localize "dc-npc-patrols.panel.enabled"}}
+				</label>
+				<button type="button" data-delete-path="{{@index}}" class="patrol-btn patrol-btn-danger">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</div>
+
+			<div class="day-checkboxes">
+				<span class="patrol-section-title">{{localize "dc-npc-patrols.panel.days"}}:</span>
+				{{#each this.day_states}}
+				<label>
+					<input type="checkbox" data-day-toggle="{{@../index}}:{{this.key}}" {{#if this.checked}}checked{{/if}} />
+					{{localize this.label}}
+				</label>
+				{{/each}}
+				{{#unless this.days.length}}
+				<em class="hub-all-days">({{localize "dc-npc-patrols.panel.all_days"}})</em>
+				{{/unless}}
+			</div>
+
+			<div class="waypoint-cards">
+				{{#each this.waypoints}}
+				{{> waypoint-card path_idx=@../index wp_idx=@index waypoint=this scenes=../../scenes}}
+				{{/each}}
+			</div>
+
+			{{#unless this.waypoints.length}}
+			<div class="empty-state">{{localize "dc-npc-patrols.panel.no_waypoints"}}</div>
+			{{/unless}}
+
+			<div class="path-item-actions">
+				<button type="button" data-add-waypoint="{{@index}}" class="patrol-btn">
+					<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.panel.add_waypoint"}}
+				</button>
+				<button type="button" data-record-path="{{@index}}" class="patrol-btn patrol-btn-record">
+					<i class="fa-solid fa-video"></i> {{localize "dc-npc-patrols.panel.record_path"}}
+				</button>
+			</div>
+		</div>
+		{{/each}}
+		{{else}}
+		<div class="empty-state">{{localize "dc-npc-patrols.panel.no_paths"}}</div>
+		{{/if}}
+	</details>
+
+	<div class="patrol-save-bar">
+		<button type="button" data-action="save" class="patrol-btn">
+			<i class="fa-solid fa-floppy-disk"></i> {{localize "dc-npc-patrols.panel.save"}}
+		</button>
+	</div>
+</div>

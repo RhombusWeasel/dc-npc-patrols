@@ -1,0 +1,36 @@
+{{#if selected_tree}}
+<div class="dialog-structure-panel">
+	{{#each node_map}}
+	<button type="button" class="dialog-map-row {{#if this.selected}}selected{{/if}}" data-node-select="{{this.id}}">
+		<div class="dialog-map-row-header">
+			<span class="dialog-map-node-id">
+				{{#if this.is_root}}<i class="fa-solid fa-star dialog-map-root" title="{{localize 'dc-npc-patrols.editor.root_node_marker'}}"></i>{{/if}}
+				{{this.label}}
+			</span>
+			<span class="dialog-map-response-count">{{this.response_count}} {{localize "dc-npc-patrols.editor.responses_count"}}</span>
+		</div>
+		{{#if this.preview}}
+		<div class="dialog-map-preview">"{{this.preview}}"</div>
+		{{/if}}
+		{{#if this.incoming_from.length}}
+		<div class="dialog-map-links">
+			<span class="dialog-map-link-label">{{localize "dc-npc-patrols.editor.incoming_from"}}</span>
+			{{#each this.incoming_from}}
+			<span class="dialog-map-chip dialog-map-chip-in">{{this.label}}</span>
+			{{/each}}
+		</div>
+		{{/if}}
+		{{#if this.goto_targets.length}}
+		<div class="dialog-map-links">
+			<span class="dialog-map-link-label">{{localize "dc-npc-patrols.editor.goto_targets"}}</span>
+			{{#each this.goto_targets}}
+			<span class="dialog-map-chip dialog-map-chip-out">{{this.label}}</span>
+			{{/each}}
+		</div>
+		{{/if}}
+	</button>
+	{{/each}}
+</div>
+{{else}}
+<div class="editor-panel-empty">{{localize "dc-npc-patrols.dialog.select_tree"}}</div>
+{{/if}}

@@ -1,0 +1,45 @@
+<div class="hub-scene-view">
+	<div class="hub-view-header">
+		<h3>{{localize "dc-npc-patrols.hub.nav_scene_controls"}}</h3>
+		<p class="hub-view-hint">{{localize "dc-npc-patrols.hub.scene_hint"}}</p>
+	</div>
+
+	<div class="hub-npc-section">
+		<div class="hub-npc-section-title">{{localize "dc-npc-patrols.bt.weather"}}</div>
+		<label class="hub-field-row">
+			<span>{{localize "dc-npc-patrols.hub.weather_label"}}</span>
+			<select data-weather-set>
+				<option value="clear" {{#if (eq weather "clear")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_clear"}}</option>
+				<option value="rain" {{#if (eq weather "rain")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_rain"}}</option>
+				<option value="snow" {{#if (eq weather "snow")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_snow"}}</option>
+				<option value="storm" {{#if (eq weather "storm")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_storm"}}</option>
+				<option value="fog" {{#if (eq weather "fog")}}selected{{/if}}>{{localize "dc-npc-patrols.bt.weather_fog"}}</option>
+			</select>
+		</label>
+	</div>
+
+	<div class="hub-npc-section">
+		<div class="hub-npc-section-title">{{localize "dc-npc-patrols.hub.bt_engine"}}</div>
+		<button type="button" data-action="toggle-bt-pause" class="patrol-btn {{#if bt_paused}}patrol-btn-danger{{/if}}">
+			{{#if bt_paused}}
+			<i class="fa-solid fa-play"></i> {{localize "dc-npc-patrols.hub.resume_bt"}}
+			{{else}}
+			<i class="fa-solid fa-pause"></i> {{localize "dc-npc-patrols.hub.pause_bt"}}
+			{{/if}}
+		</button>
+		<p class="hub-field-hint">{{localize "dc-npc-patrols.hub.bt_pause_hint"}}</p>
+	</div>
+
+	<div class="hub-npc-section">
+		<div class="hub-npc-section-title">{{localize "dc-npc-patrols.hub.path_debug"}}</div>
+		<button type="button" data-action="toggle-path-debug" class="patrol-btn {{#if path_debug_active}}active{{/if}}">
+			<i class="fa-solid fa-eye"></i>
+			{{#if path_debug_active}}
+			{{localize "dc-npc-patrols.hub.path_debug_off"}}
+			{{else}}
+			{{localize "dc-npc-patrols.hub.path_debug_on"}}
+			{{/if}}
+		</button>
+		<p class="hub-field-hint">{{localize "dc-npc-patrols.hub.path_debug_hint"}}</p>
+	</div>
+</div>

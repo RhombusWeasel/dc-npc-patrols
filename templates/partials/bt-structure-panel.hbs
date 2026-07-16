@@ -1,0 +1,51 @@
+{{#if selected_bt}}
+<div class="bt-structure-panel">
+	<div class="bt-structure-toolbar">
+		<select data-node-type-select class="bt-toolbar-select">
+			<optgroup label="Composite">
+				{{#each node_types.composite}}
+				<option value="{{this.type}}">{{this.label}}</option>
+				{{/each}}
+			</optgroup>
+			<optgroup label="Decorator">
+				{{#each node_types.decorator}}
+				<option value="{{this.type}}">{{this.label}}</option>
+				{{/each}}
+			</optgroup>
+			<optgroup label="Condition">
+				{{#each node_types.condition}}
+				<option value="{{this.type}}">{{this.label}}</option>
+				{{/each}}
+			</optgroup>
+			<optgroup label="Action">
+				{{#each node_types.action}}
+				<option value="{{this.type}}">{{this.label}}</option>
+				{{/each}}
+			</optgroup>
+		</select>
+		<button type="button" data-action="add-node" class="bt-toolbar-btn">{{localize "dc-npc-patrols.editor.add_child"}}</button>
+		<button type="button" data-action="add-sibling" class="bt-toolbar-btn">{{localize "dc-npc-patrols.editor.add_sibling"}}</button>
+		<button type="button" data-action="delete-node" class="bt-toolbar-btn bt-toolbar-btn-danger">{{localize "dc-npc-patrols.panel.delete"}}</button>
+		<button type="button" data-action="move-up" class="bt-toolbar-btn" title="Move up">↑</button>
+		<button type="button" data-action="move-down" class="bt-toolbar-btn" title="Move down">↓</button>
+	</div>
+
+	<div class="bt-structure-tree">
+		{{#each tree_nodes}}
+		<div class="bt-node {{this.category}} level-{{this.level}} {{#if this.selected}}selected{{/if}}"
+			 data-node-id="{{this._id}}"
+			 style="padding-left: {{this.indent}}px;">
+			<span class="bt-node-stripe bt-node-stripe-{{this.category}}"></span>
+			<i class="fa-solid {{this.icon}}"></i>
+			<span class="bt-node-label">{{this.label}}</span>
+			{{#if this.summary}}
+			<span class="bt-node-summary">{{this.summary}}</span>
+			{{/if}}
+			<span class="bt-node-type">{{this.type}}</span>
+		</div>
+		{{/each}}
+	</div>
+</div>
+{{else}}
+<div class="editor-panel-empty">{{localize "dc-npc-patrols.editor.select_bt"}}</div>
+{{/if}}

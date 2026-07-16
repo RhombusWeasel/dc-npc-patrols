@@ -1,0 +1,19 @@
+{{#if selected_set}}
+<div class="ambient-detail-panel">
+	<div class="editor-subsection-title">{{localize "dc-npc-patrols.ambient.lines"}}</div>
+	{{#each selected_set.lines}}
+	<div class="ambient-line-card">
+		<span class="ambient-line-number">{{add @index 1}}</span>
+		<input type="text" data-line-field="{{@index}}" value="{{this}}" placeholder="{{localize 'dc-npc-patrols.ambient.line_placeholder'}}" />
+		<button type="button" class="editor-asset-delete" data-line-delete="{{@index}}" title="{{localize 'dc-npc-patrols.ambient.delete_line'}}">
+			<i class="fa-solid fa-trash"></i>
+		</button>
+	</div>
+	{{/each}}
+	<button type="button" class="editor-add-btn" data-action="add-line">
+		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.ambient.add_line"}}
+	</button>
+</div>
+{{else}}
+<div class="editor-panel-empty">{{localize "dc-npc-patrols.ambient.select_set"}}</div>
+{{/if}}

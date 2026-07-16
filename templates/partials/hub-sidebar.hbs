@@ -1,0 +1,47 @@
+<aside class="hub-sidebar">
+	<div class="hub-sidebar-section">
+		<div class="hub-sidebar-heading">
+			<span>{{localize "dc-npc-patrols.hub.section_scene"}}</span>
+			<span class="hub-scope-badge hub-scope-scene">{{localize "dc-npc-patrols.hub.scope_scene"}}</span>
+		</div>
+		<button type="button" data-view-select="scene" class="hub-nav-item {{#if (eq active_view 'scene')}}active{{/if}}">
+			<i class="fa-solid fa-cloud-sun"></i> {{localize "dc-npc-patrols.hub.nav_scene_controls"}}
+		</button>
+	</div>
+
+	<div class="hub-sidebar-section">
+		<div class="hub-sidebar-heading">
+			<span>{{localize "dc-npc-patrols.hub.section_world"}}</span>
+			<span class="hub-scope-badge hub-scope-world">{{localize "dc-npc-patrols.hub.scope_world"}}</span>
+		</div>
+		<button type="button" data-view-select="world_dialog" class="hub-nav-item {{#if (eq active_view 'world_dialog')}}active{{/if}}">
+			<i class="fa-solid fa-comments"></i> {{localize "dc-npc-patrols.hub.nav_dialog_trees"}}
+		</button>
+		<button type="button" data-view-select="world_ambient" class="hub-nav-item {{#if (eq active_view 'world_ambient')}}active{{/if}}">
+			<i class="fa-solid fa-comment-dots"></i> {{localize "dc-npc-patrols.hub.nav_ambient_sets"}}
+		</button>
+		<button type="button" data-view-select="world_bt" class="hub-nav-item {{#if (eq active_view 'world_bt')}}active{{/if}}">
+			<i class="fa-solid fa-diagram-project"></i> {{localize "dc-npc-patrols.hub.nav_behaviour_trees"}}
+		</button>
+	</div>
+
+	<div class="hub-sidebar-section hub-sidebar-npcs">
+		<div class="hub-sidebar-heading">
+			<span>{{localize "dc-npc-patrols.hub.section_npcs"}}</span>
+			<span class="hub-scope-badge hub-scope-npc">{{localize "dc-npc-patrols.hub.scope_npc"}}</span>
+		</div>
+		{{#if npc_tokens.length}}
+		{{#each npc_tokens}}
+		<button type="button" data-actor-select="{{this.id}}" class="hub-nav-item hub-nav-npc {{#if (eq this.id ../selected_actor_id)}}{{#if (eq ../active_view 'npc')}}active{{/if}}{{/if}}">
+			<i class="fa-solid fa-person-walking"></i>
+			<span class="hub-nav-npc-name">{{this.name}}</span>
+			{{#if this.has_patrol}}
+			<span class="hub-nav-npc-meta">{{this.path_count}}</span>
+			{{/if}}
+		</button>
+		{{/each}}
+		{{else}}
+		<div class="hub-sidebar-empty">{{localize "dc-npc-patrols.hub.no_npcs_on_scene"}}</div>
+		{{/if}}
+	</div>
+</aside>

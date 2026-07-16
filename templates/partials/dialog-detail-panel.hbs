@@ -1,0 +1,59 @@
+{{#if selected_node}}
+<div class="dialog-detail-panel">
+	<div class="dialog-detail-header">
+		<span class="dialog-detail-node-name">{{selected_node.id}}</span>
+		<button type="button" class="editor-asset-delete dialog-detail-delete" data-action="delete-node" title="{{localize 'dc-npc-patrols.dialog.delete_node'}}">
+			<i class="fa-solid fa-trash"></i> {{localize "dc-npc-patrols.dialog.delete_node"}}
+		</button>
+	</div>
+
+	<label class="editor-field">
+		<span>{{localize "dc-npc-patrols.dialog.node_id"}}</span>
+		<input type="text" data-node-field="id" value="{{selected_node.id}}" />
+	</label>
+
+	<label class="editor-field">
+		<span>{{localize "dc-npc-patrols.dialog.npc_text"}}</span>
+		<textarea data-node-field="npc_text" rows="4">{{selected_node.npc_text}}</textarea>
+	</label>
+
+	<div class="dialog-responses-section">
+		<div class="editor-subsection-title">{{localize "dc-npc-patrols.dialog.responses"}}</div>
+		{{#each selected_node.responses}}
+		<div class="dc-dialog-editor-response-row" data-response-idx="{{@index}}">
+			<div class="dc-dialog-editor-response-top">
+				<input type="text" data-response-field="{{@index}}:text" value="{{this.text}}" placeholder="{{localize 'dc-npc-patrols.dialog.response_text'}}" class="dc-dialog-editor-response-text-input" />
+				<label class="dc-dialog-editor-once-label">
+					<input type="checkbox" data-response-field="{{@index}}:once" {{#if this.once}}checked{{/if}} />
+					{{localize "dc-npc-patrols.dialog.once"}}
+				</label>
+				<button type="button" class="dc-dialog-editor-response-delete" data-response-delete="{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_response'}}">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</div>
+			<div class="dc-dialog-editor-response-bottom">
+				<label>{{localize "dc-npc-patrols.dialog.goto"}}
+					<select data-response-field="{{@index}}:goto">
+						<option value="" {{#unless this.goto}}selected{{/unless}}>{{localize "dc-npc-patrols.dialog.exit_conversation"}}</option>
+						{{#each @root.node_list}}
+						<option value="{{this.id}}">{{this.label}}</option>
+						{{/each}}
+					</select>
+				</label>
+				<label>{{localize "dc-npc-patrols.dialog.set_flags"}}
+					<input type="text" data-response-field="{{@index}}:set_flags_text" value="{{this.set_flags_text}}" placeholder="flag1=true, flag2=1" />
+				</label>
+			</div>
+			<div class="dc-dialog-editor-boons" data-boon-list="{{@index}}"></div>
+		</div>
+		{{/each}}
+		<button type="button" class="editor-add-btn" data-action="add-response">
+			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_response"}}
+		</button>
+	</div>
+</div>
+{{else if selected_tree}}
+<div class="editor-panel-empty">{{localize "dc-npc-patrols.dialog.select_node"}}</div>
+{{else}}
+<div class="editor-panel-empty">{{localize "dc-npc-patrols.dialog.select_tree"}}</div>
+{{/if}}
