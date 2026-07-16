@@ -355,9 +355,7 @@
 }
 
 .dc-dialog-editor {
-	display: flex;
 	height: 100%;
-	gap: 8px;
 }
 
 .dc-dialog-editor-sidebar {
@@ -548,9 +546,7 @@
 }
 
 .dc-ambient-editor {
-	display: flex;
 	height: 100%;
-	gap: 8px;
 }
 
 .dc-ambient-editor-sidebar {
@@ -742,9 +738,7 @@
 /* ── BT Editor ────────────────────────────────────────────────── */
 
 .dc-bt-editor {
-	display: flex;
 	height: 100%;
-	gap: 8px;
 }
 
 .dc-bt-editor .bt-sidebar {
@@ -1000,7 +994,10 @@
 }
 
 .dc-patrol-hub {
+	display: flex;
+	flex-direction: column;
 	height: 100%;
+	min-height: 0;
 }
 
 .dc-patrol-hub .hub-layout {
@@ -1223,8 +1220,12 @@
 	min-height: 0;
 }
 
-.dc-patrol-hub .hub-world-view-fill .editor-shell,
-.dc-patrol-hub .hub-world-view-fill .dc-bt-editor {
+.dc-patrol-hub .hub-world-view-fill > .editor-shell,
+.dc-patrol-hub .hub-world-view-fill > .dc-dialog-editor,
+.dc-patrol-hub .hub-world-view-fill > .dc-ambient-editor,
+.dc-patrol-hub .hub-world-view-fill > .dc-bt-editor {
+	flex: 1;
+	width: 100%;
 	height: 100%;
 	min-height: 0;
 }
@@ -1448,7 +1449,6 @@
 
 /* ── Shared Editor Shell ── */
 .editor-shell {
-	display: grid;
 	height: 100%;
 	min-height: 480px;
 	gap: 0;
@@ -1458,11 +1458,16 @@
 	background: var(--color-bg-option);
 }
 
-.editor-shell-3col {
+.editor-shell.editor-shell-3col,
+.dc-dialog-editor.editor-shell.editor-shell-3col,
+.dc-bt-editor.editor-shell.editor-shell-3col {
+	display: grid;
 	grid-template-columns: 220px 1fr 320px;
 }
 
-.editor-shell-2col {
+.editor-shell.editor-shell-2col,
+.dc-ambient-editor.editor-shell.editor-shell-2col {
+	display: grid;
 	grid-template-columns: 220px 1fr;
 }
 
@@ -1799,6 +1804,11 @@
 .bt-node-props-fields .bt-prop-row label {
 	font-size: 0.8em;
 	color: var(--color-text-secondary);
+}
+
+.bt-node-props-fields .bt-prop-row input[type="checkbox"] {
+	width: auto;
+	flex: none;
 }
 
 /* ── Dialog Editor (shell panels) ── */

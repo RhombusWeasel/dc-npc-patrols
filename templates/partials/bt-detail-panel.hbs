@@ -41,6 +41,8 @@
 			<select data-node-prop="{{this.key}}">
 				<option value="">(none)</option>
 			</select>
+			{{else if (eq this.type "boolean")}}
+			<input type="checkbox" data-node-prop="{{this.key}}" {{#if (lookup ../node_field_values this.key)}}checked{{/if}} />
 			{{else}}
 			<input type="text" data-node-prop="{{this.key}}" value="{{lookup ../node_field_values this.key}}" />
 			{{/if}}
