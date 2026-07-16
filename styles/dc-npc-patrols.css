@@ -1483,7 +1483,7 @@
 .dc-dialog-editor.editor-shell.editor-shell-3col,
 .dc-bt-editor.editor-shell.editor-shell-3col {
 	display: grid;
-	grid-template-columns: 220px 1fr 320px;
+	grid-template-columns: 0.5fr 1fr 0.5fr;
 }
 
 .editor-shell.editor-shell-2col,
