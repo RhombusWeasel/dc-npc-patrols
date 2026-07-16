@@ -1633,6 +1633,28 @@
 	margin-top: 6px;
 }
 
+.bt-io-row {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 6px;
+}
+
+.bt-io-btn {
+	flex: 1;
+	width: auto;
+	margin-bottom: 0;
+}
+
+.bt-io-btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.bt-io-btn:disabled:hover {
+	border-color: var(--color-border-faint);
+	color: var(--color-text-secondary);
+}
+
 .editor-asset-settings {
 	margin-top: 8px;
 	border: 1px solid var(--color-border-faint);

@@ -11,6 +11,15 @@
 		</div>
 		{{/each}}
 	</div>
+	<div class="bt-io-row">
+		<button type="button" data-action="export-bt" class="editor-add-btn bt-io-btn" {{#unless selected_bt_id}}disabled{{/unless}}>
+			<i class="fa-solid fa-download"></i> {{localize "dc-npc-patrols.bt.export_tree"}}
+		</button>
+		<button type="button" data-action="import-bt" class="editor-add-btn bt-io-btn">
+			<i class="fa-solid fa-upload"></i> {{localize "dc-npc-patrols.bt.import_tree"}}
+		</button>
+		<input type="file" accept=".json,application/json" data-bt-import-input hidden />
+	</div>
 	<button type="button" data-action="add-bt" class="editor-add-btn">
 		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.bt.new_tree"}}
 	</button>
