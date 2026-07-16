@@ -250,7 +250,13 @@
 			"weather_storm": "Storm",
 			"weather_fog": "Fog",
 			"wp_flee_target": "Flee Target",
-			"wp_home": "Home"
+			"wp_home": "Home",
+			"nodes": {
+				"equip_item": "Equips or unequips gear matched by partial item label.",
+				"use_item": "Fires on_use boons for a usable inventory item (not attacks).",
+				"update_visible_tokens": "Scans Foundry token vision and writes a list of visible tokens to the blackboard.",
+				"visible_tokens": "Checks whether enough visible tokens match on the blackboard (optionally refreshes first)."
+			}
 		},
 		"editor": {
 			"assets": "Assets",
