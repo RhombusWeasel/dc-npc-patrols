@@ -22,6 +22,17 @@
 		<input type="text" data-node-label value="{{selected_node._label}}" placeholder="{{localize 'dc-npc-patrols.editor.node_label_optional'}}" />
 	</label>
 
+	{{#if selected_node_is_root}}
+	<label class="editor-field">
+		<span>{{localize "dc-npc-patrols.editor.root_type"}}</span>
+		<select data-root-type>
+			{{#each node_types.composite}}
+			<option value="{{this.type}}" {{#if (eq ../selected_node.type this.type)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
+	</label>
+	{{/if}}
+
 	<div class="bt-node-props-fields">
 		{{#each node_fields}}
 		<div class="bt-prop-row">

@@ -268,6 +268,7 @@
 			"add_variable": "Add Variable",
 			"node_label": "Display Label",
 			"node_label_optional": "Optional label (optional)",
+			"root_type": "Root Type",
 			"no_node_selected": "Select a node in the structure panel to edit its properties.",
 			"select_bt": "Select or create a behaviour tree.",
 			"add_child": "Add Child",
