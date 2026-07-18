@@ -499,6 +499,7 @@
 
 .dc-dialog-editor-response-top {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	gap: 6px;
 	margin-bottom: 4px;
@@ -518,6 +519,7 @@
 
 .dc-dialog-editor-response-bottom {
 	display: flex;
+	flex-wrap: wrap;
 	gap: 8px;
 	margin-bottom: 4px;
 }
@@ -1480,10 +1482,18 @@
 }
 
 .editor-shell.editor-shell-3col,
-.dc-dialog-editor.editor-shell.editor-shell-3col,
 .dc-bt-editor.editor-shell.editor-shell-3col {
 	display: grid;
 	grid-template-columns: 0.5fr 1fr 0.5fr;
+}
+
+.dc-dialog-editor.editor-shell.editor-shell-3col {
+	display: grid;
+	grid-template-columns: 220px minmax(260px, 0.65fr) minmax(320px, 1.35fr);
+}
+
+.dc-dialog-editor .editor-panel {
+	min-width: 0;
 }
 
 .editor-shell.editor-shell-2col,
@@ -1887,12 +1897,20 @@
 }
 
 /* ── Dialog Editor (shell panels) ── */
+.dialog-structure-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
 .dialog-map-row {
-	display: block;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 	width: 100%;
 	text-align: left;
 	padding: 8px;
-	margin-bottom: 6px;
+	margin-bottom: 0;
 	border: 1px solid var(--color-border-faint);
 	border-radius: 4px;
 	background: transparent;
@@ -1920,6 +1938,11 @@
 }
 
 .dialog-map-node-id {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	font-weight: bold;
 	font-size: 0.9em;
 }
@@ -1930,11 +1953,15 @@
 }
 
 .dialog-map-response-count {
+	flex-shrink: 0;
 	font-size: 0.75em;
 	color: var(--color-text-secondary);
 }
 
 .dialog-map-preview {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 	font-size: 0.8em;
 	color: var(--color-text-secondary);
 	font-style: italic;
