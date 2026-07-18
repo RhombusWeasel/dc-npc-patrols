@@ -284,7 +284,15 @@
 				"equip_item": "Equips or unequips gear matched by partial item label.",
 				"use_item": "Fires on_use boons for a usable inventory item (not attacks).",
 				"update_visible_tokens": "Scans Foundry token vision and writes a list of visible tokens to the blackboard.",
-				"visible_tokens": "Checks whether enough visible tokens match on the blackboard (optionally refreshes first)."
+				"visible_tokens": "Checks whether enough visible tokens match on the blackboard (optionally refreshes first).",
+				"acquire_target": "Finds the closest matching token and stores it on the blackboard.",
+				"measure_range": "Measures distance to a blackboard target and stores it as {target_key}_range.",
+				"fire_weapon": "Fires the equipped weapon at a blackboard target through Deadlands combat.",
+				"modify_item": "Adds or removes inventory items by partial label.",
+				"wander_region": "Walks to a random reachable point inside a named region.",
+				"range": "Compares distance to a blackboard target against a threshold.",
+				"variable": "Checks a tree template variable resolved for this NPC.",
+				"set_token_image": "Sets, restores, or resets the token texture for visual state changes."
 			}
 		},
 		"editor": {
