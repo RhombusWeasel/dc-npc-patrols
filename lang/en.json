@@ -41,6 +41,10 @@
 			"nav_resolution": {
 				"name": "Pathfinding Resolution",
 				"hint": "Subdivides each grid square into N×N navigation cells for finer wall avoidance. 1 = original behavior, 4 = recommended for tight corridors. Higher values improve pathfinding in narrow spaces but use more memory."
+			},
+			"npc_door_sounds": {
+				"name": "NPC Door Sounds",
+				"hint": "Play Foundry door open/close sounds when NPCs use doors during pathfinding or door interact actions. Off by default to avoid noise with many NPCs."
 			}
 		},
 		"hub": {
@@ -114,6 +118,7 @@
 			"var_default": "default",
 			"var_use_default": "(use default)",
 			"var_no_regions": "Open a scene to pick regions",
+			"var_no_doors": "Open a scene to pick doors",
 			"open_hub": "Open Patrol Hub"
 		},
 		"panel": {
@@ -304,6 +309,7 @@
 			"variables": "Variables",
 			"var_options": "Variables",
 			"scene_regions": "Scene Regions",
+			"scene_doors": "Scene Doors",
 			"add_variable": "Add Variable",
 			"node_label": "Display Label",
 			"node_label_optional": "Optional label (optional)",

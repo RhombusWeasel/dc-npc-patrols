@@ -34,7 +34,7 @@ Behaviour-tree-driven NPC AI for Deadlands Classic — A* navigation around wall
 | **Ambient line sets** | Random flavour lines whispered to a player when they enter an NPC's proximity region (with per-player cooldown). |
 | **Region behaviors** | `dcDialogTree` and `dcAmbient` Foundry region behavior types — attached automatically when you link dialog/ambient content to an NPC. |
 | **Fragments** | Reusable behaviour-tree subtrees. Save a branch as a fragment and insert it into other trees from the BT editor. |
-| **Template variables** | BT fields can use `{{var}}` placeholders. Each tree declares variables (text, number, boolean, `region_select`); per-NPC values are stored on the actor and resolved at tick time. |
+| **Template variables** | BT fields can use `{{var}}` placeholders. Each tree declares variables (text, number, boolean, `region_select`, `foundry_id`); per-NPC values are stored on the actor and resolved at tick time. |
 
 ```mermaid
 flowchart TD
@@ -115,7 +115,7 @@ Per-NPC runtime state updated each tick:
 **Template variables** (in any BT field):
 
 - `{{variable_key}}` — resolved from the tree's variable definitions and the actor's per-NPC overrides (`bt_variables` flag).
-- Variable types: `text`, `number`, `boolean`, `region_select` (dropdown of scene region names).
+- Variable types: `text`, `number`, `boolean`, `region_select` (dropdown of scene region names), `foundry_id` (dropdown of scene door wall IDs).
 
 ### Scene regions
 
@@ -168,6 +168,7 @@ Actions may return RUNNING while work is in progress.
 |---------|-------|-------------|------------|
 | `action_move_to` | Action: Move To | A* pathfind to a grid coordinate. Returns RUNNING while stepping through the path. Handles Change Level stairs automatically. | `dest_x`, `dest_y`, `dest_elevation` (or `waypoint_label` if set) |
 | `action_move_to_region` | Action: Move To Region | A* pathfind to the nearest accessible cell inside a named region. Fires arrival events on completion. Already inside the region → immediate success. | `region_name` |
+| `action_door_interact` | Action: Door Interact | A* path to a door wall and set its state (open, closed, or locked). Works on regular, secret, and locked doors. | `wall_id` (`foundry_id`), `target_state` |
 | `action_wake` | Action: Wake | Shows a hidden token and restores its original texture if changed. | — |
 | `action_set_token_image` | Action: Set Token Image | Sets, restores, or resets the token texture. Supports `{{var}}` in path. | `mode` (set/restore/prototype), `image_path`, `store_original` |
 | `action_emote` | Action: Emote | Posts a random emote line to chat. | `lines` (semicolon-separated) |
@@ -257,6 +258,14 @@ selector
 - **`action_move_to_region`** — multi-goal A*: finds a path to the nearest walkable cell inside the target region. Returns RUNNING while stepping tile-by-tile. Succeeds on arrival and fires arrival events. If the token is already inside the region, succeeds immediately.
 - **`action_wander_region`** — like move-to-region but picks a random reachable cell inside the region each time the node starts.
 - **`action_move_to`** — single-goal A* to grid coordinates (`dest_x`, `dest_y`). Prefer regions for reusable, GM-friendly targets; use raw coordinates for one-off positions.
+
+### Doors
+
+During normal A* movement (`action_move_to`, `action_move_to_region`, `action_wander_region`), NPCs automatically **open closed regular doors** before crossing and **close them behind** (only doors the NPC opened — player-opened doors are left alone). **Locked** and **secret** doors block passive pathfinding.
+
+**`action_door_interact`** — explicitly path to a door (by wall ID or `{{foundry_id}}` variable) and set **open**, **closed**, or **locked**. Use this for secret doors, unlocking cells, or scripted door sequences.
+
+- **`npc_door_sounds`** (module setting) — play Foundry door sounds on NPC door updates. Off by default.
 
 ### Pathfinding settings
 

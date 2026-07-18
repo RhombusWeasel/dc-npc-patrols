@@ -45,10 +45,14 @@
 			{{#if (eq this.type "dropdown")}}
 			<select data-node-prop="{{this.key}}">
 				{{#each this.options}}
-				<option value="{{@key}}">{{this}}</option>
+				<option value="{{@key}}" {{#if (eq (lookup ../../node_field_values ../key) @key)}}selected{{/if}}>{{this}}</option>
 				{{/each}}
 			</select>
 			{{else if (eq this.type "region_select")}}
+			<select data-node-prop="{{this.key}}">
+				<option value="">(none)</option>
+			</select>
+			{{else if (eq this.type "foundry_id")}}
 			<select data-node-prop="{{this.key}}">
 				<option value="">(none)</option>
 			</select>

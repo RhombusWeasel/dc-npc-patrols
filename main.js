@@ -46,6 +46,7 @@ const DEFAULTS = {
 	ambient_cooldown: 30,
 	combat_freeze: true,
 	nav_resolution: 4,
+	npc_door_sounds: false,
 };
 
 function register_settings() {
@@ -140,6 +141,15 @@ function register_settings() {
 				}
 			}
 		},
+	});
+
+	game.settings.register(MODULE_ID, "npc_door_sounds", {
+		name: game.i18n.localize("dc-npc-patrols.settings.npc_door_sounds.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.npc_door_sounds.hint"),
+		scope: "world",
+		config: true,
+		type: Boolean,
+		default: DEFAULTS.npc_door_sounds,
 	});
 
 	game.settings.register(MODULE_ID, "bt_paused", {
