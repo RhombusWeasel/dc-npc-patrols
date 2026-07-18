@@ -1,7 +1,7 @@
 {{#if selected_tree}}
 <div class="dialog-structure-panel">
 	{{#each node_map}}
-	<button type="button" class="dialog-map-row {{#if this.selected}}selected{{/if}}" data-node-select="{{this.id}}">
+	<div class="dialog-map-row {{#if this.selected}}selected{{/if}}" data-node-select="{{this.id}}" role="button" tabindex="0">
 		<div class="dialog-map-row-header">
 			<span class="dialog-map-node-id">
 				{{#if this.is_root}}<i class="fa-solid fa-star dialog-map-root" title="{{localize 'dc-npc-patrols.editor.root_node_marker'}}"></i>{{/if}}
@@ -28,7 +28,7 @@
 			{{/each}}
 		</div>
 		{{/if}}
-	</button>
+	</div>
 	{{/each}}
 </div>
 {{else}}

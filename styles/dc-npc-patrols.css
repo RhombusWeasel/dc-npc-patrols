@@ -1897,20 +1897,19 @@
 }
 
 /* ── Dialog Editor (shell panels) ── */
-.dialog-structure-panel {
+.dc-dialog-editor .dialog-structure-panel {
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
 }
 
-.dialog-map-row {
+.dc-dialog-editor .dialog-map-row {
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
 	width: 100%;
 	text-align: left;
 	padding: 8px;
-	margin-bottom: 0;
 	border: 1px solid var(--color-border-faint);
 	border-radius: 4px;
 	background: transparent;
@@ -1918,12 +1917,12 @@
 	color: var(--color-text-primary);
 }
 
-.dialog-map-row:hover {
+.dc-dialog-editor .dialog-map-row:hover {
 	border-color: var(--color-accent);
 	background: var(--color-bg-option-active);
 }
 
-.dialog-map-row.selected {
+.dc-dialog-editor .dialog-map-row.selected {
 	border-color: var(--color-accent);
 	background: var(--color-bg-option-active);
 	box-shadow: inset 0 0 0 1px var(--color-accent);
