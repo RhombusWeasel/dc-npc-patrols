@@ -1705,6 +1705,38 @@
 	border-bottom: 1px solid var(--color-border-faint);
 }
 
+.bt-fragment-toolbar {
+	margin-top: 0;
+}
+
+.bt-asset-filter {
+	display: flex;
+	gap: 4px;
+	margin-bottom: 8px;
+}
+
+.bt-asset-filter-btn {
+	flex: 1;
+	padding: 4px 6px;
+	border: 1px solid var(--color-border-faint);
+	border-radius: 3px;
+	background: var(--color-bg-button);
+	cursor: pointer;
+	font-size: 0.75em;
+	color: var(--color-text-primary);
+}
+
+.bt-asset-filter-btn.active {
+	background: var(--color-bg-button-hover);
+	border-color: var(--color-border-highlight);
+}
+
+.bt-fragment-badge {
+	font-size: 0.75em;
+	opacity: 0.7;
+	margin-right: 4px;
+}
+
 .bt-toolbar-select {
 	flex: 1;
 	min-width: 140px;

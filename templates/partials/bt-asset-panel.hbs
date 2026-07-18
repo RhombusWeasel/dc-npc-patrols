@@ -1,9 +1,22 @@
 <div class="bt-asset-panel">
+	<div class="bt-asset-filter">
+		<button type="button" data-asset-filter="all" class="bt-asset-filter-btn {{#if (eq asset_filter 'all')}}active{{/if}}">
+			{{localize "dc-npc-patrols.bt.asset_filter_all"}}
+		</button>
+		<button type="button" data-asset-filter="tree" class="bt-asset-filter-btn {{#if (eq asset_filter 'tree')}}active{{/if}}">
+			{{localize "dc-npc-patrols.bt.asset_filter_trees"}}
+		</button>
+		<button type="button" data-asset-filter="fragment" class="bt-asset-filter-btn {{#if (eq asset_filter 'fragment')}}active{{/if}}">
+			{{localize "dc-npc-patrols.bt.asset_filter_fragments"}}
+		</button>
+	</div>
 	<div class="editor-asset-list">
 		{{#each bts}}
 		<div class="editor-asset-item">
 			<button type="button" data-bt-select="{{this.id}}" class="editor-asset-btn {{#if (eq this.id ../selected_bt_id)}}active{{/if}}">
-				<i class="fa-solid fa-diagram-project"></i> {{this.name}}
+				<i class="fa-solid fa-diagram-project"></i>
+				{{#if this.is_fragment}}<span class="bt-fragment-badge">{{localize "dc-npc-patrols.bt.fragment_badge"}}</span>{{/if}}
+				{{this.name}}
 			</button>
 			<button type="button" data-bt-delete="{{this.id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.delete_tree'}}">
 				<i class="fa-solid fa-trash"></i>
@@ -23,6 +36,9 @@
 	<button type="button" data-action="add-bt" class="editor-add-btn">
 		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.bt.new_tree"}}
 	</button>
+	<button type="button" data-action="add-fragment" class="editor-add-btn">
+		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.bt.new_fragment"}}
+	</button>
 
 	{{#if selected_bt}}
 	<details class="editor-asset-settings" data-settings-panel="tree">
@@ -34,6 +50,13 @@
 		<label class="editor-field">
 			<span>{{localize "dc-npc-patrols.dialog.tree_desc"}}</span>
 			<input type="text" data-bt-field="description" value="{{selected_bt.description}}" />
+		</label>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.editor.kind"}}</span>
+			<select data-bt-field="kind">
+				<option value="tree" {{#if (eq selected_kind 'tree')}}selected{{/if}}>{{localize "dc-npc-patrols.bt.kind_tree"}}</option>
+				<option value="fragment" {{#if (eq selected_kind 'fragment')}}selected{{/if}}>{{localize "dc-npc-patrols.bt.kind_fragment"}}</option>
+			</select>
 		</label>
 	</details>
 

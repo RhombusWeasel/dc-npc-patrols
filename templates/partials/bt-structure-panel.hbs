@@ -30,6 +30,21 @@
 		<button type="button" data-action="move-down" class="bt-toolbar-btn" title="Move down">↓</button>
 	</div>
 
+	<div class="bt-structure-toolbar bt-fragment-toolbar">
+		<select data-fragment-select class="bt-toolbar-select" {{#unless can_insert_fragment}}disabled{{/unless}}>
+			<option value="">{{localize "dc-npc-patrols.bt.fragment_select"}}</option>
+			{{#each fragments}}
+			<option value="{{this.id}}">{{this.name}}</option>
+			{{/each}}
+		</select>
+		<button type="button" data-action="insert-fragment" class="bt-toolbar-btn" {{#unless can_insert_fragment}}disabled{{/unless}}>
+			{{localize "dc-npc-patrols.bt.insert_fragment"}}
+		</button>
+		<button type="button" data-action="save-as-fragment" class="bt-toolbar-btn" {{#unless can_save_as_fragment}}disabled{{/unless}}>
+			{{localize "dc-npc-patrols.bt.save_as_fragment"}}
+		</button>
+	</div>
+
 	<div class="bt-structure-tree">
 		{{#each tree_nodes}}
 		<div class="bt-node {{this.category}} level-{{this.level}} {{#if this.selected}}selected{{/if}}"
