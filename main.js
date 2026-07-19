@@ -22,6 +22,7 @@ import {
 } from "./lib/actor_behaviour_tab.js";
 import { get_default_bts } from "./lib/default_bts.js";
 import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
+import { clear_active_combat_turn } from "./lib/combat_turn.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -47,6 +48,7 @@ const DEFAULTS = {
 	combat_freeze: true,
 	nav_resolution: 4,
 	npc_door_sounds: false,
+	bt_tick_interval_ms: 2000,
 };
 
 function register_settings() {
@@ -127,6 +129,19 @@ function register_settings() {
 		default: DEFAULTS.combat_freeze,
 	});
 
+	game.settings.register(MODULE_ID, "bt_tick_interval_ms", {
+		name: game.i18n.localize("dc-npc-patrols.settings.bt_tick_interval_ms.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.bt_tick_interval_ms.hint"),
+		scope: "world",
+		config: true,
+		type: Number,
+		range: { min: 500, max: 10000, step: 100 },
+		default: DEFAULTS.bt_tick_interval_ms,
+		onChange: () => {
+			if (_bt_engine) start_bt_tick();
+		},
+	});
+
 	game.settings.register(MODULE_ID, "nav_resolution", {
 		name: game.i18n.localize("dc-npc-patrols.settings.nav_resolution.name"),
 		hint: game.i18n.localize("dc-npc-patrols.settings.nav_resolution.hint"),
@@ -183,12 +198,17 @@ function start_time_poll() {
 function start_bt_tick() {
 	if (_bt_tick_interval) clearInterval(_bt_tick_interval);
 
+	const interval_ms = Math.max(
+		500,
+		Math.min(10000, game.settings.get(MODULE_ID, "bt_tick_interval_ms") || DEFAULTS.bt_tick_interval_ms),
+	);
+
 	_bt_tick_interval = setInterval(() => {
 		if (!game.user.isGM) return;
 		if (!game.settings.get(MODULE_ID, "bt_paused")) {
 			if (_bt_engine) _bt_engine.tick();
 		}
-	}, 2000);
+	}, interval_ms);
 }
 
 // --- Scene control button ---
@@ -339,7 +359,23 @@ Hooks.once("dcReady", async () => {
 		open_hub_for_actor,
 		close_panel,
 		get_hub: () => _panel,
+		run_combat_turn: (entry) => _bt_engine?.run_turn(entry),
 	};
+
+	Hooks.on("dc.combat.npc_turn_start", (entry) => {
+		_bt_engine?.run_turn(entry);
+	});
+
+	Hooks.on("dc.combat.turn_advance", () => {
+		clear_active_combat_turn();
+		_bt_engine?.reset_all_action_movement();
+	});
+
+	Hooks.on("dc.trigger.round_start", async () => {
+		if (!game.user.isGM) return;
+		_bt_engine?.reset_all_round_movement();
+		await _bt_engine?.clear_scene_running_flags();
+	});
 
 	if (game.dc?.register_actor_tab) {
 		game.dc.register_actor_tab(`${MODULE_ID}.behaviour`, {

@@ -38,6 +38,10 @@
 				"name": "Freeze Patrols in Combat",
 				"hint": "When enabled, all NPCs with combat_behavior 'freeze' stop moving during combat."
 			},
+			"bt_tick_interval_ms": {
+				"name": "Behaviour Tree Tick Interval (ms)",
+				"hint": "How often the GM client ticks NPC behaviour trees. Lower values react faster; higher values reduce CPU use."
+			},
 			"nav_resolution": {
 				"name": "Pathfinding Resolution",
 				"hint": "Subdivides each grid square into N×N navigation cells for finer wall avoidance. 1 = original behavior, 4 = recommended for tight corridors. Higher values improve pathfinding in narrow spaces but use more memory."
@@ -301,7 +305,68 @@
 				"wander_region": "Walks to a random reachable point inside a named region.",
 				"range": "Compares distance to a blackboard target against a threshold.",
 				"variable": "Checks a tree template variable resolved for this NPC.",
-				"set_token_image": "Sets, restores, or resets the token texture for visual state changes."
+				"set_token_image": "Sets, restores, or resets the token texture for visual state changes.",
+				"condition_character": {
+					"description": "Checks character pools, traits, skills, gear, flags, edges, equipment, statuses, or scalar stats.",
+					"check_type": {
+						"pool": "Pool",
+						"trait": "Trait",
+						"skill": "Skill",
+						"gear": "Gear Count",
+						"flag": "Flag",
+						"edge": "Edge / Hindrance",
+						"equipped": "Equipped Item",
+						"status": "Status Effect",
+						"scalar": "Scalar Stat"
+					},
+					"edge_kind": {
+						"any": "Any",
+						"edge": "Edge",
+						"hindrance": "Hindrance"
+					},
+					"equip_mode": {
+						"slot": "By Slot",
+						"label": "By Item Label"
+					},
+					"operator": {
+						"empty": "Empty",
+						"full": "Full"
+					},
+					"fields": {
+						"check_type": "Check Type",
+						"pool": "Pool",
+						"trait_key": "Trait",
+						"skill_key": "Skill",
+						"item_label": "Item Label",
+						"scope": "Flag Scope",
+						"flag_path": "Flag Path",
+						"flag_key": "Flag Key",
+						"edge_key": "Edge",
+						"edge_kind": "Edge Kind",
+						"equip_mode": "Match By",
+						"equip_slot": "Equip Slot",
+						"status_key": "Status",
+						"scalar_field": "Stat Field",
+						"operator": "Operator",
+						"expected_value": "Expected Value"
+					}
+				},
+				"condition_light": {
+					"description": "Checks scene, campaign, or position darkness, or whether the token is lit.",
+					"mode": {
+						"scene_darkness": "Scene Darkness",
+						"campaign_darkness": "Campaign Darkness",
+						"position_darkness": "Position Darkness",
+						"in_light": "In Light Source",
+						"token_light": "Token Emitting Light"
+					},
+					"fields": {
+						"mode": "Mode",
+						"operator": "Operator",
+						"threshold": "Threshold (0–1)",
+						"match": "Match Mode"
+					}
+				}
 			}
 		},
 		"editor": {

@@ -97,7 +97,7 @@ Multi-tick actions (`action_move_to`, `action_move_to_region`, `action_wait`) re
 Per-NPC runtime state updated each tick:
 
 - **Time** — `current_unixtime`, `current_minutes`, `weekday`, `day_changed`
-- **World** — `combat_active`, `weather`
+- **World** — `combat_active`, `weather`, `scene_darkness`, `campaign_darkness`
 - **Token** — `token`, `actor`, `scene`, `moving`, `level_id`, `elevation`, `sleep_state`
 - **Custom** — e.g. `visible_tokens` (written by vision nodes), `target` / `{key}_range` (written by targeting nodes)
 
@@ -170,8 +170,10 @@ All conditions return instantly — never RUNNING.
 | `condition_visible_tokens` | Condition: Visible Tokens | True if enough tokens on the blackboard match the filter. Optionally refreshes the list first. | `blackboard_key`, `min_count`, `filter`, `name_contains`, `refresh`, `max_range`, `include_self`, `exclude_hidden` |
 | `condition_range` | Condition: Range | True if distance to a blackboard target matches the threshold. Computes on the fly if not pre-measured. | `target_key`, `operator`, `value`, `measure_mode` |
 | `condition_variable` | Condition: Variable | True if a tree template variable on this NPC matches (e.g. `is_believer`). | `variable_key`, `operator`, `expected_value` |
+| `condition_character` | Condition: Character | Checks pools, traits, skills, gear, flags, edges, equipment, statuses, or scalar stats. | `check_type` + type-specific fields |
+| `condition_light` | Condition: Light | Checks darkness level or whether the token is lit. | `mode`, `operator` + `threshold` (numeric modes), `match` (boolean modes) |
 
-**Flag operators** (`condition_flag`, `condition_range`, `condition_variable`): `exists`, `not_exists`, `equals`, `not_equals`, `greater`, `less`, `greater_eq`, `less_eq`, `contains`, `starts_with`.
+**Flag operators** (`condition_flag`, `condition_range`, `condition_variable`, `condition_light` numeric modes): `exists`, `not_exists`, `equals`, `not_equals`, `greater`, `less`, `greater_eq`, `less_eq`, `contains`, `starts_with`.
 
 **Vision filters** (`condition_visible_tokens`, `action_update_visible_tokens`): `all`, `players`, `npcs`.
 
@@ -247,6 +249,21 @@ sequence
   ├─ action_acquire_target         (source: blackboard_list, disposition: hostile)
   ├─ condition_range               (operator: less_eq, value: 6)
   └─ action_fire_weapon
+```
+
+**Lantern at night** — patrol when bright enough; use lantern when dark and not already lit:
+
+```
+selector
+  ├─ sequence
+  │    ├─ condition_light          (mode: position_darkness, operator: less_eq, threshold: 0.4)
+  │    └─ action_patrol
+  └─ sequence
+       ├─ condition_light          (mode: position_darkness, operator: greater, threshold: 0.5)
+       ├─ inverter
+       │    └─ condition_light     (mode: token_light, match: true)
+       ├─ condition_character      (check_type: gear, item_label: lantern, operator: greater_eq, expected_value: 1)
+       └─ action_use_item          (item_label: lantern)
 ```
 
 **Believer branch** — per-NPC template variable gates behaviour:
