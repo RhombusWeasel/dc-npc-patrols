@@ -49,6 +49,7 @@ const DEFAULTS = {
 	nav_resolution: 4,
 	npc_door_sounds: false,
 	bt_tick_interval_ms: 2000,
+	bt_combat_debug: false,
 };
 
 function register_settings() {
@@ -140,6 +141,15 @@ function register_settings() {
 		onChange: () => {
 			if (_bt_engine) start_bt_tick();
 		},
+	});
+
+	game.settings.register(MODULE_ID, "bt_combat_debug", {
+		name: game.i18n.localize("dc-npc-patrols.settings.bt_combat_debug.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.bt_combat_debug.hint"),
+		scope: "world",
+		config: true,
+		type: Boolean,
+		default: DEFAULTS.bt_combat_debug,
 	});
 
 	game.settings.register(MODULE_ID, "nav_resolution", {
@@ -362,8 +372,8 @@ Hooks.once("dcReady", async () => {
 		run_combat_turn: (entry) => _bt_engine?.run_turn(entry),
 	};
 
-	Hooks.on("dc.combat.npc_turn_start", (entry) => {
-		_bt_engine?.run_turn(entry);
+	Hooks.on("dc.combat.npc_turn_start", async (entry) => {
+		await _bt_engine?.run_turn(entry);
 	});
 
 	Hooks.on("dc.combat.turn_advance", () => {
@@ -420,7 +430,7 @@ Hooks.once("dcReady", async () => {
 	Hooks.on("deleteToken", (token_doc) => {
 		if (!game.user.isGM) return;
 		region_manager.cleanup_for_deleted_token(token_doc.parent, token_doc);
-		if (token_doc.actor) _bt_engine.remove_blackboard(token_doc.actor.id);
+		if (token_doc) _bt_engine.remove_blackboard(token_doc.id);
 	});
 
 	// --- Pathfinding cache invalidation hooks (Phase 4b) ---

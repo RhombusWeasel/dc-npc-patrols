@@ -42,6 +42,10 @@
 				"name": "Behaviour Tree Tick Interval (ms)",
 				"hint": "How often the GM client ticks NPC behaviour trees. Lower values react faster; higher values reduce CPU use."
 			},
+			"bt_combat_debug": {
+				"name": "BT Combat Debug",
+				"hint": "Show GM notifications when combat behaviour trees fail or skip a turn."
+			},
 			"nav_resolution": {
 				"name": "Pathfinding Resolution",
 				"hint": "Subdivides each grid square into N×N navigation cells for finer wall avoidance. 1 = original behavior, 4 = recommended for tight corridors. Higher values improve pathfinding in narrow spaces but use more memory."
@@ -301,6 +305,7 @@
 				"acquire_target": "Finds the closest matching token and stores it on the blackboard.",
 				"measure_range": "Measures distance to a blackboard target and stores it as {target_key}_range.",
 				"fire_weapon": "Fires the equipped weapon at a blackboard target through Deadlands combat.",
+				"reload_weapon": "Reloads the equipped weapon using Deadlands ammo rules.",
 				"modify_item": "Adds or removes inventory items by partial label.",
 				"wander_region": "Walks to a random reachable point inside a named region.",
 				"range": "Compares distance to a blackboard target against a threshold.",
