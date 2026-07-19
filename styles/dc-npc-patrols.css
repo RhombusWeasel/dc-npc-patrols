@@ -1801,6 +1801,20 @@
 .bt-node-stripe-decorator { background: #ff9e4a; }
 .bt-node-stripe-condition { background: #9eff4a; }
 .bt-node-stripe-action { background: #ff4a9e; }
+.bt-node-stripe-reference { background: #c084fc; }
+
+.bt-structure-tree .bt-node-preview {
+	opacity: 0.55;
+	font-style: italic;
+	cursor: default;
+	pointer-events: none;
+}
+
+.bt-structure-tree .bt-node-preview:hover {
+	background: transparent;
+}
+
+.bt-structure-tree .bt-node.reference > i { color: #c084fc; }
 
 .bt-structure-tree .bt-node:hover {
 	background: var(--color-bg-option-active);

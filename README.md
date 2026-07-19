@@ -33,7 +33,7 @@ Behaviour-tree-driven NPC AI for Deadlands Classic — A* navigation around wall
 | **Dialog trees** | World-level branching conversations. When a player enters a proximity region, a conversation panel opens with NPC text and response buttons. Responses can set quest flags and fire boons through the DC boon pipeline. |
 | **Ambient line sets** | Random flavour lines whispered to a player when they enter an NPC's proximity region (with per-player cooldown). |
 | **Region behaviors** | `dcDialogTree` and `dcAmbient` Foundry region behavior types — attached automatically when you link dialog/ambient content to an NPC. |
-| **Fragments** | Reusable behaviour-tree subtrees. Save a branch as a fragment and insert it into other trees from the BT editor. |
+| **Fragments** | Reusable behaviour-tree subtrees. Save a branch as a fragment, then **Insert** (copy) or **Link** (live reference) into other trees from the BT editor. |
 | **Template variables** | BT fields can use `{{var}}` placeholders. Each tree declares variables (text, number, boolean, `region_select`, `foundry_id`); per-NPC values are stored on the actor and resolved at tick time. |
 
 ```mermaid
@@ -121,6 +121,15 @@ Per-NPC runtime state updated each tick:
 
 Foundry scene regions are the primary spatial targets. Create named regions on the scene, then reference them in BT nodes or bind them via `region_select` template variables so each NPC can share one tree with different destinations.
 
+### Fragments (copy vs link)
+
+| Mode | Button | Behaviour |
+|------|--------|-----------|
+| **Copy** | Insert Fragment | Deep-clones the fragment nodes into the tree. Edits to the source fragment do not affect pasted copies. Fragment variables are merged into the parent tree at insert time. |
+| **Link** | Link Fragment | Inserts a live `subtree` reference node. The engine ticks the fragment's current root on each pass — edits to the fragment apply immediately. Variables from linked fragments are resolved on the fly (NPC config and runtime). |
+
+Linked fragments appear in the tree editor with a read-only preview of their contents (greyed out). Circular fragment references are blocked at link time and on save.
+
 ---
 
 ## Node Reference
@@ -139,6 +148,12 @@ Foundry scene regions are the primary spatial targets. Create named regions on t
 |---------|-------|-------------|------------|
 | `inverter` | Inverter (NOT) | Inverts child result: success → failure, failure → success. Running stays running. | — |
 | `cooldown` | Cooldown | Prevents child re-execution for N seconds after a success. Returns failure while on cooldown. | `seconds` (default 60) |
+
+### References
+
+| Node ID | Label | Description | Key fields |
+|---------|-------|-------------|------------|
+| `subtree` | Fragment Link | Live reference to a fragment. Ticks the fragment root at runtime with on-the-fly variable lookup. | `bt_id` (fragment) |
 
 ### Conditions
 
