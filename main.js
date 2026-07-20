@@ -23,6 +23,7 @@ import {
 import { get_default_bts } from "./lib/default_bts.js";
 import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 import { clear_active_combat_turn } from "./lib/combat_turn.js";
+import { register_combat_flows } from "./lib/bt_combat_flows.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -349,6 +350,9 @@ Hooks.once("dcReady", async () => {
 		animate_to: (token_doc, wp) => _engine.animate_to(token_doc, wp),
 		fire_arrival: (token_doc, actor, wp) => _engine.fire_arrival(token_doc, actor, wp),
 	});
+
+	// Register combat flow steps so the BT engine can hook into the pipeline.
+	register_combat_flows();
 
 	// Seed default BT templates if no BTs exist
 	const existing_bts = game.settings.get(MODULE_ID, "behaviour_trees") || {};
