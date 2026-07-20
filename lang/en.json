@@ -80,7 +80,7 @@
 			"path_debug": "Pathfinding Debug",
 			"path_debug_on": "Show Path Debug",
 			"path_debug_off": "Hide Path Debug",
-			"path_debug_hint": "Overlay last computed path on the canvas. Shortcut: Alt+Shift+P",
+			"path_debug_hint": "Toggle the wall/nav-grid overlay. Selected NPC paths always show on canvas. Shortcut: Alt+Shift+P",
 			"world_dialog_hint": "Shared conversation trees — attach them to individual NPCs under Interactions.",
 			"world_ambient_hint": "Shared flavour line sets — attach them to individual NPCs under Interactions.",
 			"world_bt_hint": "Shared AI decision trees — assign them to individual NPCs under Behaviour.",

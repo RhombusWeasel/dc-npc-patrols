@@ -214,11 +214,13 @@ function start_bt_tick() {
 		Math.min(10000, game.settings.get(MODULE_ID, "bt_tick_interval_ms") || DEFAULTS.bt_tick_interval_ms),
 	);
 
-	_bt_tick_interval = setInterval(() => {
+	_bt_tick_interval = setInterval(async () => {
 		if (!game.user.isGM) return;
 		if (!game.settings.get(MODULE_ID, "bt_paused")) {
-			if (_bt_engine) _bt_engine.tick();
+			if (_bt_engine) await _bt_engine.tick();
 		}
+		// Re-render path lines for selected tokens so they stay in sync as NPCs move
+		if (_path_debug) _path_debug.render_paths();
 	}, interval_ms);
 }
 
@@ -340,9 +342,6 @@ Hooks.once("dcReady", async () => {
 	// Initialize pathfinding and BT engine
 	_pathfinding = new Pathfinding();
 	_path_debug = new PathDebugOverlay(_pathfinding);
-	_pathfinding.set_on_path_callback((path) => {
-		if (_path_debug) _path_debug.set_last_path(path);
-	});
 	_bt_engine = new BTEngine(MODULE_ID, {
 		cross_scene,
 		region_manager,
@@ -350,6 +349,7 @@ Hooks.once("dcReady", async () => {
 		animate_to: (token_doc, wp) => _engine.animate_to(token_doc, wp),
 		fire_arrival: (token_doc, actor, wp) => _engine.fire_arrival(token_doc, actor, wp),
 	});
+	_path_debug.set_bt_engine(_bt_engine);
 
 	// Register combat flow steps so the BT engine can hook into the pipeline.
 	register_combat_flows();
@@ -425,8 +425,8 @@ Hooks.once("dcReady", async () => {
 		region_manager.cleanup_orphaned_waypoint_regions(canvas.scene);
 		_pathfinding.invalidate(canvas.scene.id);
 		if (_path_debug) {
-			_path_debug.clear_path();
-			if (_path_debug._active) _path_debug._render();
+			_path_debug.clear_paths();
+			if (_path_debug._active) _path_debug._render_struct();
 		}
 	});
 
@@ -438,29 +438,34 @@ Hooks.once("dcReady", async () => {
 	});
 
 	// --- Pathfinding cache invalidation hooks (Phase 4b) ---
+	// Wall/region changes only affect the structural overlay.  Path lines for
+	// selected tokens update on BT tick and token selection changes.
+	Hooks.on("controlToken", () => {
+		if (_path_debug) _path_debug.render_paths();
+	});
 	Hooks.on("createWall", (wall) => {
 		_pathfinding.invalidate(wall.parent.id);
-		if (_path_debug?._active) _path_debug._render();
+		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("updateWall", (wall) => {
 		_pathfinding.invalidate(wall.parent.id);
-		if (_path_debug?._active) _path_debug._render();
+		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("deleteWall", (wall) => {
 		_pathfinding.invalidate(wall.parent.id);
-		if (_path_debug?._active) _path_debug._render();
+		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("createRegion", (region) => {
 		_pathfinding.invalidate(region.parent.id);
-		if (_path_debug?._active) _path_debug._render();
+		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("updateRegion", (region) => {
 		_pathfinding.invalidate(region.parent.id);
-		if (_path_debug?._active) _path_debug._render();
+		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("deleteRegion", (region) => {
 		_pathfinding.invalidate(region.parent.id);
-		if (_path_debug?._active) _path_debug._render();
+		if (_path_debug?._active) _path_debug._render_struct();
 	});
 
 	// --- Keyboard shortcut: Alt+Shift+P toggles path debug overlay ---
