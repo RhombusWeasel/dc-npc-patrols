@@ -53,6 +53,10 @@
 			"npc_door_sounds": {
 				"name": "NPC Door Sounds",
 				"hint": "Play Foundry door open/close sounds when NPCs use doors during pathfinding or door interact actions. Off by default to avoid noise with many NPCs."
+			},
+			"block_tokens": {
+				"name": "Block Tokens in Pathfinding",
+				"hint": "Treat other tokens' footprints as obstacles during A* pathfinding so NPCs route around them instead of walking through. Also prevents multiple NPCs from selecting the same destination tile."
 			}
 		},
 		"hub": {

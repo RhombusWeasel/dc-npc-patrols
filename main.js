@@ -48,6 +48,7 @@ const DEFAULTS = {
 	ambient_cooldown: 30,
 	combat_freeze: true,
 	nav_resolution: 4,
+	block_tokens: true,
 	npc_door_sounds: false,
 	bt_tick_interval_ms: 2000,
 	bt_combat_debug: false,
@@ -176,6 +177,22 @@ function register_settings() {
 		config: true,
 		type: Boolean,
 		default: DEFAULTS.npc_door_sounds,
+	});
+
+	game.settings.register(MODULE_ID, "block_tokens", {
+		name: game.i18n.localize("dc-npc-patrols.settings.block_tokens.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.block_tokens.hint"),
+		scope: "world",
+		config: true,
+		type: Boolean,
+		default: DEFAULTS.block_tokens,
+		onChange: () => {
+			if (_pathfinding) {
+				for (const scene of game.scenes) {
+					_pathfinding.invalidate_paths(scene.id);
+				}
+			}
+		},
 	});
 
 	game.settings.register(MODULE_ID, "bt_paused", {
@@ -435,6 +452,25 @@ Hooks.once("dcReady", async () => {
 		if (!game.user.isGM) return;
 		region_manager.cleanup_for_deleted_token(token_doc.parent, token_doc);
 		if (token_doc) _bt_engine.remove_blackboard(token_doc.id);
+	});
+
+	// --- Pathfinding cache invalidation: token movement ---
+	// Tokens are treated as dynamic obstacles. Only the path cache needs
+	// invalidation (the wall grid is unaffected). Grid token-occupancy is
+	// computed at query time, not cached.
+	Hooks.on("createToken", (token_doc) => {
+		_pathfinding.invalidate_paths(token_doc.parent.id);
+	});
+	Hooks.on("deleteToken", (token_doc) => {
+		_pathfinding.invalidate_paths(token_doc.parent.id);
+	});
+	Hooks.on("updateToken", (token_doc, change) => {
+		// Only invalidate when position/size/visibility/elevation changes
+		const keys = Object.keys(change);
+		const relevant = keys.some(k =>
+			["x", "y", "width", "height", "hidden", "elevation", "level"].includes(k)
+		);
+		if (relevant) _pathfinding.invalidate_paths(token_doc.parent.id);
 	});
 
 	// --- Pathfinding cache invalidation hooks (Phase 4b) ---
