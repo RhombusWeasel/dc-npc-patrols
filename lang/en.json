@@ -15,16 +15,8 @@
 		"title": "NPC Patrols & Dialog",
 		"settings": {
 			"enable_patrols": {
-				"name": "Enable NPC Patrols",
-				"hint": "Master toggle for all NPC patrol behavior."
-			},
-			"movement_speed": {
-				"name": "Movement Speed",
-				"hint": "Token animation speed in pixels per second."
-			},
-			"stagger_delay": {
-				"name": "Stagger Delay",
-				"hint": "Milliseconds of delay between sequential NPC movements to avoid visual chaos."
+				"name": "Enable NPC Behaviour Trees",
+				"hint": "Master toggle for BT ticking. When off, NPCs stand still regardless of assigned trees."
 			},
 			"proximity_radius": {
 				"name": "Default Proximity Radius",
@@ -35,8 +27,8 @@
 				"hint": "Seconds before an NPC repeats ambient dialog to the same player."
 			},
 			"combat_freeze": {
-				"name": "Freeze Patrols in Combat",
-				"hint": "When enabled, all NPCs with combat_behavior 'freeze' stop moving during combat."
+				"name": "Freeze NPCs in Combat",
+				"hint": "When enabled, NPCs stop moving during combat (unless their behaviour tree handles combat turns)."
 			},
 			"bt_tick_interval_ms": {
 				"name": "Behaviour Tree Tick Interval (ms)",
@@ -70,7 +62,6 @@
 			"section_npcs": "NPCs on Scene",
 			"section_behaviour": "Behaviour",
 			"section_interactions": "Interactions",
-			"section_movement": "Movement Data",
 			"scope_scene": "Scene",
 			"scope_world": "World",
 			"scope_npc": "NPC",
@@ -92,10 +83,7 @@
 			"world_dialog_hint": "Shared conversation trees — attach them to individual NPCs under Interactions.",
 			"world_ambient_hint": "Shared flavour line sets — attach them to individual NPCs under Interactions.",
 			"world_bt_hint": "Shared AI decision trees — assign them to individual NPCs under Behaviour.",
-			"npc_hint": "Behaviour trees decide what this NPC does. Movement paths below are waypoint data the BT can reference.",
-			"movement_hint": "Waypoint data for BT action_patrol nodes and the legacy patrol engine.",
-			"waypoint_advanced": "Advanced options",
-			"paths_count": "paths",
+			"npc_hint": "Behaviour trees decide what this NPC does. Assign a tree and configure its variables.",
 			"edit_tree": "Edit Tree",
 			"manage_content": "Manage",
 			"create_dialog_tree": "Create a dialog tree in World Content",
@@ -109,10 +97,6 @@
 		"controls": {
 			"hub": {
 				"tooltip": "Open NPC Patrol Hub"
-			},
-			"patrol_manager": {
-				"title": "NPC Patrol Manager",
-				"tooltip": "Manage NPC patrol paths and schedules"
 			},
 			"dialog_editor": {
 				"tooltip": "Edit dialog trees"
@@ -141,50 +125,8 @@
 			"title": "NPC Patrol Manager",
 			"tab_patrols": "Patrols",
 			"tab_attachments": "Dialog & Ambient",
-			"no_paths": "No patrol paths defined for this actor.",
-			"add_path": "Add Path",
-			"path_name": "Path Name",
-			"waypoints": "Waypoints",
-			"add_waypoint": "Add Waypoint",
-			"no_waypoints": "No waypoints in this path yet.",
-			"wp_label": "Label",
-			"wp_time": "Time",
-			"wp_scene": "Scene",
-			"wp_arrival_lines": "Arrival Lines",
-			"wp_ambient_lines": "Ambient Lines",
-			"wp_face_dir": "Face Direction",
-			"wp_linger": "Linger (min)",
-			"wp_region_radius": "Region Radius",
-			"current_scene": "Current Scene",
-			"cross_scene": "Cross Scene",
-			"days": "Active Days",
-			"day_sun": "Sun",
-			"day_mon": "Mon",
-			"day_tue": "Tue",
-			"day_wed": "Wed",
-			"day_thu": "Thu",
-			"day_fri": "Fri",
-			"day_sat": "Sat",
-			"all_days": "All Days",
-			"combat_behavior": "Combat Behavior",
-			"combat_freeze": "Freeze",
-			"combat_flee": "Flee",
-			"combat_ignore": "Ignore",
-			"enabled": "Enabled",
-			"disabled": "Disabled",
-			"save": "Save",
-			"cancel": "Cancel",
-			"delete": "Delete",
-			"delete_confirm": "Delete this waypoint?",
-			"delete_path_confirm": "Delete this entire path?",
 			"select_actor": "Select an NPC token or actor to manage their patrol paths.",
-			"arrival_chat_flavor": "{name} arrives at {label}.",
-			"record_path": "Record Path",
-			"record_path_hint": "Drag the token along the patrol route. CTRL+click for waypoints, right-click to undo.",
-			"recording_cancelled": "Path recording cancelled.",
-			"recording_complete": "Path recorded: {count} waypoints.",
-			"no_token_on_scene": "This actor has no token on the current scene. Place one first.",
-			"wp_route": "Route"
+			"arrival_chat_flavor": "{name} arrives at {label}."
 		},
 		"dialog": {
 			"title": "Conversation",

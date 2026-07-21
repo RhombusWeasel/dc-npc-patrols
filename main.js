@@ -2,14 +2,12 @@
  * dc-npc-patrols — main.js
  * NPC Patrols & Dialog module for Deadlands-Classic
  *
- * Entry point: settings, scene control button, time polling,
+ * Entry point: settings, scene control button, BT tick loop,
  * and API exposure.
  */
 
-import { PatrolEngine } from "./lib/patrol_engine.js";
-import { CrossScene } from "./lib/cross_scene.js";
 import { RegionManager } from "./lib/region_manager.js";
-import { PatrolManagerPanel } from "./lib/patrol_manager_panel.js";
+import { PatrolHub } from "./lib/patrol_hub.js";
 import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
 import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
@@ -29,25 +27,19 @@ import { bt_debug_enabled } from "./lib/bt_debug.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
-let _engine = null;
 let _bt_engine = null;
 let _pathfinding = null;
 let _path_debug = null;
 let _panel = null;
-let _last_unixtime = null;
-let _poll_interval = null;
 let _bt_tick_interval = null;
 
 
 
 
-// --- Default settings ---
+
 const DEFAULTS = {
 	enable_patrols: true,
-	movement_speed: 600,
-	stagger_delay: 80,
 	proximity_radius: 2,
-	ambient_cooldown: 30,
 	combat_freeze: true,
 	nav_resolution: 4,
 	block_tokens: true,
@@ -58,6 +50,15 @@ const DEFAULTS = {
 };
 
 function register_settings() {
+	game.settings.register(MODULE_ID, "enable_patrols", {
+		name: game.i18n.localize("dc-npc-patrols.settings.enable_patrols.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.enable_patrols.hint"),
+		scope: "world",
+		config: true,
+		type: Boolean,
+		default: DEFAULTS.enable_patrols,
+	});
+
 	// World-level JSON storage for dialog trees and ambient sets
 	game.settings.register(MODULE_ID, "dialog_trees", {
 		scope: "world",
@@ -79,33 +80,6 @@ function register_settings() {
 		config: false,
 		type: Object,
 		default: {},
-	});
-
-	game.settings.register(MODULE_ID, "enable_patrols", {
-		name: game.i18n.localize("dc-npc-patrols.settings.enable_patrols.name"),
-		hint: game.i18n.localize("dc-npc-patrols.settings.enable_patrols.hint"),
-		scope: "world",
-		config: true,
-		type: Boolean,
-		default: DEFAULTS.enable_patrols,
-	});
-
-	game.settings.register(MODULE_ID, "movement_speed", {
-		name: game.i18n.localize("dc-npc-patrols.settings.movement_speed.name"),
-		hint: game.i18n.localize("dc-npc-patrols.settings.movement_speed.hint"),
-		scope: "world",
-		config: true,
-		type: Number,
-		default: DEFAULTS.movement_speed,
-	});
-
-	game.settings.register(MODULE_ID, "stagger_delay", {
-		name: game.i18n.localize("dc-npc-patrols.settings.stagger_delay.name"),
-		hint: game.i18n.localize("dc-npc-patrols.settings.stagger_delay.hint"),
-		scope: "world",
-		config: true,
-		type: Number,
-		default: DEFAULTS.stagger_delay,
 	});
 
 	game.settings.register(MODULE_ID, "proximity_radius", {
@@ -215,25 +189,6 @@ function register_settings() {
 	});
 }
 
-// --- Time polling ---
-function start_time_poll() {
-	if (_poll_interval) clearInterval(_poll_interval);
-
-	_last_unixtime = game.settings.get("Deadlands-Classic", "unixtime");
-
-	_poll_interval = setInterval(() => {
-		const now = game.settings.get("Deadlands-Classic", "unixtime");
-		if (now !== _last_unixtime) {
-			const old = _last_unixtime;
-			_last_unixtime = now;
-			if (game.user.isGM) {
-				// Tick legacy engine for NPCs without BTs
-				_engine.evaluate_schedules(old, now);
-			}
-		}
-	}, 2000);
-}
-
 // --- BT tick loop (independent of game time) ---
 function start_bt_tick() {
 	if (_bt_tick_interval) clearInterval(_bt_tick_interval);
@@ -301,7 +256,7 @@ function register_scene_control() {
 
 function open_panel() {
 	if (!_panel) {
-		_panel = new PatrolManagerPanel();
+		_panel = new PatrolHub();
 	}
 	_panel.render(true);
 	return _panel;
@@ -345,7 +300,6 @@ async function _preload_partials() {
 		["attachment-editor", "templates/attachment-editor.hbs"],
 		["hub-sidebar", "templates/partials/hub-sidebar.hbs"],
 		["scene-view", "templates/partials/scene-view.hbs"],
-		["waypoint-card", "templates/partials/waypoint-card.hbs"],
 		["npc-detail", "templates/partials/npc-detail.hbs"],
 		["editor-shell", "templates/partials/editor-shell.hbs"],
 		["bt-asset-panel", "templates/partials/bt-asset-panel.hbs"],
@@ -378,19 +332,14 @@ Hooks.once("dcReady", async () => {
 	await _preload_partials();
 
 	// Initialize subsystems
-	const cross_scene = new CrossScene(MODULE_ID);
 	const region_manager = new RegionManager(MODULE_ID);
-	_engine = new PatrolEngine(MODULE_ID, cross_scene, region_manager);
 
 	// Initialize pathfinding and BT engine
 	_pathfinding = new Pathfinding();
 	_path_debug = new PathDebugOverlay(_pathfinding);
 	_bt_engine = new BTEngine(MODULE_ID, {
-		cross_scene,
 		region_manager,
 		pathfinding: _pathfinding,
-		animate_to: (token_doc, wp) => _engine.animate_to(token_doc, wp),
-		fire_arrival: (token_doc, actor, wp) => _engine.fire_arrival(token_doc, actor, wp),
 	});
 	_path_debug.set_bt_engine(_bt_engine);
 
@@ -412,10 +361,8 @@ Hooks.once("dcReady", async () => {
 	// Expose module API
 	const mod = game.modules.get(MODULE_ID);
 	mod.api = {
-		engine: _engine,
 		bt_engine: _bt_engine,
 		pathfinding: _pathfinding,
-		cross_scene,
 		region_manager,
 		open_panel,
 		open_hub_for_actor,
@@ -460,9 +407,6 @@ Hooks.once("dcReady", async () => {
 	window.dcNpcPatrols = mod.api;
 	window.dcNpcPatrols.path_debug = _path_debug;
 
-	// Start time polling for schedule evaluation
-	start_time_poll();
-
 	// Start independent BT tick loop
 	start_bt_tick();
 
@@ -474,7 +418,6 @@ Hooks.once("dcReady", async () => {
 	Hooks.on("canvasReady", () => {
 		if (!game.user.isGM) return;
 		region_manager.sync_all_regions(canvas.scene);
-		region_manager.cleanup_orphaned_waypoint_regions(canvas.scene);
 		_pathfinding.invalidate(canvas.scene.id);
 		if (_path_debug) {
 			_path_debug.clear_paths();

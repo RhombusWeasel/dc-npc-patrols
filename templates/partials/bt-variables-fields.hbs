@@ -7,13 +7,6 @@
 		<input type="checkbox" data-bt-var="{{this.key}}" {{#if this.checked}}checked{{/if}} />
 		{{else if (eq this.type "number")}}
 		<input type="number" data-bt-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />
-		{{else if (eq this.type "waypoint_select")}}
-		<select data-bt-var="{{this.key}}">
-			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
-			{{#each this.options}}
-			<option value="{{this.value}}" {{#if (eq ../value this.value)}}selected{{/if}}>{{this.label}}</option>
-			{{/each}}
-		</select>
 		{{else if (eq this.type "region_select")}}
 		<select data-bt-var="{{this.key}}">
 			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>

@@ -15,15 +15,6 @@
 	{{> bt-variables-fields}}
 	{{/if}}
 
-	<h3 class="center" style="margin-top: 16px;">{{localize "dc-npc-patrols.panel.combat_behavior"}}</h3>
-	<div class="actor-flag-row flexrow" style="gap:8px; align-items:center; justify-content:center; margin-top:8px;">
-		<select data-combat-behavior class="combat-behavior-select">
-			<option value="freeze" {{#if (eq combat_behavior "freeze")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_freeze"}}</option>
-			<option value="flee" {{#if (eq combat_behavior "flee")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_flee"}}</option>
-			<option value="ignore" {{#if (eq combat_behavior "ignore")}}selected{{/if}}>{{localize "dc-npc-patrols.panel.combat_ignore"}}</option>
-		</select>
-	</div>
-
 	<div class="center" style="margin-top: 16px;">
 		<button type="button" data-action="open-patrol-hub" class="patrol-btn">
 			<i class="fa-solid fa-route"></i> {{localize "dc-npc-patrols.sheet.open_hub"}}

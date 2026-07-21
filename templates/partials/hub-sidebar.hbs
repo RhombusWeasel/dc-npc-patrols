@@ -35,9 +35,6 @@
 		<button type="button" data-actor-select="{{this.id}}" data-token-select="{{this.token_id}}" class="hub-nav-item hub-nav-npc {{#if (eq this.token_id ../selected_token_id)}}{{#if (eq ../active_view 'npc')}}active{{/if}}{{/if}}">
 			<i class="fa-solid fa-person-walking"></i>
 			<span class="hub-nav-npc-name">{{this.name}}</span>
-			{{#if this.has_patrol}}
-			<span class="hub-nav-npc-meta">{{this.path_count}}</span>
-			{{/if}}
 		</button>
 		{{/each}}
 		{{else}}
