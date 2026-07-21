@@ -47,6 +47,7 @@ const DEFAULTS = {
 	bt_tick_interval_ms: 2000,
 	bt_combat_debug: false,
 	bt_debug: false,
+	chat_bubble_scale: 150,
 };
 
 function register_settings() {
@@ -187,6 +188,46 @@ function register_settings() {
 		type: Boolean,
 		default: false,
 	});
+
+	game.settings.register(MODULE_ID, "chat_bubble_scale", {
+		name: game.i18n.localize("dc-npc-patrols.settings.chat_bubble_scale.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.chat_bubble_scale.hint"),
+		scope: "client",
+		config: true,
+		type: Number,
+		range: { min: 100, max: 300, step: 10 },
+		default: DEFAULTS.chat_bubble_scale,
+		onChange: apply_bubble_scale,
+	});
+}
+
+// --- Chat bubble scaling ---
+const BUBBLE_STYLE_ID = "dc-npc-patrols-bubble-scale";
+
+function apply_bubble_scale() {
+	const pct = game.settings.get(MODULE_ID, "chat_bubble_scale") ?? DEFAULTS.chat_bubble_scale;
+	const scale = pct / 100;
+	let el = document.getElementById(BUBBLE_STYLE_ID);
+	if (!el) {
+		el = document.createElement("style");
+		el.id = BUBBLE_STYLE_ID;
+		document.head.appendChild(el);
+	}
+	// Target .chat-bubble globally (not just #chat-bubbles) because Foundry's ChatBubbles
+	// measures dimensions using a hidden temp div appended to <body>, then sets inline
+	// width/height on the real bubble from those measurements. The temp div must get the
+	// same scaling or it measures at default size and locks the container to unscaled dims.
+	// !important is needed to override the inline styles set by #setPosition().
+	// color is darkened from Foundry's default (--color-text-primary = #222) to #111 for
+	// better readability on the cream bubble background.
+	el.textContent = `.chat-bubble {
+		font-size: ${scale}rem !important;
+		max-width: ${Math.round(400 * scale)}px !important;
+		max-height: ${Math.round(100 * scale)}px !important;
+		min-width: ${Math.round(100 * scale)}px !important;
+		padding: ${Math.round(8 * scale)}px !important;
+		color: #111 !important;
+	}`;
 }
 
 // --- BT tick loop (independent of game time) ---
@@ -328,6 +369,9 @@ async function _preload_partials() {
 }
 
 Hooks.once("dcReady", async () => {
+	// Apply chat bubble scale on load
+	apply_bubble_scale();
+
 	// Preload partials
 	await _preload_partials();
 

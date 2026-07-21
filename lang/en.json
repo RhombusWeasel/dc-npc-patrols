@@ -53,6 +53,10 @@
 			"block_tokens": {
 				"name": "Block Tokens in Pathfinding",
 				"hint": "Treat other tokens' footprints as obstacles during A* pathfinding so NPCs route around them instead of walking through. Also prevents multiple NPCs from selecting the same destination tile."
+			},
+			"chat_bubble_scale": {
+				"name": "Chat Bubble Scale",
+				"hint": "Enlarge chat bubbles on the canvas so NPC dialog and ambient lines are easier to read. 100% is the Foundry default; 300% is 3× larger. Text is also darkened for better contrast."
 			}
 		},
 		"hub": {
