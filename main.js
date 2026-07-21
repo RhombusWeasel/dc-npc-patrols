@@ -24,6 +24,8 @@ import { get_default_bts } from "./lib/default_bts.js";
 import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 import { clear_active_combat_turn } from "./lib/combat_turn.js";
 import { register_combat_flows } from "./lib/bt_combat_flows.js";
+import { register_node, register_variable_type, init_bt_nodes } from "./lib/nodes/loader.js";
+import { bt_debug_enabled } from "./lib/bt_debug.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -52,6 +54,7 @@ const DEFAULTS = {
 	npc_door_sounds: false,
 	bt_tick_interval_ms: 2000,
 	bt_combat_debug: false,
+	bt_debug: false,
 };
 
 function register_settings() {
@@ -154,6 +157,15 @@ function register_settings() {
 		default: DEFAULTS.bt_combat_debug,
 	});
 
+	game.settings.register(MODULE_ID, "bt_debug", {
+		name: game.i18n.localize("dc-npc-patrols.settings.bt_debug.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.bt_debug.hint"),
+		scope: "world",
+		config: true,
+		type: Boolean,
+		default: DEFAULTS.bt_debug,
+	});
+
 	game.settings.register(MODULE_ID, "nav_resolution", {
 		name: game.i18n.localize("dc-npc-patrols.settings.nav_resolution.name"),
 		hint: game.i18n.localize("dc-npc-patrols.settings.nav_resolution.hint"),
@@ -231,10 +243,24 @@ function start_bt_tick() {
 		Math.min(10000, game.settings.get(MODULE_ID, "bt_tick_interval_ms") || DEFAULTS.bt_tick_interval_ms),
 	);
 
+	const dbg = game.settings.get(MODULE_ID, "bt_debug");
+	console.log(`[dc-npc-patrols|bt:loop] starting tick loop, interval=${interval_ms}ms, engine=${_bt_engine ? "ready" : "null"}, bt_debug=${dbg}, isGM=${game.user.isGM}`);
+
 	_bt_tick_interval = setInterval(async () => {
 		if (!game.user.isGM) return;
 		if (!game.settings.get(MODULE_ID, "bt_paused")) {
-			if (_bt_engine) await _bt_engine.tick();
+			if (_bt_engine) {
+				try {
+					await _bt_engine.tick();
+				} catch (err) {
+					console.error(`[dc-npc-patrols|bt:loop] tick threw:`, err);
+				}
+			} else {
+				console.warn(`[dc-npc-patrols|bt:loop] _bt_engine is null — tick skipped`);
+			}
+		} else {
+			// bt_paused is on — only log if debug enabled to avoid spam
+			if (game.settings.get(MODULE_ID, "bt_debug")) console.log(`[dc-npc-patrols|bt:loop] bt_paused is true — tick skipped`);
 		}
 		// Re-render path lines for selected tokens so they stay in sync as NPCs move
 		if (_path_debug) _path_debug.render_paths();
@@ -368,6 +394,11 @@ Hooks.once("dcReady", async () => {
 	});
 	_path_debug.set_bt_engine(_bt_engine);
 
+	// Register all core BT nodes and variable types.
+	init_bt_nodes();
+
+	console.log(`[dc-npc-patrols|bt] init complete — engine=${_bt_engine ? "ready" : "null"} pathfinding=${_pathfinding ? "ready" : "null"}`);
+
 	// Register combat flow steps so the BT engine can hook into the pipeline.
 	register_combat_flows();
 
@@ -391,6 +422,10 @@ Hooks.once("dcReady", async () => {
 		close_panel,
 		get_hub: () => _panel,
 		run_combat_turn: (entry) => _bt_engine?.run_turn(entry),
+		// BT node + variable type registration (for external modules)
+		register_node,
+		register_variable_type,
+		init_bt_nodes,
 	};
 
 	Hooks.on("dc.combat.npc_turn_start", async (entry) => {

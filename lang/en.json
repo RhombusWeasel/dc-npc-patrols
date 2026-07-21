@@ -46,6 +46,10 @@
 				"name": "BT Combat Debug",
 				"hint": "Show GM notifications when combat behaviour trees fail or skip a turn."
 			},
+			"bt_debug": {
+				"name": "BT Debug Logging",
+				"hint": "Enable verbose console logging for the behaviour tree engine — tick lifecycle, NPC skip reasons, node dispatch and status, and combat passes. Useful for diagnosing ticks not firing. Output is prefixed [dc-npc-patrols|bt:]."
+			},
 			"nav_resolution": {
 				"name": "Pathfinding Resolution",
 				"hint": "Subdivides each grid square into N×N navigation cells for finer wall avoidance. 1 = original behavior, 4 = recommended for tight corridors. Higher values improve pathfinding in narrow spaces but use more memory."
