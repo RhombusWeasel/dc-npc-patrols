@@ -18,7 +18,6 @@ import {
 	prepare_behaviour_tab_context,
 	wire_behaviour_tab_events,
 } from "./lib/actor_behaviour_tab.js";
-import { get_default_bts } from "./lib/default_bts.js";
 import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 import { clear_active_combat_turn } from "./lib/combat_turn.js";
 import { register_combat_flows } from "./lib/bt_combat_flows.js";
@@ -394,13 +393,6 @@ Hooks.once("dcReady", async () => {
 
 	// Register combat flow steps so the BT engine can hook into the pipeline.
 	register_combat_flows();
-
-	// Seed default BT templates if no BTs exist
-	const existing_bts = game.settings.get(MODULE_ID, "behaviour_trees") || {};
-	if (Object.keys(existing_bts).length === 0) {
-		const defaults = get_default_bts();
-		await game.settings.set(MODULE_ID, "behaviour_trees", defaults);
-	}
 
 	// Expose module API
 	const mod = game.modules.get(MODULE_ID);

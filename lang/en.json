@@ -346,6 +346,8 @@
 			"select_bt": "Select or create a behaviour tree.",
 			"add_child": "Add Child",
 			"add_sibling": "Add Sibling",
+			"node_palette": "Node Palette",
+			"palette_hint": "Drag a node onto the tree. Drop on center = child, near edge = sibling.",
 			"kind": "Kind",
 			"incoming_from": "From",
 			"goto_targets": "To",

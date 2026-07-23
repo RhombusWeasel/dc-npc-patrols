@@ -88,5 +88,25 @@
 			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.editor.add_variable"}}
 		</button>
 	</details>
+
+	<details class="editor-asset-settings" data-settings-panel="palette" open>
+		<summary>{{localize "dc-npc-patrols.editor.node_palette"}}</summary>
+		<p class="bt-palette-hint">{{localize "dc-npc-patrols.editor.palette_hint"}}</p>
+		<div class="bt-palette">
+			{{#each palette_nodes}}
+			<div class="bt-palette-group">
+				<div class="bt-palette-group-label bt-node-stripe-{{this.id}}">{{this.label}}</div>
+				<div class="bt-palette-chips">
+					{{#each this.nodes}}
+					<div class="bt-palette-chip bt-node-stripe-{{../id}}" data-palette-node="{{this.type}}" draggable="true">
+						<i class="fa-solid {{this.icon}}"></i>
+						<span>{{this.label}}</span>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			{{/each}}
+		</div>
+	</details>
 	{{/if}}
 </div>
