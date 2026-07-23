@@ -76,7 +76,7 @@
 				<input type="text" data-var-field="label" value="{{this.label}}" placeholder="Label" />
 				<select data-var-field="type">
 					{{#each ../var_types}}
-					<option value="{{this}}" {{#if (eq this ../type)}}selected{{/if}}>{{this}}</option>
+					<option value="{{this.id}}" {{#if (eq this.id ../type)}}selected{{/if}}>{{this.label}}</option>
 					{{/each}}
 				</select>
 				<input type="text" data-var-field="default" value="{{this.default}}" placeholder="(blank)" />
