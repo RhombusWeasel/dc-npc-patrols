@@ -45,7 +45,7 @@
 			{{#if (eq this.type "dropdown")}}
 			<select data-node-prop="{{this.key}}">
 				{{#each this.options}}
-				<option value="{{@key}}" {{#if (eq (lookup ../../node_field_values ../key) @key)}}selected{{/if}}>{{this}}</option>
+				<option value="{{this.value}}" {{#if (eq (lookup ../../node_field_values ../key) this.value)}}selected{{/if}}>{{this.label}}</option>
 				{{/each}}
 			</select>
 			{{else if (eq this.type "region_select")}}
