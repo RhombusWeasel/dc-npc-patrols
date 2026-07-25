@@ -21,7 +21,7 @@ import {
 import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 import { clear_active_combat_turn } from "./lib/combat_turn.js";
 import { register_combat_flows } from "./lib/bt_combat_flows.js";
-import { register_node, register_variable_type, init_bt_nodes } from "./lib/nodes/loader.js";
+import { register_node, register_variable_type, init_bt_nodes, get_all_nodes } from "./lib/nodes/loader.js";
 import { bt_debug_enabled } from "./lib/bt_debug.js";
 
 // --- Module globals ---
@@ -409,6 +409,7 @@ Hooks.once("dcReady", async () => {
 		register_node,
 		register_variable_type,
 		init_bt_nodes,
+		get_all_nodes,
 	};
 
 	Hooks.on("dc.combat.npc_turn_start", async (entry) => {

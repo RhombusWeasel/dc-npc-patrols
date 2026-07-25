@@ -88,6 +88,17 @@
 			"world_ambient_hint": "Shared flavour line sets — attach them to individual NPCs under Interactions.",
 			"world_bt_hint": "Shared AI decision trees — assign them to individual NPCs under Behaviour.",
 			"npc_hint": "Behaviour trees decide what this NPC does. Assign a tree and configure its variables.",
+			"section_token_settings": "Token Settings",
+			"token_settings": {
+				"vision_label": "Vision",
+				"vision_enabled": "Enabled",
+				"vision_disabled": "Disabled",
+				"vision_required": "Assigned tree uses vision scanning ({count} node(s): {nodes}).",
+				"vision_ok": "Assigned tree does not require token vision.",
+				"vision_needs_range": "Vision is enabled but range is zero — the NPC cannot see anything.",
+				"enable_vision": "Enable Vision",
+				"vision_enabled_notify": "Token vision enabled."
+			},
 			"edit_tree": "Edit Tree",
 			"manage_content": "Manage",
 			"create_dialog_tree": "Create a dialog tree in World Content",

@@ -916,6 +916,44 @@
 	font-size: 0.95em;
 }
 
+.dc-patrol-hub .hub-token-settings-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 6px;
+}
+
+.dc-patrol-hub .hub-token-settings-label {
+	font-weight: 600;
+	min-width: 4em;
+}
+
+.dc-patrol-hub .hub-token-settings-note {
+	margin: 6px 0 0;
+	font-size: 0.9em;
+	line-height: 1.4;
+}
+
+.dc-patrol-hub .hub-token-warn-text {
+	color: var(--color-text-warning, #c08020);
+}
+
+.dc-patrol-hub .hub-token-ok-text {
+	color: var(--color-text-success, #3a8a3a);
+}
+
+.dc-patrol-hub .hub-token-settings-value.hub-token-warn {
+	color: var(--color-text-warning, #c08020);
+}
+
+.dc-patrol-hub .hub-token-settings-value.hub-token-ok {
+	color: var(--color-text-success, #3a8a3a);
+}
+
+.dc-patrol-hub .hub-token-fix-btn {
+	margin-top: 8px;
+}
+
 .bt-var-default-hint {
 	opacity: 0.65;
 	font-size: 0.85em;

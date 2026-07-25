@@ -35,6 +35,47 @@
 		{{/if}}
 	</div>
 
+	<!-- Token Settings -->
+	{{#if token_settings}}
+	<div class="hub-npc-section hub-token-settings">
+		<div class="hub-npc-section-title">
+			<i class="fa-solid fa-eye"></i> {{localize "dc-npc-patrols.hub.section_token_settings"}}
+		</div>
+		<div class="hub-token-settings-row">
+			<span class="hub-token-settings-label">{{localize "dc-npc-patrols.hub.token_settings.vision_label"}}</span>
+			<span class="hub-token-settings-value {{#if token_settings.sight_enabled}}hub-token-ok{{else}}hub-token-warn{{/if}}">
+				{{#if token_settings.sight_enabled}}
+				{{localize "dc-npc-patrols.hub.token_settings.vision_enabled"}}
+				{{#if token_settings.sight_range}} ({{token_settings.sight_range}}){{/if}}
+				{{else}}
+				{{localize "dc-npc-patrols.hub.token_settings.vision_disabled"}}
+				{{/if}}
+			</span>
+		</div>
+		{{#if assigned_bt_id}}
+		{{#if bt_vision.requires_vision}}
+		<p class="hub-token-settings-note hub-token-warn-text">
+			<i class="fa-solid fa-triangle-exclamation"></i> {{bt_vision_message}}
+		</p>
+		{{#unless vision_ok}}
+		<button type="button" data-action="enable-token-vision" class="patrol-btn hub-token-fix-btn">
+			<i class="fa-solid fa-eye"></i> {{localize "dc-npc-patrols.hub.token_settings.enable_vision"}}
+		</button>
+		{{/unless}}
+		{{#if vision_needs_range}}
+		<p class="hub-token-settings-note hub-token-warn-text">
+			<i class="fa-solid fa-triangle-exclamation"></i> {{localize "dc-npc-patrols.hub.token_settings.vision_needs_range"}}
+		</p>
+		{{/if}}
+		{{else}}
+		<p class="hub-token-settings-note hub-token-ok-text">
+			<i class="fa-solid fa-circle-check"></i> {{localize "dc-npc-patrols.hub.token_settings.vision_ok"}}
+		</p>
+		{{/if}}
+		{{/if}}
+	</div>
+	{{/if}}
+
 	<!-- Interactions -->
 	<div class="hub-npc-section">
 		<div class="hub-npc-section-title">
