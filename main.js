@@ -25,6 +25,7 @@ import { register_combat_flows } from "./lib/bt_combat_flows.js";
 import { register_node, register_variable_type, init_bt_nodes, get_all_nodes } from "./lib/nodes/loader.js";
 import { bt_debug_enabled, bt_log } from "./lib/bt_debug.js";
 import { register_active_bt_token_hooks } from "./lib/bt_active_tokens.js";
+import { register_hub_scene_cache_hooks } from "./lib/hub_scene_cache.js";
 import {
 	prepare_behaviour_tab_context,
 	wire_behaviour_tab_events,
@@ -344,12 +345,12 @@ function open_panel() {
 }
 
 function open_hub_for_actor(actor_id, options = {}) {
-	const hub = open_panel();
-	if (hub?.focus_actor) {
-		hub.focus_actor(actor_id, options);
-		hub.render();
+	if (!_panel) {
+		_panel = new PatrolHub();
 	}
-	return hub;
+	_panel.focus_actor(actor_id, options);
+	_panel.render(true);
+	return _panel;
 }
 
 function close_panel() {
@@ -502,6 +503,7 @@ Hooks.once("dcReady", async () => {
 
 	// Start independent BT tick loop
 	register_active_bt_token_hooks();
+	register_hub_scene_cache_hooks();
 	start_bt_tick();
 
 	// --- Region lifecycle hooks (Phase 3) ---
