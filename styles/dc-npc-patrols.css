@@ -1828,3 +1828,12 @@
 	gap: 4px;
 }
 
+.dc-patrol-time-tab .dc-auto-time-rate-row {
+	gap: 4px;
+}
+
+.dc-patrol-time-tab .dc-auto-time-estimate {
+	margin-top: 4px;
+	opacity: 0.9;
+}
+

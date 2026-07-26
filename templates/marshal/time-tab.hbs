@@ -27,11 +27,15 @@
       </select>
     </div>
 
-    <div class="flexcol dc-auto-time-duration-row">
-      <label class="typed-small" for="auto_time_duration">{{localize "dc-npc-patrols.marshal.time.duration"}}</label>
-      <input type="range" id="auto_time_duration" name="auto_time_duration"
-        min="{{min_duration_min}}" max="{{max_duration_min}}" step="1" value="{{duration_minutes}}">
-      <span class="typed-small dc-auto-time-duration-value">{{localize "dc-npc-patrols.marshal.time.duration_value" minutes=duration_minutes}}</span>
+    <div class="flexcol dc-auto-time-rate-row">
+      <label class="typed-small" for="auto_time_rate">{{localize "dc-npc-patrols.marshal.time.rate"}}</label>
+      <input type="range" id="auto_time_rate" name="auto_time_rate"
+        min="{{min_minutes_per_hour}}" max="{{max_minutes_per_hour}}" step="1" value="{{minutes_per_hour}}">
+      <span class="typed-small dc-auto-time-rate-value">{{localize "dc-npc-patrols.marshal.time.rate_value" minutes=minutes_per_hour}}</span>
+      <span class="typed-small dc-auto-time-estimate">
+        <strong>{{localize "dc-npc-patrols.marshal.time.estimated"}}:</strong>
+        <span class="dc-auto-time-estimate-value">{{estimated_real_label}}</span>
+      </span>
     </div>
   </div>
 
