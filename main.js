@@ -306,7 +306,7 @@ function open_hub_for_actor(actor_id, options = {}) {
 	const hub = open_panel();
 	if (hub?.focus_actor) {
 		hub.focus_actor(actor_id, options);
-		hub.render({ force: true });
+		hub.render();
 	}
 	return hub;
 }
