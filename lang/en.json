@@ -134,6 +134,8 @@
 			"var_use_default": "(use default)",
 			"var_no_regions": "Open a scene to pick regions",
 			"var_no_doors": "Open a scene to pick doors",
+			"var_no_dialog_trees": "Create dialog trees in World Content",
+			"var_no_ambient_sets": "Create ambient sets in World Content",
 			"open_hub": "Open Patrol Hub"
 		},
 		"marshal": {

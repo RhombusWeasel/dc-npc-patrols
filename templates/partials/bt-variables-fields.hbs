@@ -27,6 +27,26 @@
 		{{#unless this.options.length}}
 		<span class="bt-var-default-hint">{{localize "dc-npc-patrols.sheet.var_no_doors"}}</span>
 		{{/unless}}
+		{{else if (eq this.type "dialog_tree_select")}}
+		<select data-bt-var="{{this.key}}">
+			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
+			{{#each this.options}}
+			<option value="{{this.value}}" {{#if (eq ../value this.value)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
+		{{#unless this.options.length}}
+		<span class="bt-var-default-hint">{{localize "dc-npc-patrols.sheet.var_no_dialog_trees"}}</span>
+		{{/unless}}
+		{{else if (eq this.type "ambient_set_select")}}
+		<select data-bt-var="{{this.key}}">
+			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
+			{{#each this.options}}
+			<option value="{{this.value}}" {{#if (eq ../value this.value)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
+		{{#unless this.options.length}}
+		<span class="bt-var-default-hint">{{localize "dc-npc-patrols.sheet.var_no_ambient_sets"}}</span>
+		{{/unless}}
 		{{else}}
 		<input type="text" data-bt-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />
 		{{/if}}
