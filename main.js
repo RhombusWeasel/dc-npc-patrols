@@ -23,7 +23,8 @@ import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 import { clear_active_combat_turn } from "./lib/combat_turn.js";
 import { register_combat_flows } from "./lib/bt_combat_flows.js";
 import { register_node, register_variable_type, init_bt_nodes, get_all_nodes } from "./lib/nodes/loader.js";
-import { bt_debug_enabled } from "./lib/bt_debug.js";
+import { bt_debug_enabled, bt_log } from "./lib/bt_debug.js";
+import { register_active_bt_token_hooks } from "./lib/bt_active_tokens.js";
 import {
 	prepare_behaviour_tab_context,
 	wire_behaviour_tab_events,
@@ -35,7 +36,8 @@ let _bt_engine = null;
 let _pathfinding = null;
 let _path_debug = null;
 let _panel = null;
-let _bt_tick_interval = null;
+let _bt_tick_timeout = null;
+let _bt_tick_running = false;
 
 
 
@@ -242,36 +244,63 @@ function apply_bubble_scale() {
 }
 
 // --- BT tick loop (independent of game time) ---
-function start_bt_tick() {
-	if (_bt_tick_interval) clearInterval(_bt_tick_interval);
-
-	const interval_ms = Math.max(
+function _bt_tick_interval_ms() {
+	return Math.max(
 		500,
 		Math.min(10000, game.settings.get(MODULE_ID, "bt_tick_interval_ms") || DEFAULTS.bt_tick_interval_ms),
 	);
+}
 
-	const dbg = game.settings.get(MODULE_ID, "bt_debug");
-	console.log(`[dc-npc-patrols|bt:loop] starting tick loop, interval=${interval_ms}ms, engine=${_bt_engine ? "ready" : "null"}, bt_debug=${dbg}, isGM=${game.user.isGM}`);
+function stop_bt_tick() {
+	if (_bt_tick_timeout) {
+		clearTimeout(_bt_tick_timeout);
+		_bt_tick_timeout = null;
+	}
+}
 
-	_bt_tick_interval = setInterval(async () => {
-		if (!game.user.isGM) return;
+function schedule_bt_tick(delay_ms) {
+	stop_bt_tick();
+	_bt_tick_timeout = setTimeout(() => void run_bt_tick_cycle(), delay_ms);
+}
+
+async function run_bt_tick_cycle() {
+	if (!game.user.isGM) {
+		schedule_bt_tick(_bt_tick_interval_ms());
+		return;
+	}
+
+	try {
 		if (!game.settings.get(MODULE_ID, "bt_paused")) {
 			if (_bt_engine) {
-				try {
-					await _bt_engine.tick();
-				} catch (err) {
-					console.error(`[dc-npc-patrols|bt:loop] tick threw:`, err);
+				if (_bt_tick_running) {
+					if (bt_debug_enabled()) bt_log("loop", "previous tick still running — skipped");
+				} else {
+					_bt_tick_running = true;
+					try {
+						await _bt_engine.tick();
+					} catch (err) {
+						console.error(`[dc-npc-patrols|bt:loop] tick threw:`, err);
+					} finally {
+						_bt_tick_running = false;
+					}
 				}
-			} else {
+			} else if (bt_debug_enabled()) {
 				console.warn(`[dc-npc-patrols|bt:loop] _bt_engine is null — tick skipped`);
 			}
-		} else {
-			// bt_paused is on — only log if debug enabled to avoid spam
-			if (game.settings.get(MODULE_ID, "bt_debug")) console.log(`[dc-npc-patrols|bt:loop] bt_paused is true — tick skipped`);
+		} else if (bt_debug_enabled()) {
+			bt_log("loop", "bt_paused is true — tick skipped");
 		}
-		// Re-render path lines for selected tokens so they stay in sync as NPCs move
 		if (_path_debug) _path_debug.render_paths();
-	}, interval_ms);
+	} finally {
+		schedule_bt_tick(_bt_tick_interval_ms());
+	}
+}
+
+function start_bt_tick() {
+	const interval_ms = _bt_tick_interval_ms();
+	const dbg = game.settings.get(MODULE_ID, "bt_debug");
+	console.log(`[dc-npc-patrols|bt:loop] starting tick loop, interval=${interval_ms}ms, engine=${_bt_engine ? "ready" : "null"}, bt_debug=${dbg}, isGM=${game.user.isGM}`);
+	schedule_bt_tick(interval_ms);
 }
 
 // --- Scene control button ---
@@ -472,6 +501,7 @@ Hooks.once("dcReady", async () => {
 	window.dcNpcPatrols.path_debug = _path_debug;
 
 	// Start independent BT tick loop
+	register_active_bt_token_hooks();
 	start_bt_tick();
 
 	// --- Region lifecycle hooks (Phase 3) ---
@@ -496,24 +526,8 @@ Hooks.once("dcReady", async () => {
 		if (token_doc) _bt_engine.remove_blackboard(token_doc.id);
 	});
 
-	// --- Pathfinding cache invalidation: token movement ---
-	// Tokens are treated as dynamic obstacles. Only the path cache needs
-	// invalidation (the wall grid is unaffected). Grid token-occupancy is
-	// computed at query time, not cached.
-	Hooks.on("createToken", (token_doc) => {
-		_pathfinding.invalidate_paths(token_doc.parent.id);
-	});
-	Hooks.on("deleteToken", (token_doc) => {
-		_pathfinding.invalidate_paths(token_doc.parent.id);
-	});
-	Hooks.on("updateToken", (token_doc, change) => {
-		// Only invalidate when position/size/visibility/elevation changes
-		const keys = Object.keys(change);
-		const relevant = keys.some(k =>
-			["x", "y", "width", "height", "hidden", "elevation", "level"].includes(k)
-		);
-		if (relevant) _pathfinding.invalidate_paths(token_doc.parent.id);
-	});
+	// Path cache for token moves is tick-scoped when block_tokens is on (see pathfinding.js).
+	// Persistent path cache (block_tokens off) is unaffected by token position.
 
 	// --- Pathfinding cache invalidation hooks (Phase 4b) ---
 	// Wall/region changes only affect the structural overlay.  Path lines for
