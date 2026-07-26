@@ -86,11 +86,19 @@ flowchart TD
 
 Multi-tick actions (`action_move_to`, `action_move_to_region`, `action_wait`) return RUNNING until finished.
 
-### Stateful composites
+### Stateful composites (reactive)
 
-`sequence`, `selector`, and `parallel` remember which child was running and resume from there on the next tick instead of restarting from the beginning. This is essential for A* movement that spans many ticks.
+`sequence`, `selector`, `random_sequence`, `random_selector`, and `parallel` remember which child was running and resume from there on the next tick instead of restarting movement from the beginning. This is essential for A* movement that spans many ticks.
 
-`parallel` ticks all children each pass. Completed children are not re-ticked. Succeeds when `required` children succeed (defaults to all). Fails if too many children fail.
+**Reactive condition re-check:** upstream **condition** children are re-evaluated every tick even while a downstream **action** is RUNNING. If a schedule, variable, or other gate fails mid-walk, the branch aborts and any active movement path is cleared.
+
+| Composite | Upstream re-check behaviour |
+|-----------|----------------------------|
+| `sequence` / `random_sequence` | Re-tick children before the running index; abort on FAILURE |
+| `selector` / `random_selector` | Re-tick children before the running index; early SUCCESS if a prior branch now passes |
+| `parallel` | Condition children re-tick every tick; completed action children are not re-ticked |
+
+`parallel` ticks all non-completed action children each pass. Succeeds when `required` children succeed (defaults to all). Fails if too many children fail.
 
 ### Blackboard
 
@@ -138,9 +146,11 @@ Linked fragments appear in the tree editor with a read-only preview of their con
 
 | Node ID | Label | Description |
 |---------|-------|-------------|
-| `sequence` | Sequence (AND) | Runs children left to right. Fails on first failure. Resumes from the running child on the next tick. |
-| `selector` | Selector (OR) | Tries children left to right. Succeeds on first success. Resumes from the running child on the next tick. |
-| `parallel` | Parallel | Runs all children simultaneously. Succeeds when N succeed (`required`, default = all). Skips children that already completed. |
+| `sequence` | Sequence (AND) | Runs children left to right. Fails on first failure. Resumes the running action; re-checks upstream conditions each tick. |
+| `selector` | Selector (OR) | Tries children left to right. Succeeds on first success. Resumes the running action; re-checks upstream conditions each tick. |
+| `random_sequence` | Random Sequence (AND) | Shuffles children each pass. Same reactive behaviour as `sequence`. |
+| `random_selector` | Random Selector (OR) | Shuffles children each pass. Same reactive behaviour as `selector`. |
+| `parallel` | Parallel | Runs children simultaneously. Re-checks condition children each tick. Succeeds when N succeed (`required`, default = all). |
 
 ### Decorators
 
