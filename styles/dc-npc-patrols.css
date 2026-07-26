@@ -1773,3 +1773,58 @@
 	background: var(--color-bg-option-active);
 }
 
+/* Marshal sheet — auto time tab */
+.dc-patrol-time-tab {
+	padding: 8px 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.dc-patrol-time-tab .dc-auto-time-hint {
+	margin: 0;
+	opacity: 0.85;
+}
+
+.dc-patrol-time-tab fieldset.dc-auto-time-presets {
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	padding: 8px;
+	margin: 0;
+}
+
+.dc-patrol-time-tab .dc-auto-time-preset-row {
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.dc-patrol-time-tab .dc-auto-time-field-row {
+	gap: 8px;
+	align-items: center;
+}
+
+.dc-patrol-time-tab .dc-auto-time-field-row input[type="number"] {
+	width: 4em;
+}
+
+.dc-patrol-time-tab .dc-auto-time-controls {
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.dc-patrol-time-tab .dc-auto-time-progress-wrap {
+	height: 10px;
+	background: rgba(0, 0, 0, 0.08);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.dc-patrol-time-tab .dc-auto-time-progress-bar {
+	height: 100%;
+	background: var(--color-accent, #782e22);
+	transition: width 0.4s ease;
+}
+
+.dc-patrol-time-tab .dc-auto-time-status {
+	gap: 4px;
+}
+

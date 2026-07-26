@@ -1,0 +1,55 @@
+<section class="dc-patrol-time-tab">
+  <div class="center dc-newspaper-subhead">{{localize "dc-npc-patrols.marshal.time.header"}}</div>
+  <p class="typed-small dc-auto-time-hint">{{localize "dc-npc-patrols.marshal.time.hint"}}</p>
+
+  <div class="dc-auto-time-current-row flexrow">
+    <span class="typed-small"><strong>{{localize "dc-npc-patrols.marshal.time.current"}}:</strong></span>
+    <span class="dc-auto-time-current typed-small">{{current_formatted}}</span>
+  </div>
+
+  <fieldset class="dc-auto-time-presets">
+    <legend class="typed-small bold">{{localize "dc-npc-patrols.marshal.time.presets"}}</legend>
+    <div class="flexrow dc-auto-time-preset-row">
+      {{#each presets}}
+      <button type="button" class="patrol-btn" data-action="auto-time-preset" data-preset="{{this.key}}">{{localize this.label}}</button>
+      {{/each}}
+    </div>
+  </fieldset>
+
+  <div class="dc-auto-time-form flexcol">
+    <div class="flexrow dc-auto-time-field-row">
+      <label class="typed-small">{{localize "dc-npc-patrols.marshal.time.amount"}}</label>
+      <input type="number" name="auto_time_amount" min="1" step="1" value="{{amount}}">
+      <select name="auto_time_unit">
+        <option value="hours" {{#if (eq unit "hours")}}selected{{/if}}>{{localize "dc-npc-patrols.marshal.time.unit_hours"}}</option>
+        <option value="days" {{#if (eq unit "days")}}selected{{/if}}>{{localize "dc-npc-patrols.marshal.time.unit_days"}}</option>
+        <option value="weeks" {{#if (eq unit "weeks")}}selected{{/if}}>{{localize "dc-npc-patrols.marshal.time.unit_weeks"}}</option>
+      </select>
+    </div>
+
+    <div class="flexcol dc-auto-time-duration-row">
+      <label class="typed-small" for="auto_time_duration">{{localize "dc-npc-patrols.marshal.time.duration"}}</label>
+      <input type="range" id="auto_time_duration" name="auto_time_duration"
+        min="{{min_duration_min}}" max="{{max_duration_min}}" step="1" value="{{duration_minutes}}">
+      <span class="typed-small dc-auto-time-duration-value">{{localize "dc-npc-patrols.marshal.time.duration_value" minutes=duration_minutes}}</span>
+    </div>
+  </div>
+
+  <div class="dc-auto-time-controls flexrow">
+    <button type="button" class="patrol-btn" data-action="auto-time-start" {{#if auto.active}}disabled{{/if}}>{{localize "dc-npc-patrols.marshal.time.start"}}</button>
+    <button type="button" class="patrol-btn" data-action="auto-time-pause" {{#unless auto.active}}disabled{{/unless}} {{#if auto.paused}}disabled{{/if}}>{{localize "dc-npc-patrols.marshal.time.pause"}}</button>
+    <button type="button" class="patrol-btn" data-action="auto-time-resume" {{#unless auto.paused}}disabled{{/unless}}>{{localize "dc-npc-patrols.marshal.time.resume"}}</button>
+    <button type="button" class="patrol-btn" data-action="auto-time-stop" {{#unless auto.active}}disabled{{/unless}}>{{localize "dc-npc-patrols.marshal.time.stop"}}</button>
+  </div>
+
+  {{#if auto.active}}
+  <div class="dc-auto-time-status flexcol">
+    <div class="dc-auto-time-progress-wrap">
+      <div class="dc-auto-time-progress-bar" style="width: {{progress_pct}}%;"></div>
+    </div>
+    <span class="typed-small dc-auto-time-progress-label">{{localize "dc-npc-patrols.marshal.time.progress" pct=progress_pct}}</span>
+    <span class="typed-small"><strong>{{localize "dc-npc-patrols.marshal.time.target"}}:</strong> <span class="dc-auto-time-target">{{target_formatted}}</span></span>
+    <span class="typed-small"><strong>{{localize "dc-npc-patrols.marshal.time.eta"}}:</strong> <span class="dc-auto-time-eta">{{eta_label}}</span></span>
+  </div>
+  {{/if}}
+</section>

@@ -15,14 +15,19 @@ import { BTEngine } from "./lib/bt_engine.js";
 import { Pathfinding } from "./lib/pathfinding.js";
 import { BTEditor } from "./lib/bt_editor.js";
 import {
-	prepare_behaviour_tab_context,
-	wire_behaviour_tab_events,
-} from "./lib/actor_behaviour_tab.js";
+	prepare_marshal_time_tab,
+	wire_marshal_time_tab,
+} from "./lib/marshal_time_tab.js";
+import { restore_auto_time } from "./lib/auto_time.js";
 import { PathDebugOverlay } from "./lib/path_debug_overlay.js";
 import { clear_active_combat_turn } from "./lib/combat_turn.js";
 import { register_combat_flows } from "./lib/bt_combat_flows.js";
 import { register_node, register_variable_type, init_bt_nodes, get_all_nodes } from "./lib/nodes/loader.js";
 import { bt_debug_enabled } from "./lib/bt_debug.js";
+import {
+	prepare_behaviour_tab_context,
+	wire_behaviour_tab_events,
+} from "./lib/actor_behaviour_tab.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -77,6 +82,13 @@ function register_settings() {
 	// World-level JSON storage for behaviour trees
 	game.settings.register(MODULE_ID, "behaviour_trees", {
 		scope: "world",
+		config: false,
+		type: Object,
+		default: {},
+	});
+
+	game.settings.register(MODULE_ID, "auto_time_state", {
+		scope: "client",
 		config: false,
 		type: Object,
 		default: {},
@@ -354,6 +366,7 @@ async function _preload_partials() {
 		["ambient-editor", "templates/ambient-editor.hbs"],
 		["bt-editor", "templates/bt-editor.hbs"],
 		["behaviour-tab", "templates/actor/behaviour-tab.hbs"],
+		["marshal-time-tab", "templates/marshal/time-tab.hbs"],
 		["bt-variables-fields", "templates/partials/bt-variables-fields.hbs"],
 	];
 
@@ -440,6 +453,20 @@ Hooks.once("dcReady", async () => {
 			on_render: wire_behaviour_tab_events,
 		});
 	}
+
+	if (game.dc?.register_gm_tab) {
+		game.dc.register_gm_tab(`${MODULE_ID}.time`, {
+			group: "session",
+			id: "patrol_time",
+			label: "dc-npc-patrols.marshal.time_tab",
+			template: "marshal-time-tab",
+			order: 30,
+			prepare: prepare_marshal_time_tab,
+			on_render: wire_marshal_time_tab,
+		});
+	}
+
+	await restore_auto_time();
 	// Also on window for easy access
 	window.dcNpcPatrols = mod.api;
 	window.dcNpcPatrols.path_debug = _path_debug;

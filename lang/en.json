@@ -136,6 +136,35 @@
 			"var_no_doors": "Open a scene to pick doors",
 			"open_hub": "Open Patrol Hub"
 		},
+		"marshal": {
+			"time_tab": "Time",
+			"time": {
+				"header": "Auto Time Advance",
+				"hint": "Gradually advance campaign time while players explore. Header controls still work for manual adjustments.",
+				"current": "Current time",
+				"target": "Target time",
+				"eta": "Time remaining",
+				"paused_eta": "Paused",
+				"presets": "Quick targets",
+				"preset_6h": "6 Hours",
+				"preset_1d": "1 Day",
+				"preset_1w": "1 Week",
+				"amount": "Advance by",
+				"unit_hours": "Hours",
+				"unit_days": "Days",
+				"unit_weeks": "Weeks",
+				"duration": "Real-world duration (minutes)",
+				"duration_value": "{minutes} min",
+				"start": "Start",
+				"pause": "Pause",
+				"resume": "Resume",
+				"stop": "Stop",
+				"progress": "{pct}% complete",
+				"complete": "Campaign time reached the target.",
+				"stopped": "Auto time advance stopped.",
+				"invalid_amount": "Enter a valid time amount to advance."
+			}
+		},
 		"panel": {
 			"title": "NPC Patrol Manager",
 			"tab_patrols": "Patrols",
