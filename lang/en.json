@@ -136,6 +136,7 @@
 			"var_no_doors": "Open a scene to pick doors",
 			"var_no_dialog_trees": "Create dialog trees in World Content",
 			"var_no_ambient_sets": "Create ambient sets in World Content",
+			"var_no_fragments": "Create fragments in World Content",
 			"open_hub": "Open Patrol Hub"
 		},
 		"marshal": {
@@ -383,6 +384,7 @@
 			"variables": "Variables",
 			"var_options": "Variables",
 			"scene_regions": "Scene Regions",
+			"compass_directions": "Compass Directions",
 			"scene_doors": "Scene Doors",
 			"add_variable": "Add Variable",
 			"node_label": "Display Label",

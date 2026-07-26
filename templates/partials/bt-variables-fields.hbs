@@ -7,6 +7,13 @@
 		<input type="checkbox" data-bt-var="{{this.key}}" {{#if this.checked}}checked{{/if}} />
 		{{else if (eq this.type "number")}}
 		<input type="number" data-bt-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />
+		{{else if (eq this.type "direction_select")}}
+		<select data-bt-var="{{this.key}}">
+			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
+			{{#each this.options}}
+			<option value="{{this.value}}" {{#if (eq ../value this.value)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
 		{{else if (eq this.type "region_select")}}
 		<select data-bt-var="{{this.key}}">
 			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
@@ -46,6 +53,16 @@
 		</select>
 		{{#unless this.options.length}}
 		<span class="bt-var-default-hint">{{localize "dc-npc-patrols.sheet.var_no_ambient_sets"}}</span>
+		{{/unless}}
+		{{else if (eq this.type "fragment_select")}}
+		<select data-bt-var="{{this.key}}">
+			<option value="">{{localize "dc-npc-patrols.sheet.var_use_default"}}</option>
+			{{#each this.options}}
+			<option value="{{this.value}}" {{#if (eq ../value this.value)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
+		{{#unless this.options.length}}
+		<span class="bt-var-default-hint">{{localize "dc-npc-patrols.sheet.var_no_fragments"}}</span>
 		{{/unless}}
 		{{else}}
 		<input type="text" data-bt-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />

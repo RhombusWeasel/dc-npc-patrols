@@ -70,19 +70,6 @@
 				<span>Default</span>
 				<span></span>
 			</div>
-			{{#each selected_bt.variables}}
-			<div class="bt-var-row" data-var-index="{{@index}}">
-				<input type="text" data-var-field="key" value="{{this.key}}" placeholder="key" {{#if this.key}}readonly{{/if}} />
-				<input type="text" data-var-field="label" value="{{this.label}}" placeholder="Label" />
-				<select data-var-field="type">
-					{{#each ../var_types}}
-					<option value="{{this.id}}" {{#if (eq this.id ../type)}}selected{{/if}}>{{this.label}}</option>
-					{{/each}}
-				</select>
-				<input type="text" data-var-field="default" value="{{this.default}}" placeholder="(blank)" />
-				<button type="button" data-var-delete="{{@index}}" class="editor-asset-delete"><i class="fa-solid fa-trash"></i></button>
-			</div>
-			{{/each}}
 		</div>
 		<button type="button" data-action="add-variable" class="editor-add-btn editor-add-btn-inline">
 			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.editor.add_variable"}}

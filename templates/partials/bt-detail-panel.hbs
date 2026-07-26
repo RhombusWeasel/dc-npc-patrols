@@ -48,6 +48,10 @@
 				<option value="{{this.value}}" {{#if (eq (lookup ../../node_field_values ../key) this.value)}}selected{{/if}}>{{this.label}}</option>
 				{{/each}}
 			</select>
+			{{else if (eq this.type "direction_select")}}
+			<select data-node-prop="{{this.key}}">
+				<option value=""></option>
+			</select>
 			{{else if (eq this.type "region_select")}}
 			<select data-node-prop="{{this.key}}">
 				<option value="">(none)</option>
@@ -70,6 +74,8 @@
 			</select>
 			{{else if (eq this.type "boolean")}}
 			<input type="checkbox" data-node-prop="{{this.key}}" {{#if (lookup ../node_field_values this.key)}}checked{{/if}} />
+			{{else if (eq this.type "number")}}
+			<input type="number" data-node-prop="{{this.key}}" value="{{lookup ../node_field_values this.key}}" />
 			{{else}}
 			<input type="text" data-node-prop="{{this.key}}" value="{{lookup ../node_field_values this.key}}" />
 			{{/if}}
