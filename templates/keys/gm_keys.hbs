@@ -1,0 +1,34 @@
+<section>
+  <a data-action="togglePath" class="toggle-path" data-path="tabs.gear.tabs.keys.hint" data-char="true"><div class="dc-newspaper-subhead">{{localize "dc.marshal.sheet.tabs.gear.tabs.keys.header"}}</div></a>
+  {{#if (eq this.actor.system.tabs.gear.tabs.keys.hint true)}}
+  <div class="dc-hint">{{localize "dc.marshal.sheet.tabs.gear.tabs.keys.hint"}}</div>
+  {{/if}}
+  <div class="center">
+    <a data-action="newPath" class="new-path bold" data-path="gear.keys">{{localize "dc.marshal.sheet.tabs.gear.tabs.keys.add"}}</a>
+  </div>
+  <div class="gear-search-bar"><i class="fas fa-search"></i><input type="text" class="gear-search" placeholder="{{localize "dc.shared.search_gear"}}" data-gear-search></div>
+  <table>
+    <tr>
+      <th class="sort-list center" data-action="sortList" data-path="keys" data-key="quantity">{{localize "dc.shared.quantity_short"}}</th>
+      <th class="sort-list center" data-action="sortList" data-path="keys" data-key="label">{{localize "dc.shared.name"}}</th>
+      <th class="sort-list center" data-action="sortList" data-path="keys" data-key="wall_uuid" title="{{localize "dc-npc-patrols.key.wall_uuid"}}"><i class="fas fa-door-closed" /></th>
+      <th class="sort-list center" data-action="sortList" data-path="keys" data-key="weight" title="{{localize "dc.shared.weight"}}"><i class="fas fa-weight-hanging" /></th>
+      <th class="sort-list center" data-action="sortList" data-path="keys" data-key="cost" title="{{localize "dc.shared.cost"}}"><i class="fas fa-dollar-sign" /></th>
+      <th class="center width-5" title="{{localize "dc.shared.edit"}}"><i class="fas fa-pen-nib" /></th>
+      <th class="center width-5" title="{{localize "dc.shared.duplicate"}}"><i class="fas fa-copy" /></th>
+      <th class="center width-5" title="{{localize "dc.shared.trash"}}"><i class="fas fa-trash" /></th>
+    </tr>
+    {{#each this.gear.keys as |key|}}
+      <tr>
+        <td class="right pad-right-4">{{key.quantity}}</td>
+        <td class="left">{{key.label}}</td>
+        <td class="left pad-left-10 typed-small">{{#if key.wall_uuid}}{{key.wall_uuid}}{{else}}<i class="fas fa-minus" style="opacity:0.4"/>{{/if}}</td>
+        <td class="right pad-right-4">{{key.weight}}</td>
+        <td class="right">{{format_currency key.cost}}</td>
+        <td data-action="editPath" class="center edit-path" data-path="gear.keys" data-key="{{@key}}"><a class="fas fa-pen-nib" title="{{localize "dc.shared.edit"}} {{key.label}}"/></td>
+        <td data-action="duplicatePath" class="center duplicate-path" data-path="gear.keys" data-key="{{@key}}"><a class="fas fa-copy" title="{{localize "dc.shared.duplicate"}} {{key.label}}"/></td>
+        <td data-action="deletePath" class="center delete-path" data-path="gear.keys.{{@key}}"><a class="fas fa-trash" title="{{localize "dc.shared.trash"}} {{key.label}}?"/></td>
+      </tr>
+    {{/each}}
+  </table>
+</section>

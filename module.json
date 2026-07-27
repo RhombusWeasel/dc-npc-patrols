@@ -16,6 +16,7 @@
 	"esmodules": [
 		"main.js"
 	],
+	"socket": true,
 	"styles": [
 		"styles/dc-npc-patrols.css"
 	],

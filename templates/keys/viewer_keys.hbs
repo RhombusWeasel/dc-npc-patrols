@@ -1,0 +1,26 @@
+{{> "systems/Deadlands-Classic/templates/actor/partials/viewer/_header.hbs"}}
+<div class="viewer-stat-row">
+	<div class="viewer-stat-card">
+		<i class="fas fa-weight-hanging"></i>
+		<span class="viewer-stat-value">{{this.data.weight}}</span>
+		<span class="viewer-stat-label">{{localize "dc.shared.weight"}}</span>
+	</div>
+	<div class="viewer-stat-card">
+		<i class="fas fa-boxes-stacked"></i>
+		<span class="viewer-stat-value">{{this.data.quantity}}</span>
+		<span class="viewer-stat-label">{{localize "dc.shared.quantity"}}</span>
+	</div>
+	<div class="viewer-stat-card">
+		<i class="fas fa-key"></i>
+		<span class="viewer-stat-value">{{#if this.data.wall_uuid}}{{localize "dc-npc-patrols.key.linked"}}{{else}}{{localize "dc-npc-patrols.key.unlinked"}}{{/if}}</span>
+		<span class="viewer-stat-label">{{localize "dc-npc-patrols.key.door_link"}}</span>
+	</div>
+</div>
+<table class="viewer-detail-table">
+	{{#if this.data.wall_uuid}}
+	<tr><td>{{localize "dc-npc-patrols.key.wall_uuid"}}</td><td class="typed-small">{{this.data.wall_uuid}}</td></tr>
+	{{/if}}
+	<tr><td>{{localize "dc.shared.rarity"}}</td><td>{{resolve_field this.template this.data 'rarity'}}</td></tr>
+</table>
+{{> "systems/Deadlands-Classic/templates/actor/partials/viewer/_description.hbs"}}
+{{> "systems/Deadlands-Classic/templates/actor/partials/viewer/_boons.hbs"}}

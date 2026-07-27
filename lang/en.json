@@ -126,6 +126,26 @@
 				"tooltip": "Toggle Pathfinding Debug Overlay"
 			}
 		},
+		"key": {
+			"header": "Keys",
+			"add": "Add Key",
+			"gm_hint": "Create key items and paste a door wall UUID to link them. Copy the UUID from the wall's copy-ID button.",
+			"wall_uuid": "Door Wall UUID",
+			"use_key": "Use Key",
+			"door_link": "Door",
+			"linked": "Linked",
+			"unlinked": "Unlinked",
+			"no_door_linked": "This key is not linked to a door.",
+			"door_not_found": "The door linked to this key could not be found.",
+			"pathfinding_unavailable": "Pathfinding system not ready.",
+			"no_grid_data": "Scene navigation grid not available.",
+			"no_token_on_scene": "Your token is not on this scene.",
+			"not_adjacent": "You must be standing next to the door to use this key.",
+			"already_unlocked": "That door is not locked.",
+			"unlock_success": "The key turns and the door unlocks.",
+			"unlock_failed": "The key failed to unlock the door.",
+			"template_skeleton": "Skeleton Key"
+		},
 		"sheet": {
 			"tab_behaviour": "Behaviour",
 			"assigned_bt": "Assigned Behaviour Tree",
