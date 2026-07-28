@@ -288,6 +288,52 @@ selector
 
 ---
 
+## Boons
+
+The module registers two boon types with the Deadlands-Classic boon pipeline. Both use the `dc-npc-patrols` flag scope and share the same `quest_flags` / `posse_quest_flags` namespaces as the dialog tree flag system, so flags set by boons can be read by dialog tree flag conditions and vice versa.
+
+### modify_flag
+
+Create, destroy, or change a quest flag on an actor or posse. Works inside `roll_gate` boon lists so you can gate flag changes behind a skill check.
+
+| Field | Type | Description |
+|---|---|---|
+| `mode` | dropdown | `set` (create/update) or `delete` (remove) |
+| `scope_type` | dropdown | `actor` (flag on the triggering actor) or `posse` (flag on all player members of the actor's posse) |
+| `flag_key` | text | Flag key name |
+| `flag_value` | text | Value to set (ignored in delete mode) |
+
+**Example — persuade check sets a flag that diverts a conversation:**
+
+Put a `roll_gate` boon (persuade, TN 5) on a dialog response, with a `modify_flag` boon in `pass_boons`:
+```json
+{
+  "type": "roll_gate",
+  "trait_key": "spirit",
+  "skill_key": "persuasion",
+  "tn": 5,
+  "pass_boons": [
+    { "type": "modify_flag", "mode": "set", "scope_type": "actor", "flag_key": "persuaded_guard", "flag_value": true }
+  ]
+}
+```
+Then in the dialog tree, a node-level `flag_condition` checks `persuaded_guard` and diverts to a different branch.
+
+### flag_condition
+
+Two-sided conditional gate based on quest flags. Checks an actor's `quest_flags` (actor scope) or `posse_quest_flags` (posse scope) with 9 operators. When satisfied → `satisfied_boons` run; when not → `unsatisfied_boons` run.
+
+| Field | Type | Description |
+|---|---|---|
+| `scope_type` | dropdown | `actor` or `posse` |
+| `flag_key` | text | Flag key name |
+| `operator` | dropdown | `exists`, `not_exists`, `equals`, `not_equals`, `greater`, `less`, `greater_eq`, `less_eq`, `contains`, `starts_with` |
+| `expected_value` | text | Expected value to compare against |
+| `satisfied_boons` | boon_list | Boons to apply when condition is met |
+| `unsatisfied_boons` | boon_list | Boons to apply when condition is not met |
+
+---
+
 ## Regions and Pathfinding
 
 ### Setting up regions

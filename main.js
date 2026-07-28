@@ -31,6 +31,7 @@ import {
 	wire_behaviour_tab_events,
 } from "./lib/actor_behaviour_tab.js";
 import { register_keys } from "./lib/key_register.js";
+import { register_boons } from "./lib/boons/register_boons.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -446,6 +447,9 @@ Hooks.once("dcReady", async () => {
 
 	// Register the key gear type (door keys for NPCs and players)
 	await register_keys();
+
+	// Register boon types (modify_flag, flag_condition)
+	register_boons();
 
 	// Expose module API
 	const mod = game.modules.get(MODULE_ID);
