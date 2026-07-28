@@ -291,6 +291,89 @@
 	font-style: italic;
 }
 
+/* ── Flag Conditions (node + response level) ── */
+.dc-dialog-editor-flag-conditions-section {
+	margin: 8px 0 12px;
+	padding: 6px 8px;
+	border: 1px solid var(--color-border-light);
+	border-radius: 4px;
+	background: var(--color-bg-option);
+}
+
+.dc-dialog-editor-flag-conditions-hint {
+	font-size: 11px;
+	color: var(--color-text-secondary);
+	margin-bottom: 6px;
+}
+
+.dc-dialog-editor-flag-condition-row {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	margin-bottom: 3px;
+}
+
+.dc-flag-cond-scope {
+	flex: 0.8;
+	min-width: 70px;
+	width: auto;
+}
+
+.dc-flag-cond-key {
+	flex: 1.5;
+	min-width: 80px;
+}
+
+.dc-flag-cond-op {
+	flex: 1;
+	min-width: 90px;
+}
+
+.dc-flag-cond-val {
+	flex: 1;
+	min-width: 60px;
+}
+
+.dc-dialog-editor-flag-cond-delete {
+	flex-shrink: 0;
+	padding: 2px 6px;
+}
+
+.dc-dialog-editor-else-goto {
+	margin-top: 6px;
+}
+
+.dc-dialog-editor-response-conditions {
+	margin-top: 4px;
+	padding: 4px 6px;
+	border-left: 2px solid var(--color-border-light);
+}
+
+.dc-dialog-editor-conditions-label {
+	font-size: 11px;
+	font-weight: 600;
+	color: var(--color-text-secondary);
+	margin-bottom: 3px;
+}
+
+/* ── Flag scope selectors ── */
+.dc-flag-cond-scope {
+	flex-shrink: 0;
+	min-width: 70px;
+}
+
+.dc-dialog-editor-set-flags-scope {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-left: 6px;
+}
+
+.dc-dialog-editor-set-flags-scope span {
+	font-size: 11px;
+	color: var(--color-text-secondary);
+}
+
 /* ── Ambient Set Editor ── */
 .dc-ambient-editor-app {
 	min-width: 600px;

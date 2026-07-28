@@ -17,6 +17,50 @@
 		<textarea data-node-field="npc_text" rows="4">{{selected_node.npc_text}}</textarea>
 	</label>
 
+	<div class="dc-dialog-editor-flag-conditions-section">
+		<div class="editor-subsection-title">{{localize "dc-npc-patrols.dialog.flag_conditions"}}</div>
+		<div class="dc-dialog-editor-flag-conditions-hint">{{localize "dc-npc-patrols.dialog.flag_conditions_node_hint"}}</div>
+		<div class="dc-dialog-editor-flag-conditions-table" data-node-flag-conditions>
+			{{#each selected_node.flag_conditions}}
+			<div class="dc-dialog-editor-flag-condition-row" data-flag-condition-idx="{{@index}}">
+				<select data-node-flag-cond-field="{{@index}}:scope" class="dc-flag-cond-scope">
+					<option value="actor" {{#if (eq this.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
+					<option value="posse" {{#if (eq this.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
+				</select>
+				<input type="text" data-node-flag-cond-field="{{@index}}:flag_key" value="{{this.flag_key}}" placeholder="{{localize 'dc-npc-patrols.dialog.flag_key'}}" class="dc-flag-cond-key" />
+				<select data-node-flag-cond-field="{{@index}}:operator" class="dc-flag-cond-op">
+					<option value="exists" {{#if (eq this.operator "exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_exists"}}</option>
+					<option value="not_exists" {{#if (eq this.operator "not_exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_exists"}}</option>
+					<option value="equals" {{#if (eq this.operator "equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_equals"}}</option>
+					<option value="not_equals" {{#if (eq this.operator "not_equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_equals"}}</option>
+					<option value="greater" {{#if (eq this.operator "greater")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater"}}</option>
+					<option value="less" {{#if (eq this.operator "less")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less"}}</option>
+					<option value="greater_eq" {{#if (eq this.operator "greater_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater_eq"}}</option>
+					<option value="less_eq" {{#if (eq this.operator "less_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less_eq"}}</option>
+					<option value="contains" {{#if (eq this.operator "contains")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_contains"}}</option>
+					<option value="starts_with" {{#if (eq this.operator "starts_with")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_starts_with"}}</option>
+				</select>
+				<input type="text" data-node-flag-cond-field="{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-flag-cond-val" />
+				<button type="button" class="dc-dialog-editor-flag-cond-delete" data-node-flag-cond-delete="{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</div>
+			{{/each}}
+		</div>
+		<button type="button" class="editor-add-btn dc-flag-cond-add" data-action="add-node-flag-cond">
+			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_condition"}}
+		</button>
+		<label class="editor-field dc-dialog-editor-else-goto">
+			<span>{{localize "dc-npc-patrols.dialog.flag_conditions_else_goto"}}</span>
+			<select data-node-field="flag_conditions_else_goto">
+				<option value="" {{#unless selected_node.flag_conditions_else_goto}}selected{{/unless}}>{{localize "dc-npc-patrols.dialog.else_goto_none"}}</option>
+				{{#each @root.node_list}}
+				<option value="{{this.id}}" {{#if (eq this.id @root.selected_node.flag_conditions_else_goto)}}selected{{/if}}>{{this.label}}</option>
+				{{/each}}
+			</select>
+		</label>
+	</div>
+
 	<div class="dialog-responses-section">
 		<div class="editor-subsection-title">{{localize "dc-npc-patrols.dialog.responses"}}</div>
 		{{#each selected_node.responses}}
@@ -43,6 +87,46 @@
 				<label>{{localize "dc-npc-patrols.dialog.set_flags"}}
 					<input type="text" data-response-field="{{@index}}:set_flags_text" value="{{this.set_flags_text}}" placeholder="flag1=true, flag2=1" />
 				</label>
+				<label class="dc-dialog-editor-set-flags-scope">
+					<span>{{localize "dc-npc-patrols.dialog.scope_label"}}</span>
+					<select data-response-field="{{@index}}:set_flags_scope">
+						<option value="actor" {{#if (eq this.set_flags_scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
+						<option value="posse" {{#if (eq this.set_flags_scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
+					</select>
+				</label>
+			</div>
+			<div class="dc-dialog-editor-response-conditions">
+				<div class="dc-dialog-editor-conditions-label">{{localize "dc-npc-patrols.dialog.flag_conditions"}}</div>
+				<div class="dc-dialog-editor-flag-conditions-table" data-response-flag-conditions="{{@index}}">
+					{{#each this.flag_conditions}}
+					<div class="dc-dialog-editor-flag-condition-row" data-response-flag-cond-idx="{{@../index}}:{{@index}}">
+						<select data-response-flag-cond-field="{{@../index}}:{{@index}}:scope" class="dc-flag-cond-scope">
+							<option value="actor" {{#if (eq this.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
+							<option value="posse" {{#if (eq this.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
+						</select>
+						<input type="text" data-response-flag-cond-field="{{@../index}}:{{@index}}:flag_key" value="{{this.flag_key}}" placeholder="{{localize 'dc-npc-patrols.dialog.flag_key'}}" class="dc-flag-cond-key" />
+						<select data-response-flag-cond-field="{{@../index}}:{{@index}}:operator" class="dc-flag-cond-op">
+							<option value="exists" {{#if (eq this.operator "exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_exists"}}</option>
+							<option value="not_exists" {{#if (eq this.operator "not_exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_exists"}}</option>
+							<option value="equals" {{#if (eq this.operator "equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_equals"}}</option>
+							<option value="not_equals" {{#if (eq this.operator "not_equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_equals"}}</option>
+							<option value="greater" {{#if (eq this.operator "greater")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater"}}</option>
+							<option value="less" {{#if (eq this.operator "less")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less"}}</option>
+							<option value="greater_eq" {{#if (eq this.operator "greater_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater_eq"}}</option>
+							<option value="less_eq" {{#if (eq this.operator "less_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less_eq"}}</option>
+							<option value="contains" {{#if (eq this.operator "contains")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_contains"}}</option>
+							<option value="starts_with" {{#if (eq this.operator "starts_with")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_starts_with"}}</option>
+						</select>
+						<input type="text" data-response-flag-cond-field="{{@../index}}:{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-flag-cond-val" />
+						<button type="button" class="dc-dialog-editor-flag-cond-delete" data-response-flag-cond-delete="{{@../index}}:{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
+							<i class="fa-solid fa-trash"></i>
+						</button>
+					</div>
+					{{/each}}
+				</div>
+				<button type="button" class="editor-add-btn dc-flag-cond-add" data-action="add-response-flag-cond" data-response-flag-cond-add="{{@index}}">
+					<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_condition"}}
+				</button>
 			</div>
 			<div class="dc-dialog-editor-boons" data-boon-list="{{@index}}"></div>
 		</div>
