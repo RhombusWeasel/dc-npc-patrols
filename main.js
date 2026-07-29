@@ -9,6 +9,7 @@
 import { RegionManager } from "./lib/region_manager.js";
 import { PatrolHub } from "./lib/patrol_hub.js";
 import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
+import { register_terrain_cost_behavior } from "./lib/terrain_cost_behavior.js";
 import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
 import { BTEngine } from "./lib/bt_engine.js";
@@ -383,6 +384,7 @@ Hooks.once("init", () => {
 	register_helpers();
 	register_scene_control();
 	register_dialog_behaviors();
+	register_terrain_cost_behavior();
 });
 
 async function _preload_partials() {

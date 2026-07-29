@@ -2,13 +2,15 @@
 	"TYPES": {
 		"RegionBehavior": {
 			"dc-npc-patrols.dcDialogTree": "DC Dialog Tree",
-			"dc-npc-patrols.dcAmbient": "DC Ambient Lines"
+			"dc-npc-patrols.dcAmbient": "DC Ambient Lines",
+			"dc-npc-patrols.dcTerrainCost": "DC Terrain Cost"
 		}
 	},
 	"TYPES.HINTS": {
 		"RegionBehavior": {
 			"dc-npc-patrols.dcDialogTree": "Opens a branching conversation when a player enters the region.",
-			"dc-npc-patrols.dcAmbient": "Whispers a random flavour line when a player enters the region."
+			"dc-npc-patrols.dcAmbient": "Whispers a random flavour line when a player enters the region.",
+			"dc-npc-patrols.dcTerrainCost": "Assigns a movement cost multiplier to terrain. NPCs will prefer cheaper routes when alternatives exist."
 		}
 	},
 	"dc-npc-patrols": {
@@ -293,6 +295,12 @@
 			"dcAmbient": {
 				"label": "DC Ambient Lines",
 				"hint": "Whispers a random flavour line when a player enters the region."
+			},
+			"dcTerrainCost": {
+				"label": "DC Terrain Cost",
+				"hint": "Assigns a movement cost multiplier to terrain covered by this region. NPCs will prefer cheaper routes when alternatives exist.",
+				"cost": "Terrain Cost",
+				"cost_hint": "Movement cost multiplier. 1.0 = normal terrain, 2.0 = twice as expensive, etc. Minimum 1.0."
 			}
 		},
 		"chat": {

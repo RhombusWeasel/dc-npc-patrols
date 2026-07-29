@@ -30,7 +30,8 @@
 	"documentTypes": {
 		"RegionBehavior": {
 			"dcDialogTree": {},
-			"dcAmbient": {}
+			"dcAmbient": {},
+			"dcTerrainCost": {}
 		}
 	},
 	"relationships": {
