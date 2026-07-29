@@ -298,10 +298,16 @@ Create, destroy, or change a quest flag on an actor or posse. Works inside `roll
 
 | Field | Type | Description |
 |---|---|---|
-| `mode` | dropdown | `set` (create/update) or `delete` (remove) |
+| `mode` | dropdown | `set` (create/update to absolute value), `increment` (add to current numeric value), or `delete` (remove) |
 | `scope_type` | dropdown | `actor` (flag on the triggering actor) or `posse` (flag on all player members of the actor's posse) |
 | `flag_key` | text | Flag key name |
-| `flag_value` | text | Value to set (ignored in delete mode) |
+| `flag_value` | text | Value to set, or the delta to increment by (ignored in delete mode) |
+
+**Modes:**
+
+- **`set`** — creates or overwrites the flag with the given value (absolute assignment).
+- **`increment`** — reads the current flag value, parses it as a number (missing/non-numeric treated as 0), adds `flag_value`, and stores the result. Use a negative `flag_value` to decrement. Ideal for tracking scores like NPC opinion, reputation, or relationship.
+- **`delete`** — removes the flag entirely.
 
 **Example — persuade check sets a flag that diverts a conversation:**
 
@@ -318,6 +324,25 @@ Put a `roll_gate` boon (persuade, TN 5) on a dialog response, with a `modify_fla
 }
 ```
 Then in the dialog tree, a node-level `flag_condition` checks `persuaded_guard` and diverts to a different branch.
+
+**Example — increment an NPC opinion score:**
+
+A `roll_gate` on a dialog response (persuade, TN 5) with an `increment` `modify_flag` in `pass_boons`:
+```json
+{
+  "type": "roll_gate",
+  "trait_key": "spirit",
+  "skill_key": "persuasion",
+  "tn": 5,
+  "pass_boons": [
+    { "type": "modify_flag", "mode": "increment", "scope_type": "actor", "flag_key": "guard_opinion", "flag_value": 1 }
+  ],
+  "fail_boons": [
+    { "type": "modify_flag", "mode": "increment", "scope_type": "actor", "flag_key": "guard_opinion", "flag_value": -1 }
+  ]
+}
+```
+Then a `flag_condition` boon can check `guard_opinion` with `greater_eq` / `less_eq` operators to route different conversation branches based on the score.
 
 ### flag_condition
 
