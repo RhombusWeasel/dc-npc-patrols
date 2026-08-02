@@ -33,6 +33,26 @@ import {
 } from "./lib/actor_behaviour_tab.js";
 import { register_keys } from "./lib/key_register.js";
 import { register_boons } from "./lib/boons/register_boons.js";
+import {
+	validate_bt_tree,
+	serialize_bt_export,
+	parse_bt_import,
+	prepare_imported_tree,
+} from "./lib/bt_io.js";
+import {
+	list_fragments,
+	clone_subtree,
+	would_create_cycle,
+	collect_variable_defs,
+	make_subtree_node,
+	generate_fragment_prefix,
+	prefix_fragment_variables,
+} from "./lib/bt_subtree.js";
+import {
+	migrate_node_types,
+	repair_misplaced_child_nodes,
+} from "./lib/bt_tree_repair.js";
+import { get_builtin_fragments, get_builtin_fragment } from "./lib/fragments/builtin_fragments.js";
 
 // --- Module globals ---
 const MODULE_ID = "dc-npc-patrols";
@@ -469,6 +489,25 @@ Hooks.once("dcReady", async () => {
 		register_variable_type,
 		init_bt_nodes,
 		get_all_nodes,
+		// BT validation, import/export (from bt_io.js)
+		validate_bt_tree,
+		serialize_bt_export,
+		parse_bt_import,
+		prepare_imported_tree,
+		// Fragment operations (from bt_subtree.js)
+		list_fragments,
+		clone_subtree,
+		would_create_cycle,
+		collect_variable_defs,
+		make_subtree_node,
+		generate_fragment_prefix,
+		prefix_fragment_variables,
+		// Tree repair (from bt_tree_repair.js)
+		migrate_node_types,
+		repair_misplaced_child_nodes,
+		// Built-in fragments (from lib/fragments/builtin_fragments.js)
+		get_builtin_fragments,
+		get_builtin_fragment,
 	};
 
 	Hooks.on("dc.combat.npc_turn_start", async (entry) => {

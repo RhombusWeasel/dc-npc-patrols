@@ -94,6 +94,38 @@
 			</div>
 			{{/each}}
 		</div>
+
+		{{#if (or palette_fragments.length builtin_fragments.length)}}
+		<hr class="bt-palette-divider">
+		<div class="bt-palette">
+			{{#if palette_fragments.length}}
+			<div class="bt-palette-group">
+				<div class="bt-palette-group-label bt-node-stripe-reference">{{localize "dc-npc-patrols.bt.palette_fragments"}}</div>
+				<div class="bt-palette-chips">
+					{{#each palette_fragments}}
+					<div class="bt-palette-chip bt-node-stripe-reference" data-palette-fragment="{{this.id}}" draggable="true" title="{{this.name}}">
+						<i class="fa-solid fa-puzzle-piece"></i>
+						<span>{{this.name}}</span>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			{{/if}}
+			{{#if builtin_fragments.length}}
+			<div class="bt-palette-group">
+				<div class="bt-palette-group-label bt-node-stripe-utility">{{localize "dc-npc-patrols.bt.palette_builtin_fragments"}}</div>
+				<div class="bt-palette-chips">
+					{{#each builtin_fragments}}
+					<div class="bt-palette-chip bt-node-stripe-utility" data-palette-builtin-fragment="{{this.id}}" draggable="true" title="{{this.description}}">
+						<i class="fa-solid fa-puzzle-piece"></i>
+						<span>{{this.name}}</span>
+					</div>
+					{{/each}}
+				</div>
+			</div>
+			{{/if}}
+		</div>
+		{{/if}}
 	</details>
 	{{/if}}
 </div>

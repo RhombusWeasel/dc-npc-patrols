@@ -22,6 +22,21 @@
 		<input type="text" data-node-label value="{{selected_node._label}}" placeholder="{{localize 'dc-npc-patrols.editor.node_label_optional'}}" />
 	</label>
 
+	<div class="bt-detail-actions">
+		<button type="button" class="bt-detail-action-btn" data-action="save-as-fragment" {{#unless can_save_as_fragment}}disabled{{/unless}}>
+			<i class="fa-solid fa-floppy-disk"></i> {{localize "dc-npc-patrols.bt.save_as_fragment"}}
+		</button>
+		<select data-fragment-link-select class="bt-detail-action-select" {{#unless can_link_fragment}}disabled{{/unless}}>
+			<option value="">{{localize "dc-npc-patrols.bt.link_fragment_ellipsis"}}</option>
+			{{#each fragments}}
+			<option value="{{this.id}}">{{this.name}}</option>
+			{{/each}}
+		</select>
+		<button type="button" class="bt-detail-action-btn" data-action="link-fragment" {{#unless can_link_fragment}}disabled{{/unless}}>
+			<i class="fa-solid fa-link"></i> {{localize "dc-npc-patrols.bt.link_fragment"}}
+		</button>
+	</div>
+
 	{{#if selected_node_is_root}}
 	<label class="editor-field">
 		<span>{{localize "dc-npc-patrols.editor.root_type"}}</span>
