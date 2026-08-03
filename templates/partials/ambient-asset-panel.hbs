@@ -15,6 +15,16 @@
 		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.ambient.add_set"}}
 	</button>
 
+	<div class="bt-io-row">
+		<button type="button" data-action="export-set" class="editor-add-btn bt-io-btn" {{#unless selected_set_id}}disabled{{/unless}}>
+			<i class="fa-solid fa-download"></i> {{localize "dc-npc-patrols.ambient.export_set"}}
+		</button>
+		<button type="button" data-action="import-set" class="editor-add-btn bt-io-btn">
+			<i class="fa-solid fa-upload"></i> {{localize "dc-npc-patrols.ambient.import_set"}}
+		</button>
+		<input type="file" accept=".json,application/json" data-ambient-import-input hidden />
+	</div>
+
 	{{#if selected_set}}
 	<label class="editor-field">
 		<span>{{localize "dc-npc-patrols.ambient.set_name"}}</span>

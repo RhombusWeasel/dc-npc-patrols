@@ -230,6 +230,11 @@
 			"cant_delete_last_node": "Cannot delete the last node in a tree.",
 			"select_tree": "Select or create a dialog tree to begin.",
 			"select_node": "Select a node to edit.",
+			"export_tree": "Export",
+			"import_tree": "Import",
+			"export_success": "Exported \"{name}\".",
+			"import_success": "Imported dialog tree \"{name}\".",
+			"import_invalid": "Invalid dialog tree file. Check console for details.",
 			"node_missing": "This node no longer exists.",
 			"exit": "Leave Conversation",
 			"tree_id": "Dialog Tree ID",
@@ -269,7 +274,12 @@
 			"delete_set_confirm": "Delete this ambient set?",
 			"select_set": "Select or create an ambient set to begin.",
 			"set_id": "Ambient Set ID",
-			"actor_id": "NPC Actor ID"
+			"actor_id": "NPC Actor ID",
+			"export_set": "Export",
+			"import_set": "Import",
+			"export_success": "Exported \"{name}\".",
+			"import_success": "Imported ambient set \"{name}\".",
+			"import_invalid": "Invalid ambient set file. Check console for details."
 		},
 		"attachment": {
 			"dialog_attachments": "Dialog Attachments",

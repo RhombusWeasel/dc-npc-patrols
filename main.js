@@ -40,6 +40,14 @@ import {
 	prepare_imported_tree,
 } from "./lib/bt_io.js";
 import {
+	serialize_dialog_export,
+	parse_dialog_import,
+	prepare_imported_dialog,
+	serialize_ambient_export,
+	parse_ambient_import,
+	prepare_imported_ambient,
+} from "./lib/dialog_io.js";
+import {
 	list_fragments,
 	clone_subtree,
 	would_create_cycle,
@@ -494,6 +502,14 @@ Hooks.once("dcReady", async () => {
 		serialize_bt_export,
 		parse_bt_import,
 		prepare_imported_tree,
+		// Dialog tree import/export (from dialog_io.js)
+		serialize_dialog_export,
+		parse_dialog_import,
+		prepare_imported_dialog,
+		// Ambient set import/export (from dialog_io.js)
+		serialize_ambient_export,
+		parse_ambient_import,
+		prepare_imported_ambient,
 		// Fragment operations (from bt_subtree.js)
 		list_fragments,
 		clone_subtree,

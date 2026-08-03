@@ -15,6 +15,16 @@
 		<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_tree"}}
 	</button>
 
+	<div class="bt-io-row">
+		<button type="button" data-action="export-tree" class="editor-add-btn bt-io-btn" {{#unless selected_tree_id}}disabled{{/unless}}>
+			<i class="fa-solid fa-download"></i> {{localize "dc-npc-patrols.dialog.export_tree"}}
+		</button>
+		<button type="button" data-action="import-tree" class="editor-add-btn bt-io-btn">
+			<i class="fa-solid fa-upload"></i> {{localize "dc-npc-patrols.dialog.import_tree"}}
+		</button>
+		<input type="file" accept=".json,application/json" data-dialog-import-input hidden />
+	</div>
+
 	{{#if selected_tree}}
 	<details class="editor-asset-settings" open>
 		<summary>{{localize "dc-npc-patrols.editor.tree_settings"}}</summary>
