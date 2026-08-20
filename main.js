@@ -25,6 +25,7 @@ import { clear_active_combat_turn } from "./lib/combat_turn.js";
 import { register_combat_flows } from "./lib/bt_combat_flows.js";
 import { register_node, register_variable_type, init_bt_nodes, get_all_nodes } from "./lib/nodes/loader.js";
 import { bt_debug_enabled, bt_log } from "./lib/bt_debug.js";
+import { invalidate_region_cells_cache } from "./lib/utils.js";
 import { register_active_bt_token_hooks } from "./lib/bt_active_tokens.js";
 import { register_hub_scene_cache_hooks } from "./lib/hub_scene_cache.js";
 import {
@@ -80,6 +81,7 @@ const DEFAULTS = {
 	proximity_radius: 2,
 	combat_freeze: true,
 	nav_resolution: 4,
+	bt_path_budget_ms: 15,
 	block_tokens: true,
 	npc_door_sounds: false,
 	bt_tick_interval_ms: 2000,
@@ -194,12 +196,22 @@ function register_settings() {
 		type: Number,
 		default: DEFAULTS.nav_resolution,
 		onChange: () => {
+			invalidate_region_cells_cache();
 			if (_pathfinding) {
 				for (const scene of game.scenes) {
 					_pathfinding.invalidate(scene.id);
 				}
 			}
 		},
+	});
+
+	game.settings.register(MODULE_ID, "bt_path_budget_ms", {
+		name: game.i18n.localize("dc-npc-patrols.settings.bt_path_budget_ms.name"),
+		hint: game.i18n.localize("dc-npc-patrols.settings.bt_path_budget_ms.hint"),
+		scope: "world",
+		config: true,
+		type: Number,
+		default: DEFAULTS.bt_path_budget_ms,
 	});
 
 	game.settings.register(MODULE_ID, "npc_door_sounds", {
@@ -621,14 +633,17 @@ Hooks.once("dcReady", async () => {
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("createRegion", (region) => {
+		invalidate_region_cells_cache(region.parent.id);
 		_pathfinding.invalidate(region.parent.id);
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("updateRegion", (region) => {
+		invalidate_region_cells_cache(region.parent.id);
 		_pathfinding.invalidate(region.parent.id);
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("deleteRegion", (region) => {
+		invalidate_region_cells_cache(region.parent.id);
 		_pathfinding.invalidate(region.parent.id);
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
