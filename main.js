@@ -81,7 +81,6 @@ const DEFAULTS = {
 	proximity_radius: 2,
 	combat_freeze: true,
 	nav_resolution: 4,
-	bt_path_budget_ms: 15,
 	block_tokens: true,
 	npc_door_sounds: false,
 	bt_tick_interval_ms: 2000,
@@ -203,15 +202,6 @@ function register_settings() {
 				}
 			}
 		},
-	});
-
-	game.settings.register(MODULE_ID, "bt_path_budget_ms", {
-		name: game.i18n.localize("dc-npc-patrols.settings.bt_path_budget_ms.name"),
-		hint: game.i18n.localize("dc-npc-patrols.settings.bt_path_budget_ms.hint"),
-		scope: "world",
-		config: true,
-		type: Number,
-		default: DEFAULTS.bt_path_budget_ms,
 	});
 
 	game.settings.register(MODULE_ID, "npc_door_sounds", {
