@@ -376,6 +376,11 @@
 				"range": "Compares distance to a blackboard target against a threshold.",
 				"variable": "Checks a tree template variable resolved for this NPC.",
 				"set_token_image": "Sets, restores, or resets the token texture for visual state changes.",
+				"fire_boons": "Fires a list of Deadlands boons (damage, healing, statuses, teleport, pool/trait/skill changes, roll gates, etc.) against the NPC or a blackboard target.",
+				"roll_gate": "Runs a Deadlands skill/trait/formula check (with fate chip dialog) and branches on the result.",
+				"set_blackboard": "Writes a key/value onto the NPC's blackboard so the tree can remember state across ticks.",
+				"teleport": "Instantly teleports the NPC or a blackboard target token to a named region.",
+				"blackboard": "Checks a value on the NPC's blackboard against an operator.",
 				"condition_character": {
 					"description": "Checks character pools, traits, skills, gear, flags, edges, equipment, statuses, or scalar stats.",
 					"check_type": {

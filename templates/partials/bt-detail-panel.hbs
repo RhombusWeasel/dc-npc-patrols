@@ -91,6 +91,8 @@
 			<input type="checkbox" data-node-prop="{{this.key}}" {{#if (lookup ../node_field_values this.key)}}checked{{/if}} />
 			{{else if (eq this.type "number")}}
 			<input type="number" data-node-prop="{{this.key}}" value="{{lookup ../node_field_values this.key}}" />
+			{{else if (eq this.type "boon_list")}}
+			<div class="dc-bt-boon-list" data-boon-list="{{this.key}}"></div>
 			{{else}}
 			<input type="text" data-node-prop="{{this.key}}" value="{{lookup ../node_field_values this.key}}" />
 			{{/if}}
