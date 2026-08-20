@@ -632,19 +632,30 @@ Hooks.once("dcReady", async () => {
 		_pathfinding.invalidate(wall.parent.id);
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
+	// Only a region that alters the nav grid (stairs / terrain cost) needs to
+	// invalidate pathfinding — which also drops in-progress A* sessions. Dialog
+	// and ambient regions are auto-attached to a token and reposition every time
+	// that NPC moves, so invalidating on every updateRegion would wipe every
+	// long-distance path search before it can resume across ticks.
+	function _region_affects_nav(region) {
+		if (!region?.behaviors) return false;
+		return region.behaviors.some((b) =>
+			b.type === "changeLevel" || b.type === `${MODULE_ID}.dcTerrainCost`
+		);
+	}
 	Hooks.on("createRegion", (region) => {
 		invalidate_region_cells_cache(region.parent.id);
-		_pathfinding.invalidate(region.parent.id);
+		if (_region_affects_nav(region)) _pathfinding.invalidate(region.parent.id);
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("updateRegion", (region) => {
 		invalidate_region_cells_cache(region.parent.id);
-		_pathfinding.invalidate(region.parent.id);
+		if (_region_affects_nav(region)) _pathfinding.invalidate(region.parent.id);
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
 	Hooks.on("deleteRegion", (region) => {
 		invalidate_region_cells_cache(region.parent.id);
-		_pathfinding.invalidate(region.parent.id);
+		if (_region_affects_nav(region)) _pathfinding.invalidate(region.parent.id);
 		if (_path_debug?._active) _path_debug._render_struct();
 	});
 
