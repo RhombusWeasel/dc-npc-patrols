@@ -25,24 +25,24 @@
       <th class="center width-5" title='{{localize "dc.shared.view"}}'><i class="fas fa-magnifying-glass" /></th>
       {{/is_gm}}
     </tr>
-    {{#each actor.system.char.gear.keys as |key|}}
+    {{#each actor.system.char.gear.keys as |key keyName|}}
       <tr>
         <td class="center">{{key.count}}</td>
         <td class="left">{{key.label}}</td>
         <td class="center">{{sum key.count '*' (sum key.weight '/' key.quantity)}}</td>
         <td class="right">{{format_currency (sum key.count '*' (sum key.cost '/' key.quantity))}}</td>
-        <td class="center use-key" data-action="useItem" data-path="char.gear.keys" data-key="{{@key}}">
+        <td class="center use-key" data-action="useItem" data-path="char.gear.keys" data-key="{{keyName}}">
           <a class="fas fa-key" title="{{localize 'dc-npc-patrols.key.use_key'}}: {{key.label}}" />
         </td>
         {{#is_gm}}
-        <td class="center edit-path" data-action="editPath" data-path="char.gear.keys" data-key="{{@key}}">
+        <td class="center edit-path" data-action="editPath" data-path="char.gear.keys" data-key="{{keyName}}">
           <a class="fas fa-pen-nib" title="{{localize 'dc.shared.edit'}} {{key.label}}" />
         </td>
-        <td class="center delete-path" data-action="deletePath" data-path="char.gear.keys.{{@key}}">
+        <td class="center delete-path" data-action="deletePath" data-path="char.gear.keys.{{keyName}}">
           <a class="fas fa-trash" title="{{localize 'dc.shared.trash'}} {{key.label}}?" />
         </td>
         {{else}}
-        <td class="center view-path" data-action="viewPath" data-path="char.gear.keys" data-key="{{@key}}">
+        <td class="center view-path" data-action="viewPath" data-path="char.gear.keys" data-key="{{keyName}}">
           <a class="fas fa-magnifying-glass" title="{{localize 'dc.shared.view'}} {{key.label}}" />
         </td>
         {{/is_gm}}

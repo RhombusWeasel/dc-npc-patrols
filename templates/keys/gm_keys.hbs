@@ -18,16 +18,16 @@
       <th class="center width-5" title="{{localize "dc.shared.duplicate"}}"><i class="fas fa-copy" /></th>
       <th class="center width-5" title="{{localize "dc.shared.trash"}}"><i class="fas fa-trash" /></th>
     </tr>
-    {{#each this.gear.keys as |key|}}
+    {{#each this.gear.keys as |key keyName|}}
       <tr>
         <td class="right pad-right-4">{{key.quantity}}</td>
         <td class="left">{{key.label}}</td>
         <td class="left pad-left-10 typed-small">{{#if key.wall_uuid}}{{key.wall_uuid}}{{else}}<i class="fas fa-minus" style="opacity:0.4"/>{{/if}}</td>
         <td class="right pad-right-4">{{key.weight}}</td>
         <td class="right">{{format_currency key.cost}}</td>
-        <td data-action="editPath" class="center edit-path" data-path="gear.keys" data-key="{{@key}}"><a class="fas fa-pen-nib" title="{{localize "dc.shared.edit"}} {{key.label}}"/></td>
-        <td data-action="duplicatePath" class="center duplicate-path" data-path="gear.keys" data-key="{{@key}}"><a class="fas fa-copy" title="{{localize "dc.shared.duplicate"}} {{key.label}}"/></td>
-        <td data-action="deletePath" class="center delete-path" data-path="gear.keys.{{@key}}"><a class="fas fa-trash" title="{{localize "dc.shared.trash"}} {{key.label}}?"/></td>
+        <td data-action="editPath" class="center edit-path" data-path="gear.keys" data-key="{{keyName}}"><a class="fas fa-pen-nib" title="{{localize "dc.shared.edit"}} {{key.label}}"/></td>
+        <td data-action="duplicatePath" class="center duplicate-path" data-path="gear.keys" data-key="{{keyName}}"><a class="fas fa-copy" title="{{localize "dc.shared.duplicate"}} {{key.label}}"/></td>
+        <td data-action="deletePath" class="center delete-path" data-path="gear.keys.{{keyName}}"><a class="fas fa-trash" title="{{localize "dc.shared.trash"}} {{key.label}}?"/></td>
       </tr>
     {{/each}}
   </table>
