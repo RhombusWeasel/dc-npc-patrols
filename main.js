@@ -107,12 +107,15 @@ function register_settings() {
 		default: {},
 	});
 
-	game.settings.register(MODULE_ID, "ambient_sets", {
+	// World-level JSON storage for dialog tree folders
+	game.settings.register(MODULE_ID, "dialog_folders", {
 		scope: "world",
 		config: false,
 		type: Object,
 		default: {},
 	});
+
+	// World-level JSON storage for behaviour trees
 
 	// World-level JSON storage for behaviour trees
 	game.settings.register(MODULE_ID, "behaviour_trees", {

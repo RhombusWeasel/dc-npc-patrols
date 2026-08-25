@@ -1253,13 +1253,62 @@
 	grid-column: span 1;
 }
 
-.editor-asset-list {
+/* ── Dialog tree folders ── */
+.dialog-folder-group {
+	border: 1px solid var(--color-border-faint);
+	border-radius: 4px;
+	margin-bottom: 4px;
+}
+
+.dialog-folder-header {
 	display: flex;
-	flex-direction: column;
-	gap: 2px;
-	margin-bottom: 8px;
-	max-height: 200px;
-	overflow-y: auto;
+	align-items: center;
+	gap: 6px;
+	cursor: pointer;
+	padding: 4px 6px;
+	font-size: 0.85em;
+	font-weight: bold;
+	color: var(--color-text-secondary);
+}
+
+.dialog-folder-header:hover {
+	background: var(--color-bg-option);
+}
+
+.dialog-folder-name {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.dialog-folder-count {
+	font-size: 0.75em;
+	opacity: 0.6;
+}
+
+.dialog-folder-children {
+	padding: 2px 6px 6px 16px;
+}
+
+.dialog-folder-empty {
+	color: var(--color-text-secondary);
+	font-style: italic;
+	font-size: 0.8em;
+	padding: 4px 2px;
+}
+
+.dialog-folder-group[data-unfiled-drop] .dialog-folder-children {
+	border-top: 1px dashed var(--color-border-faint);
+}
+
+.dialog-folder-group.bt-drop-inside {
+	border-color: var(--color-accent);
+	box-shadow: 0 0 0 1px var(--color-accent);
+}
+
+.editor-asset-btn-dragging {
+	opacity: 0.4;
 }
 
 .editor-asset-item {
