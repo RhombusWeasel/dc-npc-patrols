@@ -1,0 +1,23 @@
+<section class="dc-patrol-dialog-tab">
+	<h3 class="center">{{localize "dc-npc-patrols.sheet.attached_dialog_trees"}}</h3>
+	{{#if tree_names.length}}
+	<ul class="center" style="list-style:none; padding:0; margin:0;">
+		{{#each tree_names}}
+		<li><strong>{{this}}</strong></li>
+		{{/each}}
+	</ul>
+	{{else}}
+	<p class="center">{{localize "dc-npc-patrols.sheet.no_attached_dialog_trees"}}</p>
+	{{/if}}
+
+	{{#if dialog_variable_fields.length}}
+	<h3 class="center" style="margin-top: 16px;">{{localize "dc-npc-patrols.sheet.tree_variables"}}</h3>
+	{{> dialog-variables-fields}}
+	{{/if}}
+
+	<div class="center" style="margin-top: 16px;">
+		<button type="button" data-action="open-patrol-hub" class="patrol-btn">
+			<i class="fa-solid fa-route"></i> {{localize "dc-npc-patrols.sheet.open_hub"}}
+		</button>
+	</div>
+</section>

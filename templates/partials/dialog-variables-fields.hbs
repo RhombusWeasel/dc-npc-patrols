@@ -4,11 +4,11 @@
 	<div class="actor-flag-row flexrow" style="gap:8px; align-items:center; margin-top:8px;">
 		<label>{{this.label}}{{#if this.default}} <span class="bt-var-default-hint">({{localize "dc-npc-patrols.sheet.var_default"}}: {{this.default}})</span>{{/if}}</label>
 		{{#if (eq this.type "boolean")}}
-		<input type="checkbox" data-dialog-var="{{this.key}}" {{#if this.checked}}checked{{/if}} />
+		<input type="checkbox" data-dialog-var="{{this.key}}" data-var-type="{{this.type}}" {{#if this.checked}}checked{{/if}} />
 		{{else if (eq this.type "number")}}
-		<input type="number" data-dialog-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />
+		<input type="number" data-dialog-var="{{this.key}}" data-var-type="{{this.type}}" value="{{this.value}}" placeholder="{{this.default}}" />
 		{{else}}
-		<input type="text" data-dialog-var="{{this.key}}" value="{{this.value}}" placeholder="{{this.default}}" />
+		<input type="text" data-dialog-var="{{this.key}}" data-var-type="{{this.type}}" value="{{this.value}}" placeholder="{{this.default}}" />
 		{{/if}}
 	</div>
 	{{/each}}

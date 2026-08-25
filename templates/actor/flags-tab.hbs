@@ -1,0 +1,53 @@
+<section class="dc-patrol-flags-tab">
+	<h3 class="center">{{localize "dc-npc-patrols.sheet.player_flags"}}</h3>
+	<p class="center" style="font-size: 0.9em;">{{localize "dc-npc-patrols.sheet.player_flags_hint"}}</p>
+	<table class="dc-flag-table" style="width:100%; border-collapse:collapse;">
+		<thead>
+			<tr>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.flag_key"}}</th>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.flag_value"}}</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each player_flags}}
+			<tr data-flag-row="quest_flags">
+				<td><input type="text" data-flag-key-input value="{{this.key}}" style="width:100%;" /></td>
+				<td><input type="text" data-flag-value-input value="{{this.value}}" style="width:100%;" /></td>
+				<td><button type="button" data-action="delete-flag" data-flag-scope="quest_flags" data-flag-index="{{@index}}" class="patrol-btn" title="{{localize "dc-npc-patrols.sheet.delete_flag"}}"><i class="fa-solid fa-trash"></i></button></td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	<div class="center" style="margin-top: 8px;">
+		<button type="button" data-action="add-flag" data-flag-scope="quest_flags" class="patrol-btn">
+			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.sheet.add_flag"}}
+		</button>
+	</div>
+
+	<h3 class="center" style="margin-top: 20px;">{{localize "dc-npc-patrols.sheet.posse_flags"}}</h3>
+	<p class="center" style="font-size: 0.9em;">{{localize "dc-npc-patrols.sheet.posse_flags_hint"}}</p>
+	<table class="dc-flag-table" style="width:100%; border-collapse:collapse;">
+		<thead>
+			<tr>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.flag_key"}}</th>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.flag_value"}}</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each posse_flags}}
+			<tr data-flag-row="posse_quest_flags">
+				<td><input type="text" data-flag-key-input value="{{this.key}}" style="width:100%;" /></td>
+				<td><input type="text" data-flag-value-input value="{{this.value}}" style="width:100%;" /></td>
+				<td><button type="button" data-action="delete-flag" data-flag-scope="posse_quest_flags" data-flag-index="{{@index}}" class="patrol-btn" title="{{localize "dc-npc-patrols.sheet.delete_flag"}}"><i class="fa-solid fa-trash"></i></button></td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	<div class="center" style="margin-top: 8px;">
+		<button type="button" data-action="add-flag" data-flag-scope="posse_quest_flags" class="patrol-btn">
+			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.sheet.add_flag"}}
+		</button>
+	</div>
+</section>

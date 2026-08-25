@@ -150,6 +150,8 @@
 		},
 		"sheet": {
 			"tab_behaviour": "Behaviour",
+			"tab_dialog": "Dialog",
+			"tab_flags": "Flags",
 			"assigned_bt": "Assigned Behaviour Tree",
 			"tree_variables": "Tree Variables",
 			"var_default": "default",
@@ -159,7 +161,17 @@
 			"var_no_dialog_trees": "Create dialog trees in World Content",
 			"var_no_ambient_sets": "Create ambient sets in World Content",
 			"var_no_fragments": "Create fragments in World Content",
-			"open_hub": "Open Patrol Hub"
+			"open_hub": "Open Patrol Hub",
+			"attached_dialog_trees": "Attached Dialog Trees",
+			"no_attached_dialog_trees": "No dialog trees attached.",
+			"player_flags": "Player Flags",
+			"player_flags_hint": "Player-scope quest flags (drift_met_*, drift_know_*).",
+			"posse_flags": "Posse Flags",
+			"posse_flags_hint": "Posse-scope quest flags (drift_*).",
+			"flag_key": "Key",
+			"flag_value": "Value",
+			"add_flag": "Add Flag",
+			"delete_flag": "Delete Flag"
 		},
 		"marshal": {
 			"time_tab": "Time",

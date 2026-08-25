@@ -32,6 +32,14 @@ import {
 	prepare_behaviour_tab_context,
 	wire_behaviour_tab_events,
 } from "./lib/actor_behaviour_tab.js";
+import {
+	prepare_dialog_tab_context,
+	wire_dialog_tab_events,
+} from "./lib/actor_dialog_tab.js";
+import {
+	prepare_flags_tab_context,
+	wire_flags_tab_events,
+} from "./lib/actor_flags_tab.js";
 import { register_keys } from "./lib/key_register.js";
 import { register_boons } from "./lib/boons/register_boons.js";
 import {
@@ -446,6 +454,8 @@ async function _preload_partials() {
 		["ambient-editor", "templates/ambient-editor.hbs"],
 		["bt-editor", "templates/bt-editor.hbs"],
 		["behaviour-tab", "templates/actor/behaviour-tab.hbs"],
+		["dialog-tab", "templates/actor/dialog-tab.hbs"],
+		["flags-tab", "templates/actor/flags-tab.hbs"],
 		["marshal-time-tab", "templates/marshal/time-tab.hbs"],
 		["bt-variables-fields", "templates/partials/bt-variables-fields.hbs"],
 		["dialog-variables-fields", "templates/partials/dialog-variables-fields.hbs"],
@@ -565,6 +575,32 @@ Hooks.once("dcReady", async () => {
 			visible: (actor) => !!actor.getFlag(MODULE_ID, "bt_id"),
 			prepare: prepare_behaviour_tab_context,
 			on_render: wire_behaviour_tab_events,
+		});
+	}
+
+	if (game.dc?.register_actor_tab) {
+		game.dc.register_actor_tab(`${MODULE_ID}.dialog`, {
+			id: "patrol_dialog",
+			label: "dc-npc-patrols.sheet.tab_dialog",
+			template: "dialog-tab",
+			order: 51,
+			types: ["npc", "critter", "abomination"],
+			visible: (actor) => (actor.getFlag(MODULE_ID, "dialog_attachments") || []).length > 0,
+			prepare: prepare_dialog_tab_context,
+			on_render: wire_dialog_tab_events,
+		});
+	}
+
+	if (game.dc?.register_actor_tab) {
+		game.dc.register_actor_tab(`${MODULE_ID}.flags`, {
+			id: "patrol_flags",
+			label: "dc-npc-patrols.sheet.tab_flags",
+			template: "flags-tab",
+			order: 52,
+			types: ["character"],
+			visible: (actor) => game.user.isGM,
+			prepare: prepare_flags_tab_context,
+			on_render: wire_flags_tab_events,
 		});
 	}
 
