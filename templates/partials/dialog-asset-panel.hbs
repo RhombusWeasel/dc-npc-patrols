@@ -1,12 +1,15 @@
 <div class="dialog-asset-panel">
 	<div class="editor-asset-list">
 		{{#each trees}}
-		<details class="dialog-folder-group" data-folder-drop="{{this.folder_id}}" {{#if this.is_unfiled}}data-unfiled-drop{{/if}}>
-			<summary class="dialog-folder-header">
+		<details class="dialog-folder-group" data-folder-drop="{{this.folder_id}}" data-folder-select="{{this.folder_id}}" draggable="true" {{#if this.is_unfiled}}data-unfiled-drop{{/if}}>
+			<summary class="dialog-folder-header" style="padding-left: calc({{this.depth}} * 14px + 6px)">
 				<i class="fa-solid fa-folder"></i>
 				<span class="dialog-folder-name">{{this.folder_name}}</span>
 				<span class="dialog-folder-count">{{this.trees.length}}</span>
 				{{#if this.folder_id}}
+				<button type="button" data-action="add-subfolder" data-add-subfolder="{{this.folder_id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.new_subfolder'}}">
+					<i class="fa-solid fa-folder-plus"></i>
+				</button>
 				<button type="button" data-folder-rename="{{this.folder_id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.rename_folder'}}">
 					<i class="fa-solid fa-pen"></i>
 				</button>
