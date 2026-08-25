@@ -115,7 +115,13 @@ function register_settings() {
 		default: {},
 	});
 
-	// World-level JSON storage for behaviour trees
+	// World-level JSON storage for ambient line sets
+	game.settings.register(MODULE_ID, "ambient_sets", {
+		scope: "world",
+		config: false,
+		type: Object,
+		default: {},
+	});
 
 	// World-level JSON storage for behaviour trees
 	game.settings.register(MODULE_ID, "behaviour_trees", {
