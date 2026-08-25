@@ -34,6 +34,18 @@
 		{{/if}}
 		{{/if}}
 	</div>
+	<!-- Dialog Variables -->
+	{{#if dialog_variable_fields.length}}
+	<div class="hub-npc-section">
+		<div class="hub-npc-section-title">
+			<i class="fa-solid fa-comments"></i> {{localize "dc-npc-patrols.dialog.variables"}}
+		</div>
+		<div class="hub-npc-subsection">
+			<div class="hub-npc-subsection-title">{{localize "dc-npc-patrols.dialog.variables"}}</div>
+			{{> "modules/dc-npc-patrols/templates/partials/dialog-variables-fields.hbs"}}
+		</div>
+	</div>
+	{{/if}}
 
 	<!-- Token Settings -->
 	{{#if token_settings}}

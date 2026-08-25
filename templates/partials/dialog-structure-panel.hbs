@@ -1,13 +1,36 @@
 {{#if selected_tree}}
 <div class="dialog-structure-panel">
+	{{#if can_link_fragment}}
+	<div class="dialog-structure-link">
+		<label>{{localize "dc-npc-patrols.dialog.link_fragment"}}
+			<select data-fragment-link-select>
+				<option value="">{{localize "dc-npc-patrols.dialog.select_fragment"}}</option>
+				{{#each available_fragments}}
+				<option value="{{this.id}}">{{this.name}}</option>
+				{{/each}}
+			</select>
+		</label>
+		<button type="button" data-action="link-fragment" class="editor-add-btn">
+			<i class="fa-solid fa-link"></i> {{localize "dc-npc-patrols.dialog.link_fragment"}}
+		</button>
+	</div>
+	{{/if}}
+	<div class="dialog-map-list">
 	{{#each node_map}}
 	<div class="dialog-map-row {{#if this.selected}}selected{{/if}}" data-node-select="{{this.id}}" role="button" tabindex="0">
 		<div class="dialog-map-row-header">
 			<span class="dialog-map-node-id">
 				{{#if this.is_root}}<i class="fa-solid fa-star dialog-map-root" title="{{localize 'dc-npc-patrols.editor.root_node_marker'}}"></i>{{/if}}
+				{{#if this.is_ref}}<i class="fa-solid fa-link dialog-map-ref"></i>{{/if}}
 				{{this.label}}
 			</span>
-			<span class="dialog-map-response-count">{{this.response_count}} {{localize "dc-npc-patrols.editor.responses_count"}}</span>
+			<span class="dialog-map-response-count">
+				{{#if this.is_ref}}
+				<span class="dialog-map-ref-label">{{this.ref_label}}</span>
+				{{else}}
+				{{this.response_count}} {{localize "dc-npc-patrols.editor.responses_count"}}
+				{{/if}}
+			</span>
 		</div>
 		{{#if this.preview}}
 		<div class="dialog-map-preview">"{{this.preview}}"</div>
@@ -30,6 +53,7 @@
 		{{/if}}
 	</div>
 	{{/each}}
+	</div>
 </div>
 {{else}}
 <div class="editor-panel-empty">{{localize "dc-npc-patrols.dialog.select_tree"}}</div>
