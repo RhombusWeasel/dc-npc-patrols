@@ -1171,7 +1171,7 @@
 
 .dc-dialog-editor.editor-shell.editor-shell-3col {
 	display: grid;
-	grid-template-columns: 220px minmax(260px, 0.65fr) minmax(320px, 1.35fr);
+	grid-template-columns: 1fr 1fr 1fr;
 }
 
 .dc-dialog-editor .editor-panel {
