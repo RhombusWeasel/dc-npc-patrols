@@ -1,40 +1,7 @@
 <div class="dialog-asset-panel">
 	<div class="editor-asset-list">
 		{{#each trees}}
-		<details class="dialog-folder-group" data-folder-drop="{{this.folder_id}}" data-folder-select="{{this.folder_id}}" draggable="true" {{#if this.is_unfiled}}data-unfiled-drop{{/if}}>
-			<summary class="dialog-folder-header" style="padding-left: calc({{this.depth}} * 14px + 6px)">
-				<i class="fa-solid fa-folder"></i>
-				<span class="dialog-folder-name">{{this.folder_name}}</span>
-				<span class="dialog-folder-count">{{this.trees.length}}</span>
-				{{#if this.folder_id}}
-				<button type="button" data-action="add-subfolder" data-add-subfolder="{{this.folder_id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.new_subfolder'}}">
-					<i class="fa-solid fa-folder-plus"></i>
-				</button>
-				<button type="button" data-folder-rename="{{this.folder_id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.rename_folder'}}">
-					<i class="fa-solid fa-pen"></i>
-				</button>
-				<button type="button" data-folder-delete="{{this.folder_id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.delete_folder'}}">
-					<i class="fa-solid fa-trash"></i>
-				</button>
-				{{/if}}
-			</summary>
-			<div class="dialog-folder-children">
-				{{#each this.trees}}
-				<div class="editor-asset-item">
-					<button type="button" data-tree-select="{{this.id}}" class="editor-asset-btn {{#if (eq this.id ../../selected_tree_id)}}active{{/if}}" draggable="true" title="{{localize 'dc-npc-patrols.dialog.drag_to_folder'}}">
-						<i class="fa-solid fa-comments"></i>
-						{{#if this.is_fragment}}<span class="bt-fragment-badge">{{localize "dc-npc-patrols.dialog.fragment_badge"}}</span>{{/if}}
-						{{this.name}}
-					</button>
-					<button type="button" data-tree-delete="{{this.id}}" class="editor-asset-delete" title="{{localize 'dc-npc-patrols.dialog.delete_tree'}}">
-						<i class="fa-solid fa-trash"></i>
-					</button>
-				</div>
-				{{else}}
-				<div class="dialog-folder-empty">{{localize "dc-npc-patrols.dialog.folder_empty"}}</div>
-				{{/each}}
-			</div>
-		</details>
+		{{> dialog-folder-group}}
 		{{/each}}
 	</div>
 	<button type="button" data-action="add-folder" class="editor-add-btn">
