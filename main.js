@@ -437,6 +437,7 @@ async function _preload_partials() {
 		["bt-structure-panel", "templates/partials/bt-structure-panel.hbs"],
 		["bt-detail-panel", "templates/partials/bt-detail-panel.hbs"],
 		["dialog-asset-panel", "templates/partials/dialog-asset-panel.hbs"],
+		["dialog-folder-group", "templates/partials/dialog-folder-group.hbs"],
 		["dialog-structure-panel", "templates/partials/dialog-structure-panel.hbs"],
 		["dialog-detail-panel", "templates/partials/dialog-detail-panel.hbs"],
 		["ambient-asset-panel", "templates/partials/ambient-asset-panel.hbs"],
