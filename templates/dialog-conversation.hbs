@@ -13,7 +13,7 @@
 	<div class="dc-dialog-responses">
 		{{#each responses}}
 		<button type="button" class="dc-dialog-response" data-response-id="{{this.id}}">
-			<span class="dc-dialog-response-text">{{this.text}}</span>
+			<span class="dc-dialog-response-text">{{#if this.resolved_text}}{{this.resolved_text}}{{else}}{{this.text}}{{/if}}</span>
 			{{#if this.once}}
 			<span class="dc-dialog-once-badge" title="{{localize 'dc-npc-patrols.dialog.once_tooltip'}}">
 				<i class="fa-solid fa-clock-rotate-left"></i>

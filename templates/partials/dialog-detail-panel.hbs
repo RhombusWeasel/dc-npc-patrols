@@ -7,6 +7,31 @@
 		</button>
 	</div>
 
+	{{#if selected_node.is_ref}}
+	<div class="dc-dialog-ref-section">
+		<div class="editor-subsection-title">{{localize "dc-npc-patrols.dialog.dialog_ref_node"}}</div>
+		<p class="dc-dialog-ref-hint">{{localize "dc-npc-patrols.dialog.dialog_ref_hint"}}</p>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.dialog.linked_fragment"}}</span>
+			<select data-node-field="tree_id">
+				<option value="">{{localize "dc-npc-patrols.dialog.select_fragment"}}</option>
+				{{#each @root.available_fragments}}
+				<option value="{{this.id}}" {{#if (eq this.id @root.selected_node.tree_id)}}selected{{/if}}>{{this.name}}</option>
+				{{/each}}
+			</select>
+		</label>
+		<label class="editor-field">
+			<span>{{localize "dc-npc-patrols.dialog.return_to"}}</span>
+			<select data-node-field="return_to">
+				<option value="" {{#unless selected_node.return_to}}selected{{/unless}}>{{localize "dc-npc-patrols.dialog.exit_conversation"}}</option>
+				{{#each @root.node_list}}
+				<option value="{{this.id}}" {{#if (eq this.id @root.selected_node.return_to)}}selected{{/if}}>{{this.label}}</option>
+				{{/each}}
+			</select>
+		</label>
+	</div>
+	{{else}}
+
 	<label class="editor-field">
 		<span>{{localize "dc-npc-patrols.dialog.node_id"}}</span>
 		<input type="text" data-node-field="id" value="{{selected_node.id}}" />
@@ -135,6 +160,7 @@
 			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_response"}}
 		</button>
 	</div>
+	{{/if}}
 </div>
 {{else if selected_tree}}
 <div class="editor-panel-empty">{{localize "dc-npc-patrols.dialog.select_node"}}</div>

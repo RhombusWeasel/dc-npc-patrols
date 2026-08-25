@@ -438,6 +438,7 @@ async function _preload_partials() {
 		["behaviour-tab", "templates/actor/behaviour-tab.hbs"],
 		["marshal-time-tab", "templates/marshal/time-tab.hbs"],
 		["bt-variables-fields", "templates/partials/bt-variables-fields.hbs"],
+		["dialog-variables-fields", "templates/partials/dialog-variables-fields.hbs"],
 	];
 
 	for (const [name, path] of partials) {
