@@ -90,6 +90,7 @@
 			"world_dialog_hint": "Shared conversation trees — attach them to individual NPCs under Interactions.",
 			"world_ambient_hint": "Shared flavour line sets — attach them to individual NPCs under Interactions.",
 			"world_bt_hint": "Shared AI decision trees — assign them to individual NPCs under Behaviour.",
+			"world_quests_hint": "Author quest definitions here; grant them to posses with modify_quest boons and edit live posse state in the middle column.",
 			"npc_hint": "Behaviour trees decide what this NPC does. Assign a tree and configure its variables.",
 			"section_token_settings": "Token Settings",
 			"token_settings": {

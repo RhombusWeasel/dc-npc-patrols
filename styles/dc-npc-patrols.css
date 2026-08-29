@@ -1110,7 +1110,8 @@
 .dc-patrol-hub .hub-world-view-fill > .editor-shell,
 .dc-patrol-hub .hub-world-view-fill > .dc-dialog-editor,
 .dc-patrol-hub .hub-world-view-fill > .dc-ambient-editor,
-.dc-patrol-hub .hub-world-view-fill > .dc-bt-editor {
+.dc-patrol-hub .hub-world-view-fill > .dc-bt-editor,
+.dc-patrol-hub .hub-world-view-fill > .dc-quest-editor {
 	flex: 1;
 	width: 100%;
 	height: 100%;
@@ -1261,6 +1262,31 @@
 	color: var(--color-text-secondary);
 	font-style: italic;
 	font-size: 0.9em;
+}
+
+/* ── Quest Editor ── */
+.dc-quest-editor .dc-quest-var-row {
+	display: grid;
+	grid-template-columns: 1fr 80px 70px auto;
+	gap: 4px;
+	align-items: center;
+	margin-bottom: 4px;
+}
+
+.dc-quest-editor .dc-quest-var-row .editor-asset-delete {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.dc-quest-editor .dc-quest-save-btn {
+	margin-top: 10px;
+}
+
+.dc-quest-completed-field {
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
 }
 
 .editor-panel-detail-wide {
