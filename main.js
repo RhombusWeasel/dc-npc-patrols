@@ -40,8 +40,10 @@ import {
 	prepare_flags_tab_context,
 	wire_flags_tab_events,
 } from "./lib/actor_flags_tab.js";
+import { prepare_quests_tab_context, wire_quests_tab_events } from "./lib/actor_quests_tab.js";
 import { register_keys } from "./lib/key_register.js";
 import { register_boons } from "./lib/boons/register_boons.js";
+import { register_quest_socket, on_quest_change, posse_quest_change_broadcaster } from "./lib/quest_socket.js";
 import {
 	validate_bt_tree,
 	serialize_bt_export,
@@ -133,6 +135,14 @@ function register_settings() {
 
 	// World-level JSON storage for behaviour trees
 	game.settings.register(MODULE_ID, "behaviour_trees", {
+		scope: "world",
+		config: false,
+		type: Object,
+		default: {},
+	});
+
+	// World-level JSON storage for quest definitions (instances live per-posse)
+	game.settings.register(MODULE_ID, "quest_defs", {
 		scope: "world",
 		config: false,
 		type: Object,
@@ -441,6 +451,7 @@ async function _preload_partials() {
 		["scene-view", "templates/partials/scene-view.hbs"],
 		["npc-detail", "templates/partials/npc-detail.hbs"],
 		["editor-shell", "templates/partials/editor-shell.hbs"],
+		["quest-editor", "templates/partials/quest-editor.hbs"],
 		["bt-asset-panel", "templates/partials/bt-asset-panel.hbs"],
 		["bt-structure-panel", "templates/partials/bt-structure-panel.hbs"],
 		["bt-detail-panel", "templates/partials/bt-detail-panel.hbs"],
@@ -456,6 +467,7 @@ async function _preload_partials() {
 		["behaviour-tab", "templates/actor/behaviour-tab.hbs"],
 		["dialog-tab", "templates/actor/dialog-tab.hbs"],
 		["flags-tab", "templates/actor/flags-tab.hbs"],
+		["quests-tab", "templates/actor/quests-tab.hbs"],
 		["marshal-time-tab", "templates/marshal/time-tab.hbs"],
 		["bt-variables-fields", "templates/partials/bt-variables-fields.hbs"],
 		["dialog-variables-fields", "templates/partials/dialog-variables-fields.hbs"],
@@ -501,8 +513,15 @@ Hooks.once("dcReady", async () => {
 	// Register the key gear type (door keys for NPCs and players)
 	await register_keys();
 
-	// Register boon types (modify_flag, flag_condition)
+	// Register boon types (modify_flag, flag_condition, modify_quest)
 	register_boons();
+
+	// Quest socket: player→GM writes + quest_state broadcast cache. Must come
+	// after register_boons so it can re-render whichever surface is open.
+	register_quest_socket();
+	on_quest_change(() => {
+		if (_panel) _panel.render();
+	});
 
 	// Expose module API
 	const mod = game.modules.get(MODULE_ID);
@@ -601,6 +620,19 @@ Hooks.once("dcReady", async () => {
 			visible: (actor) => game.user.isGM,
 			prepare: prepare_flags_tab_context,
 			on_render: wire_flags_tab_events,
+		});
+	}
+
+	if (game.dc?.register_actor_tab) {
+		game.dc.register_actor_tab(`${MODULE_ID}.quests`, {
+			id: "patrol_quests",
+			label: "dc-npc-patrols.sheet.tab_quests",
+			template: "quests-tab",
+			order: 53,
+			types: ["character"],
+			visible: (actor) => true,
+			prepare: prepare_quests_tab_context,
+			on_render: wire_quests_tab_events,
 		});
 	}
 

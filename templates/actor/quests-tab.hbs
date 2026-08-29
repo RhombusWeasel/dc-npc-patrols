@@ -1,0 +1,38 @@
+<section class="dc-patrol-quests-tab">
+	{{#if (not has_posse)}}
+	<p class="center">{{localize "dc-npc-patrols.sheet.quests_no_posse"}}</p>
+	{{else}}
+	<h3 class="center">{{posse_label}} — {{localize "dc-npc-patrols.sheet.tab_quests"}}</h3>
+	{{#if quests.length}}
+	<table class="dc-flag-table" style="width:100%; border-collapse:collapse;">
+		<thead>
+			<tr>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.flag_key"}}</th>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.quests.stage"}}</th>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.quests_progress_col"}}</th>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.quests_completed_col"}}</th>
+				{{#if is_gm}}<th></th>{{/if}}
+			</tr>
+		</thead>
+		<tbody>
+			{{#each quests}}
+			<tr style="{{#if this.completed}}opacity:0.55; text-decoration:line-through;{{/if}}">
+				<td style="padding: 4px;">
+					{{this.title}}
+					{{#if this.giver}}<span style="font-style:italic; opacity:0.7;"> — {{this.giver}}</span>{{/if}}
+				</td>
+				<td style="padding: 4px;">{{#if this.completed}}—{{else}}{{this.stage_label}}{{/if}}</td>
+				<td style="padding: 4px;">{{this.progress}}</td>
+				<td style="padding: 4px;">{{#if this.completed}}{{localize "dc-npc-patrols.sheet.quests_complete"}}{{else}}{{localize "dc-npc-patrols.sheet.quests_active"}}{{/if}}</td>
+				{{#if ../is_gm}}
+				<td><button type="button" class="patrol-btn" data-action="delete-posse-quest" data-quest-id="{{this.id}}" title="{{localize 'dc-npc-patrols.sheet.quests_delete_instance'}}"><i class="fa-solid fa-trash"></i></button></td>
+				{{/if}}
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	{{else}}
+	<p class="center">{{localize "dc-npc-patrols.sheet.quests_none"}}</p>
+	{{/if}}
+	{{/if}}
+</section>

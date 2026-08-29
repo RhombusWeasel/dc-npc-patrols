@@ -26,6 +26,12 @@
 			</div>
 			{{/if}}
 
+			{{#if (eq active_view 'world_quests')}}
+			<div class="hub-world-view-fill">
+				{{> quest-editor}}
+			</div>
+			{{/if}}
+
 			{{#if (eq active_view 'npc')}}
 			{{#if selected_actor}}
 			{{> npc-detail}}

@@ -1,0 +1,112 @@
+<div class="dc-quest-editor editor-two-col">
+	<div class="hub-world-asset-col">
+		<div class="editor-asset-header">
+			<span>{{localize "dc-npc-patrols.quests.defs"}}</span>
+			<button type="button" class="editor-add-btn" data-action="quest-add-def">
+				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.quests.add_def"}}
+			</button>
+		</div>
+		<div class="editor-asset-list">
+			{{#each quest_defs}}
+			<button type="button" class="editor-asset-item {{#if (eq this.id ../selected_def_id)}}active{{/if}}" data-quest-def-select="{{this.id}}">
+				<span class="editor-asset-name">{{this.title}}</span>
+				<button type="button" class="editor-asset-delete" data-quest-def-delete="{{this.id}}" title="{{localize 'dc-npc-patrols.quests.delete_def'}}">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</button>
+			{{/each}}
+			{{#unless quest_defs.length}}
+			<div class="editor-panel-empty">{{localize "dc-npc-patrols.quests.no_defs"}}</div>
+			{{/unless}}
+		</div>
+
+		<div class="editor-asset-header" style="margin-top: 14px;">
+			<span>{{localize "dc-npc-patrols.quests.posse_state"}}</span>
+		</div>
+		<select data-quest-posse-select>
+			<option value="">{{localize "dc-npc-patrols.quests.select_posse"}}</option>
+			{{#each posses}}
+			<option value="{{this.id}}" {{#if (eq this.id ../selected_posse_id)}}selected{{/if}}>{{this.label}}</option>
+			{{/each}}
+		</select>
+		<div class="editor-asset-list" style="margin-top: 8px;">
+			{{#each posse_quests}}
+			<button type="button" class="editor-asset-item {{#if (eq this.id ../selected_posse_quest_id)}}active{{/if}}" data-posse-quest-select="{{this.id}}">
+				<span class="editor-asset-name">{{this.title}}{{#if this.completed}} ✔{{/if}}</span>
+				<button type="button" class="editor-asset-delete" data-posse-quest-delete="{{this.id}}" title="{{localize 'dc-npc-patrols.quests.delete_instance'}}">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+			</button>
+			{{else}}
+			<div class="editor-panel-empty">{{localize "dc-npc-patrols.quests.no_posse_quests"}}</div>
+			{{/each}}
+		</div>
+	</div>
+
+	<div class="hub-world-detail-col">
+		{{#if working_def}}
+		<div class="editor-subsection-title">{{localize "dc-npc-patrols.quests.def_editor"}}</div>
+		<div class="editor-form-grid">
+			<label>{{localize "dc-npc-patrols.quests.title"}}</label>
+			<input type="text" data-quest-def-field="title" value="{{working_def.title}}" />
+			<label>{{localize "dc-npc-patrols.quests.giver"}}</label>
+			<input type="text" data-quest-def-field="giver" value="{{working_def.giver}}" />
+			<label>{{localize "dc-npc-patrols.dialog.tree_desc"}}</label>
+			<input type="text" data-quest-def-field="notes" value="{{working_def.notes}}" />
+			<label>{{localize "dc-npc-patrols.quests.stages"}}</label>
+			<textarea data-quest-def-field="stages" rows="4" placeholder="{{localize 'dc-npc-patrols.quests.stages_placeholder'}}">{{working_def.stages_text}}</textarea>
+			<label>{{localize "dc-npc-patrols.quests.vars"}}</label>
+			<div>
+				{{#each working_def.vars}}
+				<div class="quest-var-row" style="display:flex; gap:4px; margin-bottom:4px;">
+					<input type="text" data-quest-var-key="{{@index}}" value="{{this.key}}" placeholder="{{localize 'dc-npc-patrols.dialog.variable_key'}}" style="flex:1;" />
+					<select data-quest-var-type="{{@index}}">
+						<option value="text" {{#if (eq this.type "text")}}selected{{/if}}>Text</option>
+						<option value="number" {{#if (eq this.type "number")}}selected{{/if}}>Number</option>
+						<option value="boolean" {{#if (eq this.type "boolean")}}selected{{/if}}>Boolean</option>
+					</select>
+					<input type="text" data-quest-var-default="{{@index}}" value="{{this.default}}" placeholder="{{localize 'dc-npc-patrols.dialog.variable_default'}}" style="width:70px;" />
+					<button type="button" class="editor-asset-delete" data-quest-var-delete="{{@index}}"><i class="fa-solid fa-trash"></i></button>
+				</div>
+				{{/each}}
+				<button type="button" class="editor-add-btn" data-action="quest-add-var">
+					<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.quests.add_var"}}
+				</button>
+			</div>
+		</div>
+		<div class="center" style="margin-top: 10px;">
+			<button type="button" class="patrol-btn" data-action="quest-save-def">
+				<i class="fa-solid fa-floppy-disk"></i> {{localize "dc-npc-patrols.quests.save_def"}}
+			</button>
+		</div>
+
+		{{else if working_instance}}
+		<div class="editor-subsection-title">{{localize "dc-npc-patrols.quests.instance_editor"}}</div>
+		<p class="editor-panel-hint">{{working_instance.title}} — {{localize "dc-npc-patrols.quests.instance_hint"}}</p>
+		<div class="editor-form-grid">
+			<label>{{localize "dc-npc-patrols.quests.stage"}}</label>
+			<input type="number" data-quest-instance-field="stage" value="{{working_instance.stage}}" min="0" max="{{working_instance.max_stage}}" />
+			<label>{{localize "dc-npc-patrols.quests.completed"}}</label>
+			<input type="checkbox" data-quest-instance-field="completed" {{#if working_instance.completed}}checked{{/if}} />
+			{{#each working_instance.var_fields}}
+			<label>{{this.key}}</label>
+			{{#if (eq this.type "boolean")}}
+			<input type="checkbox" data-quest-instance-var="{{this.key}}" {{#if this.value}}checked{{/if}} />
+			{{else if (eq this.type "number")}}
+			<input type="number" data-quest-instance-var="{{this.key}}" value="{{this.value}}" />
+			{{else}}
+			<input type="text" data-quest-instance-var="{{this.key}}" value="{{this.value}}" />
+			{{/if}}
+			{{/each}}
+		</div>
+		<div class="center" style="margin-top: 10px;">
+			<button type="button" class="patrol-btn" data-action="quest-save-instance">
+				<i class="fa-solid fa-floppy-disk"></i> {{localize "dc-npc-patrols.quests.save_instance"}}
+			</button>
+		</div>
+
+		{{else}}
+		<div class="editor-panel-empty">{{localize "dc-npc-patrols.quests.select_hint"}}</div>
+		{{/if}}
+	</div>
+</div>
