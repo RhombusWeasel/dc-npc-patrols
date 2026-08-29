@@ -43,7 +43,7 @@ import {
 import { prepare_quests_tab_context, wire_quests_tab_events } from "./lib/actor_quests_tab.js";
 import { register_keys } from "./lib/key_register.js";
 import { register_boons } from "./lib/boons/register_boons.js";
-import { register_quest_socket, on_quest_change, posse_quest_change_broadcaster } from "./lib/quest_socket.js";
+import { register_quests_state_socket, on_quests_change } from "./lib/quest_socket.js";
 import {
 	validate_bt_tree,
 	serialize_bt_export,
@@ -516,10 +516,10 @@ Hooks.once("dcReady", async () => {
 	// Register boon types (modify_flag, flag_condition, modify_quest)
 	register_boons();
 
-	// Quest socket: player→GM writes + quest_state broadcast cache. Must come
+	// Posse-state transport (generic): socket + system ext hook. Must come
 	// after register_boons so it can re-render whichever surface is open.
-	register_quest_socket();
-	on_quest_change(() => {
+	register_quests_state_socket();
+	on_quests_change(() => {
 		if (_panel) _panel.render();
 	});
 
