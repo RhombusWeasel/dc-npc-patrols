@@ -630,6 +630,7 @@ Hooks.once("dcReady", async () => {
 			template: "quests-tab",
 			order: 53,
 			types: ["character"],
+			gm_only: false,
 			visible: (actor) => true,
 			prepare: prepare_quests_tab_context,
 			on_render: wire_quests_tab_events,
