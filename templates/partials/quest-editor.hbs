@@ -26,42 +26,8 @@
 
 	<section class="editor-panel editor-panel-structure">
 		<header class="editor-panel-header">
-			<span>{{localize "dc-npc-patrols.quests.posse_state"}}</span>
-		</header>
-		<div class="editor-panel-body">
-			<label class="editor-field">
-				<span>{{localize "dc-npc-patrols.quests.select_posse"}}</span>
-				<select data-quest-posse-select>
-					<option value="">{{localize "dc-npc-patrols.quests.select_posse"}}</option>
-					{{#each posses}}
-					<option value="{{this.id}}" {{#if (eq this.id ../selected_posse_id)}}selected{{/if}}>{{this.label}}</option>
-					{{/each}}
-				</select>
-			</label>
-			<div class="editor-asset-list">
-				{{#each posse_quests}}
-				<button type="button" class="editor-asset-item {{#if (eq this.id ../selected_posse_quest_id)}}active{{/if}}" data-posse-quest-select="{{this.id}}">
-					<span class="editor-asset-name">{{this.title}}{{#if this.completed}} ✔{{/if}}</span>
-					<button type="button" class="editor-asset-delete" data-posse-quest-delete="{{this.id}}" title="{{localize 'dc-npc-patrols.quests.delete_instance'}}">
-						<i class="fa-solid fa-trash"></i>
-					</button>
-				</button>
-				{{else}}
-				<div class="editor-panel-empty">{{localize "dc-npc-patrols.quests.no_posse_quests"}}</div>
-				{{/each}}
-			</div>
-		</div>
-	</section>
-
-	<section class="editor-panel editor-panel-detail">
-		<header class="editor-panel-header">
-			{{#if working_def}}
 			<span>{{localize "dc-npc-patrols.quests.def_editor"}}</span>
-			{{else if working_instance}}
-			<span>{{localize "dc-npc-patrols.quests.instance_editor"}}</span>
-			{{else}}
-			<span>{{localize "dc-npc-patrols.editor.detail"}}</span>
-			{{/if}}
+			{{#if working_def}}<span class="editor-panel-subtitle">{{working_def.title}}</span>{{/if}}
 		</header>
 		<div class="editor-panel-body">
 			{{#if working_def}}
@@ -100,8 +66,40 @@
 			<button type="button" class="editor-add-btn dc-quest-save-btn" data-action="quest-save-def">
 				<i class="fa-solid fa-floppy-disk"></i> {{localize "dc-npc-patrols.quests.save_def"}}
 			</button>
+			{{else}}
+			<div class="editor-panel-empty">{{localize "dc-npc-patrols.quests.select_def_hint"}}</div>
+			{{/if}}
+		</div>
+	</section>
 
-			{{else if working_instance}}
+	<section class="editor-panel editor-panel-detail">
+		<header class="editor-panel-header">
+			<span>{{localize "dc-npc-patrols.quests.posse_state"}}</span>
+		</header>
+		<div class="editor-panel-body">
+			<label class="editor-field">
+				<span>{{localize "dc-npc-patrols.quests.select_posse"}}</span>
+				<select data-quest-posse-select>
+					<option value="">{{localize "dc-npc-patrols.quests.select_posse"}}</option>
+					{{#each posses}}
+					<option value="{{this.id}}" {{#if (eq this.id ../selected_posse_id)}}selected{{/if}}>{{this.label}}</option>
+					{{/each}}
+				</select>
+			</label>
+			<div class="editor-asset-list">
+				{{#each posse_quests}}
+				<button type="button" class="editor-asset-item {{#if (eq this.id ../selected_posse_quest_id)}}active{{/if}}" data-posse-quest-select="{{this.id}}">
+					<span class="editor-asset-name">{{this.title}}{{#if this.completed}} ✔{{/if}}</span>
+					<button type="button" class="editor-asset-delete" data-posse-quest-delete="{{this.id}}" title="{{localize 'dc-npc-patrols.quests.delete_instance'}}">
+						<i class="fa-solid fa-trash"></i>
+					</button>
+				</button>
+				{{else}}
+				<div class="editor-panel-empty">{{localize "dc-npc-patrols.quests.no_posse_quests"}}</div>
+				{{/each}}
+			</div>
+			{{#if working_instance}}
+			<div class="editor-subsection-title" style="margin-top: 10px;">{{localize "dc-npc-patrols.quests.instance_editor"}}</div>
 			<p class="editor-hint dc-quest-instance-hint">{{working_instance.title}} — {{localize "dc-npc-patrols.quests.instance_hint"}}</p>
 			<label class="editor-field">
 				<span>{{localize "dc-npc-patrols.quests.stage"}}</span>
@@ -127,9 +125,6 @@
 			<button type="button" class="editor-add-btn dc-quest-save-btn" data-action="quest-save-instance">
 				<i class="fa-solid fa-floppy-disk"></i> {{localize "dc-npc-patrols.quests.save_instance"}}
 			</button>
-
-			{{else}}
-			<div class="editor-panel-empty">{{localize "dc-npc-patrols.quests.select_hint"}}</div>
 			{{/if}}
 		</div>
 	</section>

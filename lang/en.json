@@ -378,7 +378,8 @@
 			"stage": "Stage index",
 			"completed": "Completed",
 			"save_instance": "Save Quest State",
-			"select_hint": "Select a quest definition or a posse quest to edit."
+			"select_hint": "Select a quest definition or a posse quest to edit.",
+			"select_def_hint": "Select or create a quest definition to edit."
 		},
 		"attachment": {
 			"dialog_attachments": "Dialog Attachments",
