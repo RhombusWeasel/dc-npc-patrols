@@ -171,7 +171,14 @@
 			"flag_key": "Key",
 			"flag_value": "Value",
 			"add_flag": "Add Flag",
-			"delete_flag": "Delete Flag"
+			"delete_flag": "Delete Flag",
+			"conversation_state": "Conversation State",
+			"conversation_state_hint": "Dialog visits per tree (once-only tracking). Clear to replay a conversation from the top.",
+			"conversation_tree": "Tree",
+			"conversation_visited": "Visited",
+			"clear_seen": "Reset this conversation",
+			"clear_all_seen": "Clear All",
+			"conversation_state_none": "No conversations visited."
 		},
 		"marshal": {
 			"time_tab": "Time",
@@ -281,8 +288,7 @@
 			"op_starts_with": "Starts With",
 			"scope_label": "Store on",
 			"scope_actor": "Actor",
-			"scope_posse": "Posse"
-			,
+			"scope_posse": "Posse",
 			"kind_tree": "Full Tree",
 			"kind_fragment": "Fragment",
 			"new_fragment": "New Fragment",

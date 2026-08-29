@@ -50,4 +50,34 @@
 			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.sheet.add_flag"}}
 		</button>
 	</div>
+
+	<h3 class="center" style="margin-top: 20px;">{{localize "dc-npc-patrols.sheet.conversation_state"}}</h3>
+	<p class="center" style="font-size: 0.9em;">{{localize "dc-npc-patrols.sheet.conversation_state_hint"}}</p>
+	{{#if seen_trees.length}}
+	<table class="dc-flag-table" style="width:100%; border-collapse:collapse;">
+		<thead>
+			<tr>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.conversation_tree"}}</th>
+				<th style="text-align:left;">{{localize "dc-npc-patrols.sheet.conversation_visited"}}</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each seen_trees}}
+			<tr>
+				<td style="padding: 4px;">{{this.tree_name}}</td>
+				<td style="padding: 4px;">{{this.count}}</td>
+				<td><button type="button" data-action="clear-seen" data-tree-id="{{this.tree_id}}" class="patrol-btn" title="{{localize "dc-npc-patrols.sheet.clear_seen"}}"><i class="fa-solid fa-rotate-left"></i></button></td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+	<div class="center" style="margin-top: 8px;">
+		<button type="button" data-action="clear-seen" data-tree-id="" class="patrol-btn">
+			<i class="fa-solid fa-broom"></i> {{localize "dc-npc-patrols.sheet.clear_all_seen"}}
+		</button>
+	</div>
+	{{else}}
+	<p class="center" style="font-size: 0.9em; font-style: italic;">{{localize "dc-npc-patrols.sheet.conversation_state_none"}}</p>
+	{{/if}}
 </section>
