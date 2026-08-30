@@ -351,6 +351,9 @@
 .dc-cond-col-scope { width: 70px; }
 .dc-cond-col-op { width: 100px; }
 
+.dc-cond-table .dc-cond-col-order { width: 44px; white-space: nowrap; }
+.dc-cond-table .dc-cond-col-order button { padding: 0 3px; font-size: 9px; line-height: 1.2; }
+
 .dc-cond-table-nested {
 	margin: 2px 0 4px;
 }

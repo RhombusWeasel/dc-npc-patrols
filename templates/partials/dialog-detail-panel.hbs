@@ -91,66 +91,46 @@
 		<div class="dc-dialog-editor-diverts-section">
 			<div class="editor-subsection-title">{{localize "dc-npc-patrols.dialog.diverts"}}</div>
 			<div class="dc-dialog-editor-diverts-hint">{{localize "dc-npc-patrols.dialog.diverts_hint"}}</div>
-			<div class="dc-dialog-editor-diverts-table" data-node-diverts>
+			<table class="dc-cond-table" data-node-diverts>
+				<thead><tr><th class="dc-cond-col-scope">Scope</th><th>Flag</th><th class="dc-cond-col-op">Operator</th><th>Value</th><th>Go to</th><th class="dc-cond-col-order"></th><th></th></tr></thead>
+				<tbody>
 				{{#each selected_node.diverts}}
-				<div class="dc-dialog-editor-divert-row" data-divert-idx="{{@index}}">
-					<div class="dc-dialog-editor-divert-conds">
-						<table class="dc-cond-table dc-cond-table-nested">
-							<thead><tr><th class="dc-cond-col-scope">Scope</th><th>Flag</th><th class="dc-cond-col-op">Operator</th><th>Value</th><th></th></tr></thead>
-							<tbody>
-							{{#each this.conditions}}
-							<tr class="dc-dialog-editor-divert-cond-row" data-divert-cond-idx="{{@index}}">
-								<td><select data-node-divert-cond-field="{{@../index}}:{{@index}}:scope" class="dc-divert-cond-scope">
-								<option value="actor" {{#if (eq this.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
-								<option value="posse" {{#if (eq this.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
-							</select></td>
-								<td><input type="text" data-node-divert-cond-field="{{@../index}}:{{@index}}:flag_key" value="{{this.flag_key}}" placeholder="{{localize 'dc-npc-patrols.dialog.flag_key'}}" class="dc-divert-cond-key" /></td>
-								<td><select data-node-divert-cond-field="{{@../index}}:{{@index}}:operator" class="dc-divert-cond-op">
-								<option value="exists" {{#if (eq this.operator "exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_exists"}}</option>
-								<option value="not_exists" {{#if (eq this.operator "not_exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_exists"}}</option>
-								<option value="equals" {{#if (eq this.operator "equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_equals"}}</option>
-								<option value="not_equals" {{#if (eq this.operator "not_equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_equals"}}</option>
-								<option value="greater" {{#if (eq this.operator "greater")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater"}}</option>
-								<option value="less" {{#if (eq this.operator "less")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less"}}</option>
-								<option value="greater_eq" {{#if (eq this.operator "greater_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater_eq"}}</option>
-								<option value="less_eq" {{#if (eq this.operator "less_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less_eq"}}</option>
-								<option value="contains" {{#if (eq this.operator "contains")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_contains"}}</option>
-								<option value="starts_with" {{#if (eq this.operator "starts_with")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_starts_with"}}</option>
-							</select></td>
-								<td><input type="text" data-node-divert-cond-field="{{@../index}}:{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-divert-cond-val" /></td>
-								<td><button type="button" class="dc-divert-cond-delete" data-divert-cond-delete="{{@../index}}:{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
-								<i class="fa-solid fa-trash"></i>
-							</button></td>
-						</tr>
+				<tr class="dc-dialog-editor-divert-row" data-divert-idx="{{@index}}">
+					<td><select data-node-divert-cond-field="{{@index}}:0:scope" class="dc-divert-cond-scope">
+						<option value="actor" {{#if (eq this.conditions.0.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
+						<option value="posse" {{#if (eq this.conditions.0.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
+					</select></td>
+					<td><input type="text" data-node-divert-cond-field="{{@index}}:0:flag_key" value="{{this.conditions.0.flag_key}}" placeholder="{{localize 'dc-npc-patrols.dialog.flag_key'}}" class="dc-divert-cond-key" /></td>
+					<td><select data-node-divert-cond-field="{{@index}}:0:operator" class="dc-divert-cond-op">
+						<option value="exists" {{#if (eq this.conditions.0.operator "exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_exists"}}</option>
+						<option value="not_exists" {{#if (eq this.conditions.0.operator "not_exists")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_exists"}}</option>
+						<option value="equals" {{#if (eq this.conditions.0.operator "equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_equals"}}</option>
+						<option value="not_equals" {{#if (eq this.conditions.0.operator "not_equals")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_not_equals"}}</option>
+						<option value="greater" {{#if (eq this.conditions.0.operator "greater")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater"}}</option>
+						<option value="less" {{#if (eq this.conditions.0.operator "less")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less"}}</option>
+						<option value="greater_eq" {{#if (eq this.conditions.0.operator "greater_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_greater_eq"}}</option>
+						<option value="less_eq" {{#if (eq this.conditions.0.operator "less_eq")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_less_eq"}}</option>
+						<option value="contains" {{#if (eq this.conditions.0.operator "contains")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_contains"}}</option>
+						<option value="starts_with" {{#if (eq this.conditions.0.operator "starts_with")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_starts_with"}}</option>
+					</select></td>
+					<td><input type="text" data-node-divert-cond-field="{{@index}}:0:expected_value" value="{{this.conditions.0.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-divert-cond-val" /></td>
+					<td><select data-node-divert-goto="{{@index}}">
+						<option value="" {{#unless this.goto}}selected{{/unless}}>{{localize "dc-npc-patrols.dialog.else_goto_none"}}</option>
+						{{#each @root.node_list}}
+						<option value="{{this.id}}" {{#if (eq this.id ../this.goto)}}selected{{/if}}>{{this.label}}</option>
 						{{/each}}
-						</tbody>
-						</table>
-						<button type="button" class="editor-add-btn dc-divert-cond-add" data-divert-cond-add="{{@index}}">
-							<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_condition"}}
-						</button>
-					</div>
-					<div class="dc-dialog-editor-divert-goto">
-						<label>{{localize "dc-npc-patrols.dialog.divert_goto"}}
-							<select data-node-divert-goto="{{@index}}">
-								<option value="" {{#unless this.goto}}selected{{/unless}}>{{localize "dc-npc-patrols.dialog.else_goto_none"}}</option>
-								{{#each @root.node_list}}
-								<option value="{{this.id}}" {{#if (eq this.id ../this.goto)}}selected{{/if}}>{{this.label}}</option>
-								{{/each}}
-							</select>
-						</label>
-						<button type="button" class="dc-divert-delete" data-divert-delete="{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_divert'}}">
-							<i class="fa-solid fa-trash"></i>
-						</button>
-					</div>
-					{{#if @root.selected_node.diverts.length}}
-					<div class="dc-dialog-editor-divert-order">
+					</select></td>
+					<td class="dc-cond-col-order">
 						<button type="button" class="dc-divert-up" data-divert-up="{{@index}}" {{#if @first}}disabled{{/if}} title="Move up">▲</button>
 						<button type="button" class="dc-divert-down" data-divert-down="{{@index}}" title="Move down">▼</button>
-					</div>
-					{{/if}}
-				</div>
+					</td>
+					<td><button type="button" class="dc-divert-delete" data-divert-delete="{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_divert'}}">
+						<i class="fa-solid fa-trash"></i>
+					</button></td>
+				</tr>
 				{{/each}}
-			</div>
+				</tbody>
+			</table>
 			<button type="button" class="editor-add-btn dc-divert-add" data-action="add-node-divert">
 				<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_divert"}}
 			</button>
