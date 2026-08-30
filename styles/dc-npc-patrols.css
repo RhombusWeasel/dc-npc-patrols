@@ -305,19 +305,13 @@
 	font-style: italic;
 }
 
-/* ── Flag Conditions (node + response level) ── */
+/* ── Flag Conditions / Diverts (node + response level) ── */
 .dc-dialog-editor-flag-conditions-section {
 	margin: 8px 0 12px;
 	padding: 6px 8px;
 	border: 1px solid var(--color-border-light);
 	border-radius: 4px;
 	background: var(--color-bg-option);
-}
-
-.dc-dialog-editor-flag-conditions-hint {
-	font-size: 11px;
-	color: var(--color-text-secondary);
-	margin-bottom: 6px;
 }
 
 .dc-cond-table {
@@ -373,10 +367,6 @@
 .dc-dialog-editor-flag-cond-delete {
 	flex-shrink: 0;
 	padding: 2px 6px;
-}
-
-.dc-dialog-editor-else-goto {
-	margin-top: 6px;
 }
 
 .dc-dialog-editor-response-conditions {
