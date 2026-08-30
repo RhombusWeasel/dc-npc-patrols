@@ -9,6 +9,7 @@
 import { RegionManager } from "./lib/region_manager.js";
 import { PatrolHub } from "./lib/patrol_hub.js";
 import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
+import { migrate_dialog_diverts, run_dialog_diverts_migration } from "./lib/dialog_tree_store.js";
 import { register_terrain_cost_behavior } from "./lib/terrain_cost_behavior.js";
 import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
@@ -563,6 +564,9 @@ Hooks.once("dcReady", async () => {
 		// Tree repair (from bt_tree_repair.js)
 		migrate_node_types,
 		repair_misplaced_child_nodes,
+		// Dialog diverts migration (from dialog_tree_store.js)
+		migrate_dialog_diverts,
+		run_dialog_diverts_migration,
 		// Built-in fragments (from lib/fragments/builtin_fragments.js)
 		get_builtin_fragments,
 		get_builtin_fragment,
