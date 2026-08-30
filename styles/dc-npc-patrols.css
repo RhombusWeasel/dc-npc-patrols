@@ -320,32 +320,51 @@
 	margin-bottom: 6px;
 }
 
-.dc-dialog-editor-flag-condition-row {
-	display: flex;
-	gap: 4px;
-	align-items: center;
-	margin-bottom: 3px;
+.dc-cond-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 4px;
+	table-layout: fixed;
 }
 
-.dc-flag-cond-scope {
-	flex: 0.8;
-	min-width: 70px;
-	width: auto;
+.dc-cond-table th {
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	color: var(--color-text-secondary);
+	text-align: left;
+	padding: 1px 4px;
+	border-bottom: 1px solid var(--color-border-light);
+}
+
+.dc-cond-table td {
+	padding: 1px 2px;
+	vertical-align: middle;
+}
+
+.dc-cond-table td input,
+.dc-cond-table td select {
+	width: 100%;
+	min-width: 0;
+}
+
+.dc-cond-col-scope { width: 70px; }
+.dc-cond-col-op { width: 100px; }
+
+.dc-cond-table-nested {
+	margin: 2px 0 4px;
+}
+
+.dc-cond-table td:last-child { width: 30px; }
+
+.dc-dialog-editor-flag-condition-row .dc-flag-cond-scope,
+.dc-dialog-editor-divert-cond-row .dc-divert-cond-scope {
+	width: 100%;
 }
 
 .dc-flag-cond-key {
 	flex: 1.5;
 	min-width: 80px;
-}
-
-.dc-flag-cond-op {
-	flex: 1;
-	min-width: 90px;
-}
-
-.dc-flag-cond-val {
-	flex: 1;
-	min-width: 60px;
 }
 
 .dc-dialog-editor-flag-cond-delete {
@@ -371,11 +390,6 @@
 }
 
 /* ── Flag scope selectors ── */
-.dc-flag-cond-scope {
-	flex-shrink: 0;
-	min-width: 70px;
-}
-
 .dc-dialog-editor-set-flags-scope {
 	display: inline-flex;
 	align-items: center;

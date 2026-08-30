@@ -45,10 +45,12 @@
 	<div class="dc-dialog-editor-flag-conditions-section">
 		<div class="editor-subsection-title">{{localize "dc-npc-patrols.dialog.flag_conditions"}}</div>
 		<div class="dc-dialog-editor-flag-conditions-hint">{{localize "dc-npc-patrols.dialog.flag_conditions_node_hint"}}</div>
-		<div class="dc-dialog-editor-flag-conditions-table" data-node-flag-conditions>
+		<table class="dc-cond-table" data-node-flag-conditions>
+			<thead><tr><th class="dc-cond-col-scope">Scope</th><th>Flag</th><th class="dc-cond-col-op">Operator</th><th>Value</th><th></th></tr></thead>
+			<tbody>
 			{{#each selected_node.flag_conditions}}
-			<div class="dc-dialog-editor-flag-condition-row" data-flag-condition-idx="{{@index}}">
-				<select data-node-flag-cond-field="{{@index}}:scope" class="dc-flag-cond-scope">
+			<tr class="dc-dialog-editor-flag-condition-row" data-flag-condition-idx="{{@index}}">
+				<td><select data-node-flag-cond-field="{{@index}}:scope" class="dc-flag-cond-scope">
 					<option value="actor" {{#if (eq this.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
 					<option value="posse" {{#if (eq this.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
 				</select>
@@ -65,13 +67,14 @@
 					<option value="contains" {{#if (eq this.operator "contains")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_contains"}}</option>
 					<option value="starts_with" {{#if (eq this.operator "starts_with")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_starts_with"}}</option>
 				</select>
-				<input type="text" data-node-flag-cond-field="{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-flag-cond-val" />
-				<button type="button" class="dc-dialog-editor-flag-cond-delete" data-node-flag-cond-delete="{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
+				<input type="text" data-node-flag-cond-field="{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-flag-cond-val" /></td>
+				<td><button type="button" class="dc-dialog-editor-flag-cond-delete" data-node-flag-cond-delete="{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
 					<i class="fa-solid fa-trash"></i>
-				</button>
-			</div>
+				</button></td>
+			</tr>
 			{{/each}}
-		</div>
+			</tbody>
+		</table>
 		<button type="button" class="editor-add-btn dc-flag-cond-add" data-action="add-node-flag-cond">
 			<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_condition"}}
 		</button>
@@ -92,9 +95,12 @@
 				{{#each selected_node.diverts}}
 				<div class="dc-dialog-editor-divert-row" data-divert-idx="{{@index}}">
 					<div class="dc-dialog-editor-divert-conds">
-						{{#each this.conditions}}
-						<div class="dc-dialog-editor-divert-cond-row" data-divert-cond-idx="{{@index}}">
-							<select data-node-divert-cond-field="{{@../index}}:{{@index}}:scope" class="dc-divert-cond-scope">
+						<table class="dc-cond-table dc-cond-table-nested">
+							<thead><tr><th class="dc-cond-col-scope">Scope</th><th>Flag</th><th class="dc-cond-col-op">Operator</th><th>Value</th><th></th></tr></thead>
+							<tbody>
+							{{#each this.conditions}}
+							<tr class="dc-dialog-editor-divert-cond-row" data-divert-cond-idx="{{@index}}">
+								<td><select data-node-divert-cond-field="{{@../index}}:{{@index}}:scope" class="dc-divert-cond-scope">
 								<option value="actor" {{#if (eq this.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
 								<option value="posse" {{#if (eq this.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
 							</select>
@@ -111,12 +117,14 @@
 								<option value="contains" {{#if (eq this.operator "contains")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_contains"}}</option>
 								<option value="starts_with" {{#if (eq this.operator "starts_with")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_starts_with"}}</option>
 							</select>
-							<input type="text" data-node-divert-cond-field="{{@../index}}:{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-divert-cond-val" />
-							<button type="button" class="dc-divert-cond-delete" data-divert-cond-delete="{{@../index}}:{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
+							<input type="text" data-node-divert-cond-field="{{@../index}}:{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-divert-cond-val" /></td>
+							<td><button type="button" class="dc-divert-cond-delete" data-divert-cond-delete="{{@../index}}:{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
 								<i class="fa-solid fa-trash"></i>
-							</button>
-						</div>
+							</button></td>
+						</tr>
 						{{/each}}
+						</tbody>
+						</table>
 						<button type="button" class="editor-add-btn dc-divert-cond-add" data-divert-cond-add="{{@index}}">
 							<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_condition"}}
 						</button>
@@ -185,10 +193,12 @@
 			</div>
 			<div class="dc-dialog-editor-response-conditions">
 				<div class="dc-dialog-editor-conditions-label">{{localize "dc-npc-patrols.dialog.flag_conditions"}}</div>
-				<div class="dc-dialog-editor-flag-conditions-table" data-response-flag-conditions="{{@index}}">
+				<table class="dc-cond-table dc-cond-table-nested" data-response-flag-conditions="{{@index}}">
+					<thead><tr><th class="dc-cond-col-scope">Scope</th><th>Flag</th><th class="dc-cond-col-op">Operator</th><th>Value</th><th></th></tr></thead>
+					<tbody>
 					{{#each this.flag_conditions}}
-					<div class="dc-dialog-editor-flag-condition-row" data-response-flag-cond-idx="{{@../index}}:{{@index}}">
-						<select data-response-flag-cond-field="{{@../index}}:{{@index}}:scope" class="dc-flag-cond-scope">
+					<tr class="dc-dialog-editor-flag-condition-row" data-response-flag-cond-idx="{{@../index}}:{{@index}}">
+						<td><select data-response-flag-cond-field="{{@../index}}:{{@index}}:scope" class="dc-flag-cond-scope">
 							<option value="actor" {{#if (eq this.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
 							<option value="posse" {{#if (eq this.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
 						</select>
@@ -205,13 +215,14 @@
 							<option value="contains" {{#if (eq this.operator "contains")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_contains"}}</option>
 							<option value="starts_with" {{#if (eq this.operator "starts_with")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.op_starts_with"}}</option>
 						</select>
-						<input type="text" data-response-flag-cond-field="{{@../index}}:{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-flag-cond-val" />
-						<button type="button" class="dc-dialog-editor-flag-cond-delete" data-response-flag-cond-delete="{{@../index}}:{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
+						<input type="text" data-response-flag-cond-field="{{@../index}}:{{@index}}:expected_value" value="{{this.expected_value}}" placeholder="{{localize 'dc-npc-patrols.dialog.expected_value'}}" class="dc-flag-cond-val" /></td>
+						<td><button type="button" class="dc-dialog-editor-flag-cond-delete" data-response-flag-cond-delete="{{@../index}}:{{@index}}" title="{{localize 'dc-npc-patrols.dialog.delete_condition'}}">
 							<i class="fa-solid fa-trash"></i>
-						</button>
-					</div>
+						</button></td>
+					</tr>
 					{{/each}}
-				</div>
+					</tbody>
+				</table>
 				<button type="button" class="editor-add-btn dc-flag-cond-add" data-action="add-response-flag-cond" data-response-flag-cond-add="{{@index}}">
 					<i class="fa-solid fa-plus"></i> {{localize "dc-npc-patrols.dialog.add_condition"}}
 				</button>
