@@ -94,7 +94,7 @@
 					<div class="dc-dialog-editor-divert-conds">
 						{{#each this.conditions}}
 						<div class="dc-dialog-editor-divert-cond-row" data-divert-cond-idx="{{@index}}">
-							<select data-node-divert-cond-field="{{@../index}}:{{this.@index}}:scope" class="dc-divert-cond-scope">
+							<select data-node-divert-cond-field="{{@../index}}:{{@index}}:scope" class="dc-divert-cond-scope">
 								<option value="actor" {{#if (eq this.scope "actor")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_actor"}}</option>
 								<option value="posse" {{#if (eq this.scope "posse")}}selected{{/if}}>{{localize "dc-npc-patrols.dialog.scope_posse"}}</option>
 							</select>
@@ -126,7 +126,7 @@
 							<select data-node-divert-goto="{{@index}}">
 								<option value="" {{#unless this.goto}}selected{{/unless}}>{{localize "dc-npc-patrols.dialog.else_goto_none"}}</option>
 								{{#each @root.node_list}}
-								<option value="{{this.id}}" {{#if (eq this.id this.goto)}}selected{{/if}}>{{this.label}}</option>
+								<option value="{{this.id}}" {{#if (eq this.id ../this.goto)}}selected{{/if}}>{{this.label}}</option>
 								{{/each}}
 							</select>
 						</label>
