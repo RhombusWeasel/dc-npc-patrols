@@ -522,6 +522,21 @@ Hooks.once("dcReady", async () => {
 	register_quests_state_socket();
 	on_quests_change(() => {
 		if (_panel) _panel.render();
+		// Keep player-facing Quests sheet tabs live: re-render open character
+		// sheets so a quest offered mid-session shows up without a sheet reopen.
+		queueMicrotask(() => {
+			for (const actor of game.actors) {
+				const sheet = actor.sheet;
+				if (sheet?.rendered && actor.type === "character") sheet.render(false);
+			}
+			if (canvas?.ready) {
+				for (const tokenDoc of canvas.scene?.tokens || []) {
+					if (tokenDoc.actor?.type === "character" && tokenDoc.actor.sheet?.rendered) {
+						tokenDoc.actor.sheet.render(false);
+					}
+				}
+			}
+		});
 	});
 
 	// Expose module API
