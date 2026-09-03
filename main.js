@@ -9,7 +9,7 @@
 import { RegionManager } from "./lib/region_manager.js";
 import { PatrolHub } from "./lib/patrol_hub.js";
 import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
-import { migrate_dialog_diverts, run_dialog_diverts_migration } from "./lib/dialog_tree_store.js";
+import { migrate_dialog_diverts, run_dialog_diverts_migration, run_dialog_set_flags_migration } from "./lib/dialog_tree_store.js";
 import { register_terrain_cost_behavior } from "./lib/terrain_cost_behavior.js";
 import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
@@ -491,6 +491,11 @@ Hooks.once("dcReady", async () => {
 	// Preload partials
 	await _preload_partials();
 
+	// One-time data migrations (GM client only; idempotent).
+	if (game.user.isGM) {
+		await run_dialog_set_flags_migration();
+	}
+
 	// Initialize subsystems
 	const region_manager = new RegionManager(MODULE_ID);
 
@@ -582,6 +587,9 @@ Hooks.once("dcReady", async () => {
 		// Dialog diverts migration (from dialog_tree_store.js)
 		migrate_dialog_diverts,
 		run_dialog_diverts_migration,
+		// set_flags string migration (from dialog_tree_store.js)
+		migrate_dialog_set_flags,
+		run_dialog_set_flags_migration,
 		// Built-in fragments (from lib/fragments/builtin_fragments.js)
 		get_builtin_fragments,
 		get_builtin_fragment,
