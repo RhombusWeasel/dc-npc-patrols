@@ -9,7 +9,7 @@
 import { RegionManager } from "./lib/region_manager.js";
 import { PatrolHub } from "./lib/patrol_hub.js";
 import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
-import { migrate_dialog_diverts, run_dialog_diverts_migration, run_dialog_set_flags_migration } from "./lib/dialog_tree_store.js";
+import { migrate_dialog_diverts, migrate_dialog_set_flags, run_dialog_diverts_migration, run_dialog_set_flags_migration } from "./lib/dialog_tree_store.js";
 import { register_terrain_cost_behavior } from "./lib/terrain_cost_behavior.js";
 import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
