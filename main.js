@@ -9,7 +9,7 @@
 import { RegionManager } from "./lib/region_manager.js";
 import { PatrolHub } from "./lib/patrol_hub.js";
 import { register_dialog_behaviors } from "./lib/dialog_behaviors.js";
-import { migrate_dialog_diverts, migrate_dialog_set_flags, run_dialog_diverts_migration, run_dialog_set_flags_migration } from "./lib/dialog_tree_store.js";
+import { migrate_dialog_diverts, migrate_dialog_set_flags, run_dialog_diverts_migration, run_dialog_set_flags_migration, migrate_dialog_tree_store } from "./lib/dialog_tree_store.js";
 import { register_terrain_cost_behavior } from "./lib/terrain_cost_behavior.js";
 import { DialogEditor } from "./lib/dialog_editor.js";
 import { AmbientEditor } from "./lib/ambient_editor.js";
@@ -110,12 +110,22 @@ function register_settings() {
 		default: DEFAULTS.enable_patrols,
 	});
 
-	// World-level JSON storage for dialog trees and ambient sets
+	// World-level JSON storage for dialog trees and ambient sets.
+	// LEGACY: the monolithic dialog_trees blob (pre per-key store). Retained
+	// only for migration reads; new writes go to per-tree keys below.
 	game.settings.register(MODULE_ID, "dialog_trees", {
 		scope: "world",
 		config: false,
 		type: Object,
 		default: {},
+	});
+
+	// Index of tree ids living in per-tree settings (dialog_tree_<id> keys).
+	game.settings.register(MODULE_ID, "dialog_tree_ids", {
+		scope: "world",
+		config: false,
+		type: Array,
+		default: [],
 	});
 
 	// World-level JSON storage for dialog tree folders
@@ -493,6 +503,8 @@ Hooks.once("dcReady", async () => {
 
 	// One-time data migrations (GM client only; idempotent).
 	if (game.user.isGM) {
+		// Legacy monolithic dialog_trees blob → per-tree settings keys.
+		await migrate_dialog_tree_store();
 		await run_dialog_set_flags_migration();
 	}
 
@@ -590,6 +602,8 @@ Hooks.once("dcReady", async () => {
 		// set_flags string migration (from dialog_tree_store.js)
 		migrate_dialog_set_flags,
 		run_dialog_set_flags_migration,
+		// Legacy monolith → per-key dialog tree store migration
+		migrate_dialog_tree_store,
 		// Built-in fragments (from lib/fragments/builtin_fragments.js)
 		get_builtin_fragments,
 		get_builtin_fragment,
